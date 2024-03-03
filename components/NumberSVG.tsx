@@ -6,7 +6,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-1"
                     // width="100%"
                     height="100%"
-                    viewBox="-45 0 80 154"
+                    viewBox="-20 0 80 154"
                     className={className}
                 >
                     <path
@@ -21,7 +21,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-2"
                     // width="100%"
                     height="100%"
-                    viewBox="-15 0 80 154"
+                    viewBox="0 0 80 154"
                     className={className}
                 >
                     <path
@@ -36,7 +36,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-3"
                     // width="100%"
                     height="100%"
-                    viewBox="-15 0 80 154"
+                    viewBox="0 0 80 154"
                     className={className}
                 >
                     <path
@@ -51,7 +51,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-4"
                     // width="100%"
                     height="100%"
-                    viewBox="-15 0 81 154"
+                    viewBox="0 0 81 154"
                     className={className}
                 >
                     <path
@@ -66,7 +66,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-5"
                     // width="100%"
                     height="100%"
-                    viewBox="-15 0 81 154"
+                    viewBox="0 0 81 154"
                     className={className}
                 >
                     <path
@@ -81,7 +81,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-6"
                     // width="100%"
                     height="100%"
-                    viewBox="-15 0 81 154"
+                    viewBox="0 0 81 154"
                     className={className}
                 >
                     <path
@@ -94,7 +94,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
             ) : rank === 7 ? (
                 <svg
                     id="rank-7"
-                    viewBox="-15 0 78 154"
+                    viewBox="0 0 78 154"
                     // width="100%"
                     height="100%"
                     className={className}
@@ -111,7 +111,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-8"
                     // width="100%"
                     height="100%"
-                    viewBox="-15 0 77 154"
+                    viewBox="0 0 77 154"
                     className={className}
                 >
                     <path
@@ -124,7 +124,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
             ) : rank === 9 ? (
                 <svg
                     id="rank-9"
-                    viewBox="-15 0 71 154"
+                    viewBox="0 0 71 154"
                     // width="100%"
                     height="100%"
                     className={className}
@@ -141,7 +141,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     id="rank-10"
                     // width="100%"
                     height="100%"
-                    viewBox="-5 0 140 154"
+                    viewBox="0 0 140 154"
                     className={className}
                 >
                     <path

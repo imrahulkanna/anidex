@@ -18,15 +18,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`min-h-screen bg-neutral-800 text-neutral-50 ${inter.className}`}>
-                <header className="top-0 left-0 right-0 fixed w-full">
+            <body
+                className={`min-h-screen bg-neutral-800 px-4 md:px-6 text-neutral-50 ${inter.className}`}
+            >
+                <header className="z-50 top-0 left-0 right-0 fixed w-full bg-transparent">
                     <div className="max-w-[1800px] mx-auto px-5 py-3 flex justify-between items-center">
                         <Image src="/anidex-logo.png" alt="anidex logo" width={50} height={50} />
-                        {/* <button className="bg-[#52dff4] py-2 px-4 rounded-md text-black font-semibold">
-                            Login
-                            
-                        </button> */}
-                        <Button variant="secondary" className="bg-[#52dff4] font-semibold">
+                        <Button variant="secondary" className="bg-primary font-semibold">
                             Login
                         </Button>
                     </div>
