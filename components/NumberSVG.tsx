@@ -1,4 +1,12 @@
-const NumberSVG = ({ rank, className }: { rank: number; className: string }) => {
+const NumberSVG = ({
+    rank,
+    className,
+    title,
+}: {
+    rank: number;
+    className: string;
+    title: string;
+}) => {
     return (
         <>
             {rank === 1 ? (
@@ -9,6 +17,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="-20 0 80 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"
@@ -24,6 +33,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="0 0 80 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"
@@ -39,6 +49,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="0 0 80 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"
@@ -54,6 +65,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="0 0 81 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"
@@ -69,6 +81,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="0 0 81 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"
@@ -84,6 +97,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="0 0 81 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"
@@ -99,6 +113,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     height="100%"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeWidth={4}
@@ -114,6 +129,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="0 0 77 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"
@@ -129,6 +145,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     height="100%"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeWidth={4}
@@ -144,6 +161,7 @@ const NumberSVG = ({ rank, className }: { rank: number; className: string }) => 
                     viewBox="0 0 140 154"
                     className={className}
                 >
+                    <title>{title}</title>
                     <path
                         stroke="#595959"
                         strokeLinejoin="miter"

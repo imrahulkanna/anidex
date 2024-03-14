@@ -19,7 +19,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`min-h-screen bg-neutral-800 px-4 md:px-6 text-neutral-50 ${inter.className}`}
+                className={`min-h-screen max-w-[1800px] mx-auto bg-neutral-800 px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
             >
                 <header className="z-50 top-0 left-0 right-0 fixed w-full bg-transparent">
                     <div className="max-w-[1800px] mx-auto px-5 py-3 flex justify-between items-center">

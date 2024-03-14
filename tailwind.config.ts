@@ -34,6 +34,7 @@ const config = {
             },
             screens: {
                 "2xl": "1670px",
+                "3xl": "1799px"
             },
             colors: {
                 primary: "#52dff4",
