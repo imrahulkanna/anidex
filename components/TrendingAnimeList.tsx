@@ -2,13 +2,10 @@ import React from "react";
 import {
     Carousel,
     CarouselContent,
-    CarouselItem,
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import Image from "next/image";
 import { getTrendingAnimes } from "../app/lib/fetch";
-import NumberSVG from "./NumberSVG";
 import TrendingAnimeCard from "./TrendingAnimeCard";
 
 interface imageType {

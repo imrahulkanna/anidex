@@ -1,7 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getTopAiringAnimes, getMostPopularAnimes, getMostFavoriteAnimes } from "@/app/lib/fetch";
+import {
+    getTopAiringAnimes,
+    getMostPopularAnimes,
+    getMostFavoriteAnimes,
+    getLatestCompletedAnimes,
+} from "@/app/lib/fetch";
 import { animeData } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
@@ -25,19 +30,23 @@ const CategoryList = async ({ categoryTitle }: categoryListType) => {
             data = await getMostFavoriteAnimes();
             break;
 
+        case "Latest Completed":
+            data = await getLatestCompletedAnimes();
+            break;
+
         default:
             data = null;
             break;
     }
     return (
-        <div>
+        <>
             <h3 className="font-bold text-2xl">{categoryTitle}</h3>
             <div>
                 {data &&
                     data.slice(0, 5).map((anime: animeData) => (
                         <div
                             key={anime.mal_id}
-                            className="flex items-center gap-4 py-4 border-b border-white border-opacity-25"
+                            className="flex items-center gap-4 py-4 border-b border-white border-opacity-15"
                         >
                             <Image
                                 src={anime.images.webp.image_url}
@@ -48,13 +57,19 @@ const CategoryList = async ({ categoryTitle }: categoryListType) => {
                             />
 
                             <div className="text-sm w-[calc(100%-80px)]">
-                                <p className="whitespace-nowrap overflow-hidden text-ellipsis">
+                                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                                     {anime.title_english || anime.title}
                                 </p>
                                 <div className="flex items-center gap-1">
-                                    <div>{anime.episodes || "???"}</div>
+                                    <div>
+                                        {anime.episodes ? (
+                                            <span className="font-medium">{anime.episodes}</span>
+                                        ) : (
+                                            <span className="opacity-80">???</span>
+                                        )}
+                                    </div>
                                     <DotFilledIcon className="opacity-30" />
-                                    <div className="opacity-50">{anime.type}</div>
+                                    <div className="opacity-50 font-medium">{anime.type}</div>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +80,7 @@ const CategoryList = async ({ categoryTitle }: categoryListType) => {
                     View more <ChevronRightIcon />
                 </Link>
             </div>
-        </div>
+        </>
     );
 };
 

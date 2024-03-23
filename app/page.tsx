@@ -6,12 +6,14 @@ export default function Home() {
     return (
         <main>
             <TrendingAnimeList />
-            <div className="flex gap-4 w-full">
-                {categoryTitles.map((title) => (
-                    <div className="w-1/4">
-                        <CategoryList categoryTitle={title} />
-                    </div>
-                ))}
+            <div className="flex">
+                <div className="w-full flex justify-between flex-wrap gap-4 flex-col md:flex-row md:gap-0">
+                    {categoryTitles.map((title) => (
+                        <div className="w-full md:w-1/2 lg:w-1/4 md:pr-4">
+                            <CategoryList key={title} categoryTitle={title} />
+                        </div>
+                    ))}
+                </div>
             </div>
         </main>
     );
