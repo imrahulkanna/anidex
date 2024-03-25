@@ -11,10 +11,11 @@ export default function Home() {
             <div className="w-full flex justify-between flex-wrap gap-4 flex-col md:flex-row md:gap-0 md:-mx-2">
                 {featuredAnimeTitles.map((title) => (
                     <div
+                        key={title}
                         className="w-full md:w-1/2 xl:w-1/4 md:px-2"
                         id={title.toLowerCase().split(" ").join("-")}
                     >
-                        <FeaturedAnimes key={title} title={title} />
+                        <FeaturedAnimes title={title} />
                     </div>
                 ))}
             </div>
@@ -22,7 +23,7 @@ export default function Home() {
                 {/* Anime tiles */}
                 <div id="main-container" className="w-full xl:w-3/4">
                     {categoryTitles.map((title) => (
-                        <div id="new-releases" className="w-full">
+                        <div key={title} id="new-releases" className="w-full">
                             <CategoryAnimes title={title} />
                         </div>
                     ))}
