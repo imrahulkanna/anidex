@@ -10,6 +10,7 @@ import TrendingAnimeCard from "./TrendingAnimeCard";
 
 interface imageType {
     image_url: string;
+    large_image_url: string;
 }
 
 export interface animeData {

@@ -19,7 +19,7 @@ const TrendingAnimeCard = ({ anime, index }: { anime: animeData; index: number }
                 />
                 <div>
                     <Image
-                        src={anime.images.webp.image_url}
+                        src={anime.images.webp.large_image_url}
                         alt={anime.title_english || anime.title}
                         width={180}
                         height={0}

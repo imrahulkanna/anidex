@@ -2,7 +2,7 @@ import { GET_ANIME_BY_SEARCH, GET_TOP_ANIME } from "./constants";
 import { animeData } from "../../components/TrendingAnimeList";
 
 interface queryType {
-    [key: string]: string | number;
+    [key: string]: string | number | boolean;
 }
 
 const constructUrl = (baseUrl: string, queryParams: queryType) => {
@@ -88,6 +88,24 @@ export const getLatestCompletedAnimes = async (): Promise<any> => {
         status: "complete",
         order_by: "end_date",
         sort: "desc",
+        sfw: true,
+    };
+    try {
+        const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
+        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const apiData = await response.json();
+        return getUniqueAnimeData(apiData.data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getNewReleasedAnimes = async (): Promise<any> => {
+    const queryParams: queryType = {
+        status: "airing",
+        order_by: "start_date",
+        sort: "desc",
+        sfw: true,
     };
     try {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
