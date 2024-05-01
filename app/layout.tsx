@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Prompt, Rowdies } from "next/font/google";
 import Image from "next/image";
 import "./globals.css";
 import { Button } from "@/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
+const rowdies = Rowdies({
+    subsets: ["latin"],
+    weight: "700",
+});
 
 export const metadata: Metadata = {
     title: "Anidex - Anime Community",
@@ -23,7 +27,15 @@ export default function RootLayout({
             >
                 <header className="z-50 top-0 left-0 right-0 fixed w-full bg-transparent">
                     <div className="w-full max-w-[1800px] mx-auto px-5 py-3 flex justify-between items-center">
-                        <Image src="/anidex-logo.png" alt="anidex logo" width={50} height={50} />
+                        <div className="flex items-center gap-3">
+                            <Image
+                                src="/anidex-logo.png"
+                                alt="anidex logo"
+                                width={50}
+                                height={50}
+                            />
+                            <p className={`text-4xl font-extrabold text-primary ${rowdies.className}`}>AniDex</p>
+                        </div>
                         <Button variant="secondary" className="bg-primary font-semibold">
                             Login
                         </Button>

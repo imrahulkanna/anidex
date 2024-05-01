@@ -63,7 +63,7 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
                                 <div className="flex items-center gap-1">
                                     <div>
                                         {anime.episodes ? (
-                                            <span className="font-medium">{anime.episodes}</span>
+                                            <p className="font-medium">{anime.episodes} eps</p>
                                         ) : (
                                             <span className="opacity-80">???</span>
                                         )}

@@ -47,7 +47,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                 <DotFilledIcon className="opacity-30" />
                                 <div>
                                     {anime.episodes ? (
-                                        <span className="font-medium">{anime.episodes}</span>
+                                        <span className="font-medium">{anime.episodes} eps</span>
                                     ) : (
                                         <span className="opacity-80">???</span>
                                     )}
