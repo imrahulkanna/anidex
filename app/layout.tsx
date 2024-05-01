@@ -3,6 +3,7 @@ import { Inter, Prompt, Rowdies } from "next/font/google";
 import Image from "next/image";
 import "./globals.css";
 import { Button } from "@/components/ui/button";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 const rowdies = Rowdies({
@@ -42,6 +43,7 @@ export default function RootLayout({
                     </div>
                 </header>
                 {children}
+                <SpeedInsights />
             </body>
         </html>
     );
