@@ -1,4 +1,4 @@
-import { GET_ANIME_BY_SEARCH, GET_TOP_ANIME } from "./constants";
+import { GET_ANIME_BY_SEARCH, GET_TOP_ANIME, GET_SEASON_UPCOMING } from "./constants";
 import { animeData } from "../../components/TrendingAnimeList";
 
 interface queryType {
@@ -35,7 +35,7 @@ export const getTrendingAnimes = async (): Promise<any> => {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
         const response = await fetch(url, { next: { revalidate: 3600 } });
         const apiData = await response.json();
-        return apiData.data;
+        return getUniqueAnimeData(apiData.data);
     } catch (error) {
         console.log(error);
     }
@@ -116,3 +116,17 @@ export const getNewReleasedAnimes = async (): Promise<any> => {
         console.log(error);
     }
 };
+
+export const getUpcomingSeasonAnimes = async(): Promise<any> => {
+    const queryParams: queryType = {
+        sfw: true,
+    };
+    try {
+        const url = constructUrl(GET_SEASON_UPCOMING, queryParams);
+        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const apiData = await response.json();
+        return getUniqueAnimeData(apiData.data);
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -23,12 +23,15 @@ export interface animeData {
     };
     type: string;
     episodes: number;
+    aired: {
+        from: string | null;
+    };
 }
 
 const TrendingAnimeList = async () => {
     const trendingAnimeData: Array<animeData> = await getTrendingAnimes();
     return (
-        <div className="">
+        <div id="trending-animes" className="mb-10">
             <h3 className="font-bold text-2xl">Trending</h3>
             <Carousel
                 opts={{

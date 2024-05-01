@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getNewReleasedAnimes } from "@/app/lib/fetch";
+import { getNewReleasedAnimes, getUpcomingSeasonAnimes } from "@/app/lib/fetch";
 import { categoryListType } from "./FeaturedAnimes";
 import { animeData } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
@@ -14,12 +14,28 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
             data = await getNewReleasedAnimes();
             break;
 
+        case "Top Upcoming":
+            data = await getUpcomingSeasonAnimes();
+            break;
+
         default:
             data = null;
             break;
     }
+
+    const getFormattedDate = (dateString: string): string => {
+        const date = new Date(dateString);
+        const options: Intl.DateTimeFormatOptions = {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        };
+        const formattedDate: string = date.toLocaleDateString('en-US', options);
+        return formattedDate;
+    }
+
     return (
-        <>
+        <div id={title.split(" ").join("-").toLowerCase()} className="w-full mb-10">
             <div className="flex justify-between items-center px-0 md:px-4">
                 <h3 className="font-bold text-2xl">{title}</h3>
                 <Link href="#" className="flex items-center gap-2 text-sm hover:text-primary">
@@ -42,21 +58,29 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                             <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                                 {anime.title_english || anime.title}
                             </p>
-                            <div className="flex items-center gap-1">
-                                <div className="opacity-50 font-medium">{anime.type}</div>
+                            <div className="flex items-center gap-0.5 text-sm">
+                                <div className="opacity-60 font-medium">{anime.type || "TV"}</div>
                                 <DotFilledIcon className="opacity-30" />
-                                <div>
+                                <div className="opacity-60">
                                     {anime.episodes ? (
                                         <span className="font-medium">{anime.episodes} eps</span>
                                     ) : (
-                                        <span className="opacity-80">???</span>
+                                        <span>???</span>
                                     )}
                                 </div>
+                                {title === "Top Upcoming" && anime.aired.from && (
+                                    <>
+                                        <DotFilledIcon className="opacity-30" />
+                                        <div className="opacity-60 font-medium">
+                                            {getFormattedDate(anime.aired.from)}
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     ))}
             </div>
-        </>
+        </div>
     );
 };
 

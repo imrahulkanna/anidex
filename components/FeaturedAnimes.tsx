@@ -39,7 +39,10 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
             break;
     }
     return (
-        <>
+        <div
+            className="w-full md:w-1/2 xl:w-1/4 md:px-2"
+            id={title.toLowerCase().split(" ").join("-")}
+        >
             <h3 className="font-bold text-2xl">{title}</h3>
             <div>
                 {data &&
@@ -56,20 +59,20 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
                                 className="w-20 h-28 rounded-md object-cover"
                             />
 
-                            <div className="text-sm w-[calc(100%-80px)]">
+                            <div className="text-sm w-[calc(100%-96px)]">
                                 <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                                     {anime.title_english || anime.title}
                                 </p>
                                 <div className="flex items-center gap-1">
-                                    <div>
+                                    <div className="opacity-60">
                                         {anime.episodes ? (
                                             <p className="font-medium">{anime.episodes} eps</p>
                                         ) : (
-                                            <span className="opacity-80">???</span>
+                                            <span>???</span>
                                         )}
                                     </div>
                                     <DotFilledIcon className="opacity-30" />
-                                    <div className="opacity-50 font-medium">{anime.type}</div>
+                                    <div className="opacity-60 font-medium">{anime.type}</div>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +83,7 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
                     </Link>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

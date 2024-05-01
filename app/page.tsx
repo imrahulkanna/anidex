@@ -4,28 +4,20 @@ import CategoryAnimes from "@/components/CategoryAnimes";
 
 export default function Home() {
     const featuredAnimeTitles = ["Top Airing", "Most Popular", "Most Favorite", "Latest Completed"];
-    const categoryTitles = ["New Releases"];
+    const categoryTitles = ["New Releases", "Top Upcoming"];
     return (
         <main>
             <TrendingAnimeList />
-            <div className="w-full flex justify-between flex-wrap gap-4 flex-col md:flex-row md:gap-0 md:-mx-2">
+            <div id="featured-animes" className="w-full mb-10 flex justify-between flex-wrap gap-4 flex-col md:flex-row md:gap-0 md:-mx-2">
                 {featuredAnimeTitles.map((title) => (
-                    <div
-                        key={title}
-                        className="w-full md:w-1/2 xl:w-1/4 md:px-2"
-                        id={title.toLowerCase().split(" ").join("-")}
-                    >
-                        <FeaturedAnimes title={title} />
-                    </div>
+                    <FeaturedAnimes key={title} title={title} />
                 ))}
             </div>
             <div className="w-full flex flex-col xl:flex-row md:-mx-4">
                 {/* Anime tiles */}
                 <div id="main-container" className="w-full xl:w-3/4">
                     {categoryTitles.map((title) => (
-                        <div key={title} id="new-releases" className="w-full">
-                            <CategoryAnimes title={title} />
-                        </div>
+                        <CategoryAnimes key={title} title={title} />
                     ))}
                 </div>
                 {/* Genre and top anime tiles */}
