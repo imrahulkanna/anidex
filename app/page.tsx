@@ -4,7 +4,7 @@ import CategoryAnimes from "@/components/CategoryAnimes";
 
 export default function Home() {
     const featuredAnimeTitles = ["Top Airing", "Most Popular", "Most Favorite", "Latest Completed"];
-    const categoryTitles = ["New Releases", "Top Upcoming"];
+    const categoryTitles = ["Latest Episodes", "New Releases", "Top Upcoming"];
     return (
         <main>
             <TrendingAnimeList />

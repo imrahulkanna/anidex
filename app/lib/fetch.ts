@@ -1,4 +1,9 @@
-import { GET_ANIME_BY_SEARCH, GET_TOP_ANIME, GET_SEASON_UPCOMING } from "./constants";
+import {
+    GET_ANIME_BY_SEARCH,
+    GET_TOP_ANIME,
+    GET_SEASON_UPCOMING,
+    GET_LATEST_EPISODES,
+} from "./constants";
 import { animeData } from "../../components/TrendingAnimeList";
 
 interface queryType {
@@ -130,3 +135,14 @@ export const getUpcomingSeasonAnimes = async(): Promise<any> => {
         console.log(error);
     }
 }
+
+export const getLatestEpisodes = async (): Promise<any> => {
+    try {
+        const url = GET_LATEST_EPISODES;
+        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const apiData = await response.json();
+        return apiData.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

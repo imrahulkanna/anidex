@@ -1,13 +1,55 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getNewReleasedAnimes, getUpcomingSeasonAnimes } from "@/app/lib/fetch";
+import { getLatestEpisodes, getNewReleasedAnimes, getUpcomingSeasonAnimes } from "@/app/lib/fetch";
 import { categoryListType } from "./FeaturedAnimes";
-import { animeData } from "./TrendingAnimeList";
+import { animeData, imageType } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
+interface latestEps {
+    entry: {
+        mal_id: number;
+        title: string;
+        images: {
+            webp: imageType;
+            jpg?: imageType;
+        };
+    };
+    episodes: [
+        {
+            title: string;
+        }
+    ];
+}
+
+const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestEps> | null }) => {
+    if (!latestEpsData) {
+        return null;
+    }
+    return latestEpsData.slice(0, 10).map((anime: latestEps) => (
+        <div key={anime.entry.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
+            <div className="py-4">
+                <Image
+                    src={anime?.entry?.images?.webp?.large_image_url}
+                    alt={anime.entry.title}
+                    width={300}
+                    height={0}
+                    className="w-full h-[196px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
+                />
+            </div>
+            <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
+                {anime.entry.title}
+            </p>
+            <div className="flex items-center gap-0.5 text-xs">
+                <div className="opacity-60 font-medium">{anime.episodes[0].title}</div>
+            </div>
+        </div>
+    ));
+};
+
 const CategoryAnimes = async ({ title }: categoryListType) => {
-    let data: Array<animeData> | null;
+    let data: Array<animeData> | null = null;
+    let latestEpsData: Array<latestEps> | null = null;
 
     switch (title) {
         case "New Releases":
@@ -18,8 +60,11 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
             data = await getUpcomingSeasonAnimes();
             break;
 
+        case "Latest Episodes":
+            latestEpsData = await getLatestEpisodes();
+            break;
+
         default:
-            data = null;
             break;
     }
 
@@ -30,9 +75,9 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
             month: "short",
             day: "numeric",
         };
-        const formattedDate: string = date.toLocaleDateString('en-US', options);
+        const formattedDate: string = date.toLocaleDateString("en-US", options);
         return formattedDate;
-    }
+    };
 
     return (
         <div id={title.split(" ").join("-").toLowerCase()} className="w-full mb-10">
@@ -43,7 +88,10 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                 </Link>
             </div>
             <div className="flex flex-wrap [&>*:nth-child(odd)]:pr-2 [&>*:nth-child(even)]:pl-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4">
-                {data &&
+                {title === "Latest Episodes" ? (
+                    <LatestEpisodesSection latestEpsData={latestEpsData} />
+                ) : (
+                    data &&
                     data.slice(0, 10).map((anime: animeData) => (
                         <div key={anime.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
                             <div className="py-4">
@@ -58,14 +106,14 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                             <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                                 {anime.title_english || anime.title}
                             </p>
-                            <div className="flex items-center gap-0.5 text-sm">
+                            <div className="flex items-center gap-0.5 text-xs">
                                 <div className="opacity-60 font-medium">{anime.type || "TV"}</div>
                                 <DotFilledIcon className="opacity-30" />
                                 <div className="opacity-60">
                                     {anime.episodes ? (
                                         <span className="font-medium">{anime.episodes} eps</span>
                                     ) : (
-                                        <span>???</span>
+                                        <span>? eps</span>
                                     )}
                                 </div>
                                 {title === "Top Upcoming" && anime.aired.from && (
@@ -78,7 +126,8 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                 )}
                             </div>
                         </div>
-                    ))}
+                    ))
+                )}
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ import {
 import { getTrendingAnimes } from "../app/lib/fetch";
 import TrendingAnimeCard from "./TrendingAnimeCard";
 
-interface imageType {
+export interface imageType {
     image_url: string;
     large_image_url: string;
 }
