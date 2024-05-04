@@ -34,13 +34,13 @@ const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestE
                     alt={anime.entry.title}
                     width={300}
                     height={0}
-                    className="w-full h-[196px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
+                    className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
                 />
             </div>
             <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                 {anime.entry.title}
             </p>
-            <div className="flex items-center gap-0.5 text-xs">
+            <div className="flex items-center gap-0.5 text-sm">
                 <div className="opacity-60 font-medium">{anime.episodes[0].title}</div>
             </div>
         </div>
@@ -100,27 +100,49 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                     alt={anime.title_english || anime.title}
                                     width={300}
                                     height={0}
-                                    className="w-full h-[196px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
+                                    className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
                                 />
                             </div>
                             <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                                 {anime.title_english || anime.title}
                             </p>
-                            <div className="flex items-center gap-0.5 text-xs">
+                            <div className="flex items-center gap-0.5 text-sm">
                                 <div className="opacity-60 font-medium">{anime.type || "TV"}</div>
-                                <DotFilledIcon className="opacity-30" />
+                                <DotFilledIcon
+                                    className={`opacity-30 ${
+                                        title === "Top Upcoming" &&
+                                        !anime.episodes &&
+                                        "hidden md:block"
+                                    }`}
+                                />
                                 <div className="opacity-60">
                                     {anime.episodes ? (
-                                        <span className="font-medium">{anime.episodes} eps</span>
+                                        <span
+                                            className={`font-medium ${
+                                                title === "Top Upcoming" &&
+                                                !anime.episodes &&
+                                                "hidden md:block"
+                                            }`}
+                                        >
+                                            {anime.episodes} eps
+                                        </span>
                                     ) : (
-                                        <span>? eps</span>
+                                        <span
+                                            className={`${
+                                                title === "Top Upcoming" ? "hidden md:block" : ""
+                                            }`}
+                                        >
+                                            ? eps
+                                        </span>
                                     )}
                                 </div>
-                                {title === "Top Upcoming" && anime.aired.from && (
+                                {title === "Top Upcoming" && (
                                     <>
                                         <DotFilledIcon className="opacity-30" />
                                         <div className="opacity-60 font-medium">
-                                            {getFormattedDate(anime.aired.from)}
+                                            {anime.aired.from
+                                                ? getFormattedDate(anime.aired.from)
+                                                : "Soon"}
                                         </div>
                                     </>
                                 )}
