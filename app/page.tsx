@@ -1,6 +1,7 @@
 import TrendingAnimeList from "../components/TrendingAnimeList";
 import FeaturedAnimes from "@/components/FeaturedAnimes";
 import CategoryAnimes from "@/components/CategoryAnimes";
+import AnimeGenres from "@/components/AnimeGenres";
 
 export default function Home() {
     const featuredAnimeTitles = ["Top Airing", "Most Popular", "Most Favorite", "Latest Completed"];
@@ -22,9 +23,7 @@ export default function Home() {
                 </div>
                 {/* Genre and top anime tiles */}
                 <div id="main-sidebar" className="w-full xl:w-1/4 md:px-2">
-                    <div id="genre">
-                        <h3 className="font-bold text-2xl">Genres</h3>
-                    </div>
+                        <AnimeGenres />
                 </div>
             </div>
         </main>

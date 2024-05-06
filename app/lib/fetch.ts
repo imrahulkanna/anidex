@@ -3,6 +3,7 @@ import {
     GET_TOP_ANIME,
     GET_SEASON_UPCOMING,
     GET_LATEST_EPISODES,
+    GET_ANIME_GENRES,
 } from "./constants";
 import { animeData } from "../../components/TrendingAnimeList";
 
@@ -122,7 +123,7 @@ export const getNewReleasedAnimes = async (): Promise<any> => {
     }
 };
 
-export const getUpcomingSeasonAnimes = async(): Promise<any> => {
+export const getUpcomingSeasonAnimes = async (): Promise<any> => {
     const queryParams: queryType = {
         sfw: true,
     };
@@ -134,7 +135,7 @@ export const getUpcomingSeasonAnimes = async(): Promise<any> => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 export const getLatestEpisodes = async (): Promise<any> => {
     try {
@@ -142,6 +143,17 @@ export const getLatestEpisodes = async (): Promise<any> => {
         const response = await fetch(url, { next: { revalidate: 3600 } });
         const apiData = await response.json();
         return apiData.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getAnimeGenres = async (): Promise<any> => {
+    try {
+        const url = GET_ANIME_GENRES;
+        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const apiData = await response.json();
+        return getUniqueAnimeData(apiData.data);
     } catch (error) {
         console.log(error);
     }

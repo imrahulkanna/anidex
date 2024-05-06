@@ -28,7 +28,7 @@ const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestE
     }
     return latestEpsData.slice(0, 10).map((anime: latestEps) => (
         <div key={anime.entry.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
-            <div className="py-4">
+            <div className="my-4 relative">
                 <Image
                     src={anime?.entry?.images?.webp?.large_image_url}
                     alt={anime.entry.title}
@@ -36,6 +36,7 @@ const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestE
                     height={0}
                     className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%"/>
             </div>
             <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                 {anime.entry.title}
@@ -84,7 +85,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
             <div className="flex justify-between items-center px-0 md:px-4">
                 <h3 className="font-bold text-2xl">{title}</h3>
                 <Link href="#" className="flex items-center gap-2 text-sm hover:text-primary">
-                    <p className="text-xs">View more</p> <ChevronRightIcon />
+                    <p className="text-xs font-medium">View more</p> <ChevronRightIcon />
                 </Link>
             </div>
             <div className="flex flex-wrap [&>*:nth-child(odd)]:pr-2 [&>*:nth-child(even)]:pl-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4">
@@ -94,7 +95,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                     data &&
                     data.slice(0, 10).map((anime: animeData) => (
                         <div key={anime.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
-                            <div className="py-4">
+                            <div className="my-4 relative">
                                 <Image
                                     src={anime.images.webp.large_image_url}
                                     alt={anime.title_english || anime.title}
@@ -102,6 +103,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                     height={0}
                                     className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
                                 />
+                                <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%" />
                             </div>
                             <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                                 {anime.title_english || anime.title}
