@@ -9,6 +9,7 @@ import {
 } from "@/app/lib/fetch";
 import { animeData } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { isDataEmptyorUndefined } from "@/app/lib/utils";
 
 export interface categoryListType {
     title: string;
@@ -45,8 +46,8 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
         >
             <h3 className="font-bold text-2xl">{title}</h3>
             <div>
-                {data &&
-                    data.slice(0, 5).map((anime: animeData) => (
+                {!isDataEmptyorUndefined(data) &&
+                    data?.slice(0, 5).map((anime: animeData) => (
                         <div
                             key={anime.mal_id}
                             className="flex items-center gap-4 py-4 border-b border-white border-opacity-15"

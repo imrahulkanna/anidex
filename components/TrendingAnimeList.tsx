@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/carousel";
 import { getTrendingAnimes } from "../app/lib/fetch";
 import TrendingAnimeCard from "./TrendingAnimeCard";
+import { isDataEmptyorUndefined } from "@/app/lib/utils";
 
 export interface imageType {
     image_url: string;
@@ -40,9 +41,10 @@ const TrendingAnimeList = async () => {
                 className="w-[95%] mx-auto"
             >
                 <CarouselContent>
-                    {trendingAnimeData.map((anime: animeData, index: number) => (
-                        <TrendingAnimeCard anime={anime} index={index} key={anime.mal_id} />
-                    ))}
+                    {!isDataEmptyorUndefined(trendingAnimeData) &&
+                        trendingAnimeData.map((anime: animeData, index: number) => (
+                            <TrendingAnimeCard anime={anime} index={index} key={anime.mal_id} />
+                        ))}
                 </CarouselContent>
                 <CarouselPrevious variant="secondary" className="h-1/4 hover:bg-primary" />
                 <CarouselNext variant="secondary" className="h-1/4 hover:bg-primary font-bold" />
