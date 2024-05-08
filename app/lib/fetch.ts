@@ -20,7 +20,7 @@ const constructUrl = (baseUrl: string, queryParams: queryType) => {
 
 const getUniqueAnimeData = (data: Array<animeData>) => {
     const uniqueIds = new Set();
-    return data.filter((anime) => {
+    return data?.filter((anime) => {
         if (!uniqueIds.has(anime.mal_id)) {
             uniqueIds.add(anime.mal_id);
             return true;
