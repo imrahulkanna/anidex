@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface genre {
     mal_id: number;
@@ -11,6 +11,10 @@ interface genre {
 const AnimeGenresClient = ({ genreData }: { genreData: genre[] }) => {
     const [showMore, setShowMore] = useState<boolean>(false);
     const [genreCount, setGenreCount] = useState<number>();
+
+    useEffect(() => {
+        setGenreCount(genreData.length / 3 + 1);
+    }, []);
 
     const handleShowMore = (e: React.MouseEvent<HTMLButtonElement>): void => {
         e.preventDefault();
