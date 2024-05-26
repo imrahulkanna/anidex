@@ -26,8 +26,8 @@ export default function RootLayout({
             <body
                 className={`min-h-screen max-w-[1800px] mx-auto bg-neutral-800 px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
             >
-                <header className="z-50 top-0 left-0 right-0 fixed w-full bg-transparent">
-                    <div className="w-full max-w-[1800px] mx-auto px-5 py-3 flex justify-between items-center">
+                <header className="z-50 max-w-[1800px] top-0 left-0 right-0 fixed w-full bg-transparent">
+                    <div className="w-full mx-auto px-4 md:px-10 3xl:px-2 flex justify-between items-center">
                         <div className="flex items-center gap-3">
                             <Image
                                 src="/anidex-logo.png"
@@ -35,7 +35,11 @@ export default function RootLayout({
                                 width={50}
                                 height={50}
                             />
-                            <p className={`text-4xl font-extrabold text-primary ${rowdies.className}`}>AniDex</p>
+                            <p
+                                className={`text-4xl font-extrabold text-primary ${rowdies.className}`}
+                            >
+                                AniDex
+                            </p>
                         </div>
                         <Button variant="secondary" className="bg-primary font-semibold">
                             Login

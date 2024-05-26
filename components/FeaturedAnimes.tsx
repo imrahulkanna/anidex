@@ -41,7 +41,7 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
     }
     return (
         <div
-            className="w-full md:w-1/2 xl:w-1/4 md:px-2"
+            className="w-full md:w-1/2 xl:w-1/4 md:px-4"
             id={title.toLowerCase().split(" ").join("-")}
         >
             <h3 className="font-bold text-2xl">{title}</h3>

@@ -37,7 +37,7 @@ const TrendingAnimeList = async () => {
     const trendingAnimeData: Array<animeData> = await getTrendingAnimes();
     return (
         <div id="trending-animes" className="mb-10">
-            <h3 className="font-bold text-2xl">Trending</h3>
+            <h3 className="font-bold text-2xl md:mx-4">Trending</h3>
             <Carousel
                 opts={{
                     align: "start",
