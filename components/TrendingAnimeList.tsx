@@ -27,6 +27,10 @@ export interface animeData {
     aired: {
         from: string | null;
     };
+    duration?: string;
+    broadcast: {
+        time: string;
+    };
 }
 
 const TrendingAnimeList = async () => {

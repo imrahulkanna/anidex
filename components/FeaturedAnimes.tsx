@@ -78,7 +78,7 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
                             </div>
                         </div>
                     ))}
-                <div className="py-4">
+                <div className="pt-4">
                     <Link href="#" className="flex items-center gap-2 text-sm hover:text-primary">
                         View more <ChevronRightIcon />
                     </Link>

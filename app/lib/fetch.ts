@@ -4,6 +4,7 @@ import {
     GET_SEASON_UPCOMING,
     GET_LATEST_EPISODES,
     GET_ANIME_GENRES,
+    GET_SCHEDULED_RELEASES,
 } from "./constants";
 import { animeData } from "../../components/TrendingAnimeList";
 
@@ -151,6 +152,21 @@ export const getLatestEpisodes = async (): Promise<any> => {
 export const getAnimeGenres = async (): Promise<any> => {
     try {
         const url = GET_ANIME_GENRES;
+        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const apiData = await response.json();
+        return getUniqueAnimeData(apiData.data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getScheduledReleases = async (day: string): Promise<any> => {
+    const queryParams: queryType = {
+        sfw: true,
+        filter: day,
+    };
+    try {
+        const url = constructUrl(GET_SCHEDULED_RELEASES, queryParams);
         const response = await fetch(url, { next: { revalidate: 3600 } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
