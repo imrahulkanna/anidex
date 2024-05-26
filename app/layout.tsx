@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Prompt, Rowdies } from "next/font/google";
-import Image from "next/image";
 import "./globals.css";
-import { Button } from "@/components/ui/button";
+import Header from "@/components/Header";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,26 +25,7 @@ export default function RootLayout({
             <body
                 className={`min-h-screen max-w-[1800px] mx-auto bg-neutral-800 px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
             >
-                <header className="z-50 max-w-[1800px] top-0 left-0 right-0 fixed w-full bg-transparent">
-                    <div className="w-full mx-auto px-4 md:px-10 3xl:px-2 flex justify-between items-center">
-                        <div className="flex items-center gap-3">
-                            <Image
-                                src="/anidex-logo.png"
-                                alt="anidex logo"
-                                width={50}
-                                height={50}
-                            />
-                            <p
-                                className={`text-4xl font-extrabold text-primary ${rowdies.className}`}
-                            >
-                                AniDex
-                            </p>
-                        </div>
-                        <Button variant="secondary" className="bg-primary font-semibold">
-                            Login
-                        </Button>
-                    </div>
-                </header>
+                <Header rowdies={rowdies} />
                 {children}
                 <SpeedInsights />
             </body>
