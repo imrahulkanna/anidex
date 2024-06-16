@@ -8,6 +8,7 @@ import {
 import { getTrendingAnimes } from "../app/lib/fetch";
 import TrendingAnimeCard from "./TrendingAnimeCard";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
+import { apiCallHandler } from "@/app/lib/utils";
 
 export interface imageType {
     image_url: string;
@@ -34,7 +35,8 @@ export interface animeData {
 }
 
 const TrendingAnimeList = async () => {
-    const trendingAnimeData: Array<animeData> = await getTrendingAnimes();
+    // const trendingAnimeData: Array<animeData> = await getTrendingAnimes();
+    const trendingAnimeData: Array<animeData> = await apiCallHandler(getTrendingAnimes);
     return (
         <div id="trending-animes" className="mb-10">
             <h3 className="font-bold text-2xl md:mx-4">Trending</h3>

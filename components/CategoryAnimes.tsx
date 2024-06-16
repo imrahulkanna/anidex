@@ -6,6 +6,7 @@ import { categoryListType } from "./FeaturedAnimes";
 import { animeData, imageType } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
+import { apiCallHandler } from "@/app/lib/utils";
 
 interface latestEps {
     entry: {
@@ -58,15 +59,18 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
 
     switch (title) {
         case "New Releases":
-            data = await getNewReleasedAnimes();
+            // data = await getNewReleasedAnimes();
+            data = await apiCallHandler(getNewReleasedAnimes);
             break;
 
         case "Top Upcoming":
-            data = await getUpcomingSeasonAnimes();
+            // data = await getUpcomingSeasonAnimes();
+            data = await apiCallHandler(getUpcomingSeasonAnimes);
             break;
 
         case "Latest Episodes":
-            latestEpsData = await getLatestEpisodes();
+            // latestEpsData = await getLatestEpisodes();
+            latestEpsData = await apiCallHandler(getLatestEpisodes);
             break;
 
         default:

@@ -6,11 +6,13 @@ class RateLimiter {
         this.limit = limit;
         this.interval = interval;
         this.activeJobs = 0;
+        this.jobsCount = 0;
     }
 
     async processQueue() {
         if (this.queue.isQueueEmpty()) return;
         if (this.activeJobs < this.limit) {
+            this.jobsCount++;
             this.activeJobs++;
             // console.log("inside processQueue");
             // console.log("job added", this.activeJobs);
@@ -23,6 +25,7 @@ class RateLimiter {
             } finally {
                 this.activeJobs--;
                 // console.log("job completed", this.activeJobs);
+                // console.log("jobs Count", this.jobsCount);
                 setTimeout(() => {
                     this.processQueue();
                 }, this.interval / this.limit);

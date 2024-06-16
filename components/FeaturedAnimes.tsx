@@ -10,6 +10,7 @@ import {
 import { animeData } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
+import { apiCallHandler } from "@/app/lib/utils";
 
 export interface categoryListType {
     title: string;
@@ -20,19 +21,23 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
 
     switch (title) {
         case "Top Airing":
-            data = await getTopAiringAnimes();
+            // data = await getTopAiringAnimes();
+            data = await apiCallHandler(getTopAiringAnimes);
             break;
 
         case "Most Popular":
-            data = await getMostPopularAnimes();
+            // data = await getMostPopularAnimes();
+            data = await apiCallHandler(getMostPopularAnimes);
             break;
 
         case "Most Favorite":
-            data = await getMostFavoriteAnimes();
+            // data = await getMostFavoriteAnimes();
+            data = await apiCallHandler(getMostFavoriteAnimes);
             break;
 
         case "Latest Completed":
-            data = await getLatestCompletedAnimes();
+            // data = await getLatestCompletedAnimes();
+            data = await apiCallHandler(getLatestCompletedAnimes);
             break;
 
         default:

@@ -21,9 +21,8 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = fetchWeeklyReleases(selectedDay);
-            Promise.resolve(data);
-            setAnimeData(await Promise.resolve(data));
+            const data = await fetchWeeklyReleases(selectedDay);
+            setAnimeData(data);
         };
         fetchData();
     }, [selectedDay]);
