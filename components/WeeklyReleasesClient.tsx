@@ -110,7 +110,7 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
                         )}
                     </>
                 ) : (
-                    <p className="w-full font-bold">No scheduled releases</p>
+                    <p className="w-full font-bold text-center">No scheduled releases</p>
                 )}
             </div>
         </div>
