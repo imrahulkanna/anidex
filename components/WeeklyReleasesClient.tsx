@@ -18,6 +18,7 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
     const [time, setTime] = useState<string>(date);
     const [selectedDay, setSelectedDay] = useState<string>(currDay);
     const [animeData, setAnimeData] = useState<animeData[] | null>(null);
+    const [length, setLength] = useState(7);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,6 +31,14 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
     const handleDayChange = (e: React.MouseEvent<HTMLButtonElement>) => {
         const target = e.target as Element;
         setSelectedDay(target.id);
+    };
+
+    const handleViewMoreClick = () => {
+        if (length === 7) {
+            setLength(10);
+        } else {
+            setLength(7);
+        }
     };
 
     return (
@@ -55,31 +64,54 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
                         </button>
                     ))}
                 </div>
-                <div className="w-full">
-                    {!isDataEmptyorUndefined(animeData) &&
-                        animeData?.slice(0, 7).map((anime: animeData) => (
-                            <Link
-                                href=""
-                                key={anime.mal_id}
-                                className="w-full pb-6 flex items-center justify-between hover:text-primary group"
+                {!isDataEmptyorUndefined(animeData) ? (
+                    <>
+                        <div className="w-full">
+                            {animeData && animeData?.length > 0 ? (
+                                animeData
+                                    ?.slice(0, length)
+                                    .sort((a, b) =>
+                                        (a.broadcast.time || "").localeCompare(
+                                            b.broadcast.time || ""
+                                        )
+                                    )
+                                    .map((anime: animeData) => (
+                                        <Link
+                                            href=""
+                                            key={anime.mal_id}
+                                            className="w-full pb-6 flex items-center justify-between hover:text-primary group"
+                                        >
+                                            <div className="w-3/4 md:w-10/12 flex gap-4 md:gap-8 font-bold">
+                                                <p className="w-[50px] text-white/30 group-hover:text-primary">
+                                                    {anime.broadcast.time
+                                                        ? anime.broadcast.time
+                                                        : "??:??"}
+                                                </p>
+                                                <p className="text-wrap">
+                                                    {anime.title_english || anime.title}
+                                                </p>
+                                            </div>
+                                            <p className="text-sm">
+                                                Episode {anime.episodes ? anime.episodes : "?"}
+                                            </p>
+                                        </Link>
+                                    ))
+                            ) : (
+                                <></>
+                            )}
+                        </div>
+                        {animeData && animeData?.length > 7 && (
+                            <p
+                                className="flex items-center gap-2 text-sm hover:text-primary cursor-pointer"
+                                onClick={handleViewMoreClick}
                             >
-                                <div className="w-3/4 md:w-10/12 flex gap-4 md:gap-8 font-bold">
-                                    <p className="w-[50px] text-white/30 group-hover:text-primary">
-                                        {anime.broadcast.time ? anime.broadcast.time : "??:??"}
-                                    </p>
-                                    <p className="text-wrap">
-                                        {anime.title_english || anime.title}
-                                    </p>
-                                </div>
-                                <p className="text-sm">
-                                    Episode {anime.episodes ? anime.episodes : "?"}
-                                </p>
-                            </Link>
-                        ))}
-                </div>
-                <p className="flex items-center gap-2 text-sm hover:text-primary">
-                    View more <ChevronRightIcon />
-                </p>
+                                {length === 7 ? "Show More" : "Show Less"}
+                            </p>
+                        )}
+                    </>
+                ) : (
+                    <p className="w-full font-bold">No scheduled releases</p>
+                )}
             </div>
         </div>
     );
