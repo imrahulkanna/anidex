@@ -45,7 +45,7 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
         <div id="scheduled-releases" className="md:px-4 mb-10">
             <div className="flex justify-between items-center flex-wrap mb-4">
                 <h3 className="font-bold text-2xl">Weekly Releases</h3>
-                <div suppressHydrationWarning={true}>{time}</div>
+                <div className="font-medium" suppressHydrationWarning={true}>{time}</div>
             </div>
             <div>
                 <div className="w-full flex items-center justify-between mb-8">
@@ -110,7 +110,7 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
                         )}
                     </>
                 ) : (
-                    <p className="w-full font-bold text-center">No scheduled releases</p>
+                    <p className="w-full font-bold text-center text-neutral-200">No scheduled releases</p>
                 )}
             </div>
         </div>
