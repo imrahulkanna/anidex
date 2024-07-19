@@ -21,7 +21,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         };
         return (
             <div
-                className={`p-4 absolute left-1/2 z-50 bg-white/15 backdrop-blur-xl text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
+                className={`p-4 absolute left-1/2 z-50 bg-black/15 backdrop-blur-xl text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
                     cardPosition === "top" ? "bottom-1/2" : "top-1/2"
                 }`}
                 onMouseOver={handleOpenHover}

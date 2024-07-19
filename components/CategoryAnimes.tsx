@@ -7,6 +7,7 @@ import { animeData, imageType } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { apiCallHandler } from "@/app/lib/utils";
+import HoverCardWrapper from "./HoverCardWrapper";
 
 interface latestEps {
     entry: {
@@ -104,14 +105,18 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                     data?.slice(0, 10).map((anime: animeData) => (
                         <div key={anime.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
                             <div className="my-4 relative">
-                                <Image
-                                    src={anime.images.webp.large_image_url}
-                                    alt={anime.title_english || anime.title}
-                                    width={300}
-                                    height={0}
-                                    className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%" />
+                                <HoverCardWrapper anime={anime}>
+                                    <>
+                                        <Image
+                                            src={anime.images.webp.large_image_url}
+                                            alt={anime.title_english || anime.title}
+                                            width={300}
+                                            height={0}
+                                            className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%" />
+                                    </>
+                                </HoverCardWrapper>
                             </div>
                             <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
                                 {anime.title_english || anime.title}
@@ -120,16 +125,14 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                 <div className="opacity-60 font-medium">{anime.type || "TV"}</div>
                                 <DotFilledIcon
                                     className={`opacity-30 ${
-                                        title === "Top Upcoming" &&
-                                        "hidden md:block"
+                                        title === "Top Upcoming" && "hidden md:block"
                                     }`}
                                 />
                                 <div className="opacity-60">
                                     {anime.episodes ? (
                                         <span
                                             className={`font-medium ${
-                                                title === "Top Upcoming" &&
-                                                "hidden md:block"
+                                                title === "Top Upcoming" && "hidden md:block"
                                             }`}
                                         >
                                             {anime.episodes} eps
