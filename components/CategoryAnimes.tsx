@@ -142,7 +142,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                                 title === "Top Upcoming" ? "hidden md:block" : ""
                                             }`}
                                         >
-                                            ? eps
+                                            N/A
                                         </span>
                                     )}
                                 </div>
@@ -150,9 +150,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                     <>
                                         <DotFilledIcon className="opacity-30" />
                                         <div className="opacity-60 font-medium">
-                                            {anime.aired.from
-                                                ? getFormattedDate(anime.aired.from)
-                                                : "Soon"}
+                                            {anime.aired.string.split(" to ")[0]}
                                         </div>
                                     </>
                                 )}
