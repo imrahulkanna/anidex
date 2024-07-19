@@ -121,7 +121,6 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                 <DotFilledIcon
                                     className={`opacity-30 ${
                                         title === "Top Upcoming" &&
-                                        !anime.episodes &&
                                         "hidden md:block"
                                     }`}
                                 />
@@ -130,7 +129,6 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                         <span
                                             className={`font-medium ${
                                                 title === "Top Upcoming" &&
-                                                !anime.episodes &&
                                                 "hidden md:block"
                                             }`}
                                         >
