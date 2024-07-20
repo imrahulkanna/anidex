@@ -174,3 +174,15 @@ export const getScheduledReleases = async (day: string): Promise<any> => {
         console.log(error);
     }
 };
+
+export const getAnimeDataById = async (id: number): Promise<any> => {
+    try {
+        const url = `${GET_ANIME_BY_SEARCH}/${id}`;
+        const repsonse = await fetch(url, { next: { revalidate: 3600 } });
+        const apiData = await repsonse.json();
+        return apiData.data;
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+}

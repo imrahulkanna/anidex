@@ -6,7 +6,7 @@ import Link from "next/link";
 
 interface props {
     children: ReactNode;
-    anime: animeData;
+    anime: animeData | undefined;
 }
 
 const HoverCardWrapper = ({ children, anime }: props) => {

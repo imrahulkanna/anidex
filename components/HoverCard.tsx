@@ -1,9 +1,10 @@
 import React, { forwardRef, Ref } from "react";
 import { animeData, genre } from "./TrendingAnimeList";
 import { StarFilledIcon, PlayIcon } from "@radix-ui/react-icons";
+import { isDataEmptyorUndefined } from "@/app/lib/utils";
 
 interface props {
-    anime: animeData;
+    anime: animeData | undefined;
     handleOpenHover: () => void;
     handleCloseHover: () => void;
     cardPosition: string;
@@ -13,13 +14,21 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
     ({ anime, handleOpenHover, handleCloseHover, cardPosition }, ref) => {
         const getGenres = (): string => {
             let genreString = "";
-            anime.genres.forEach((data: genre, index: number) => {
+            anime?.genres.forEach((data: genre, index: number) => {
                 genreString += data.name;
                 if (index != anime.genres.length - 1) genreString += ", ";
             });
             return genreString;
         };
-        return (
+        return isDataEmptyorUndefined(anime) ? (
+            <div
+                className={`p-4 absolute left-1/2 z-50 bg-black/15 backdrop-blur-xl text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
+                    cardPosition === "top" ? "bottom-1/2" : "top-1/2"
+                }`}
+            >
+                Loading
+            </div>
+        ) : (
             <div
                 className={`p-4 absolute left-1/2 z-50 bg-black/15 backdrop-blur-xl text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
                     cardPosition === "top" ? "bottom-1/2" : "top-1/2"

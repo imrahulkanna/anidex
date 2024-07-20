@@ -2,7 +2,7 @@ import RateLimiter from "./apiQueue/rateLimiter.js";
 
 const rateLimiter = new RateLimiter(3, 1000); // 3 request per second
 
-export function isDataEmptyorUndefined(data: any) {
+export function isDataEmptyorUndefined<T>(data: T | undefined | null): data is undefined | null {
     return (
         data === undefined ||
         data === null ||
@@ -10,7 +10,7 @@ export function isDataEmptyorUndefined(data: any) {
         Number.isNaN(data) ||
         false ||
         (Array.isArray(data) && data.length === 0) ||
-        (typeof data === "object" && Object.keys(data).length === 0)
+        (typeof data === "object" && data !== null && Object.keys(data).length === 0)
     );
 }
 
