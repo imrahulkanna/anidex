@@ -71,9 +71,11 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
                                 </HoverCardWrapper>
                             </div>
                             <div className="text-sm w-[calc(100%-96px)]">
-                                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
-                                    {anime.title_english || anime.title}
-                                </p>
+                                <Link href="#">
+                                    <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary">
+                                        {anime.title_english || anime.title}
+                                    </p>
+                                </Link>
                                 <div className="flex items-center gap-1">
                                     <div className="opacity-60">
                                         {anime.episodes ? (
@@ -88,7 +90,7 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
                             </div>
                         </div>
                     ))}
-                <div className="pt-4">
+                <div className="pt-4 flex">
                     <Link href="#" className="flex items-center gap-2 text-sm hover:text-primary">
                         View more <ChevronRightIcon />
                     </Link>

@@ -43,9 +43,11 @@ const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestE
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%" />
                 </div>
-                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
-                    {anime.entry.title}
-                </p>
+                <Link href="#">
+                    <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary">
+                        {anime.entry.title}
+                    </p>
+                </Link>
                 <div className="flex items-center gap-0.5 text-sm">
                     <div className="opacity-60 font-medium">{anime.episodes[0].title}</div>
                 </div>
@@ -106,21 +108,21 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                         <div key={anime.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
                             <div className="my-4 relative">
                                 <HoverCardWrapper anime={anime}>
-                                    <>
-                                        <Image
-                                            src={anime.images.webp.large_image_url}
-                                            alt={anime.title_english || anime.title}
-                                            width={300}
-                                            height={0}
-                                            className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%" />
-                                    </>
+                                    <Image
+                                        src={anime.images.webp.large_image_url}
+                                        alt={anime.title_english || anime.title}
+                                        width={300}
+                                        height={0}
+                                        className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%" />
                                 </HoverCardWrapper>
                             </div>
-                            <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
-                                {anime.title_english || anime.title}
-                            </p>
+                            <Link href="#">
+                                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary">
+                                    {anime.title_english || anime.title}
+                                </p>
+                            </Link>
                             <div className="flex items-center gap-0.5 text-sm">
                                 <div className="opacity-60 font-medium">{anime.type || "TV"}</div>
                                 <DotFilledIcon

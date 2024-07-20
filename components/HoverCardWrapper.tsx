@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import { useState, useEffect, useRef, useCallback, ReactNode } from "react";
 import HoverCard from "./HoverCard";
 import { animeData } from "./TrendingAnimeList";
+import Link from "next/link";
 
 interface props {
     children: ReactNode;
@@ -36,7 +37,7 @@ const HoverCardWrapper = ({ children, anime }: props) => {
     return (
         <>
             <div ref={imageRef} onMouseEnter={handleOpenHover} onMouseLeave={handleCloseHover}>
-                {children}
+                <Link href="#">{children}</Link>
             </div>
             {showHoverCard && (
                 <HoverCard
