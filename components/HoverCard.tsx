@@ -2,6 +2,7 @@ import React, { forwardRef, Ref } from "react";
 import { animeData, genre } from "./TrendingAnimeList";
 import { StarFilledIcon, PlayIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
+import { Skeleton } from "./Skeleton";
 
 interface props {
     anime: animeData | undefined;
@@ -9,6 +10,25 @@ interface props {
     handleCloseHover: () => void;
     cardPosition: string;
 }
+
+const HoverCardSkeleton = () => {
+    return (
+        <>
+            <p className="bg-gray-500 h-2 mb-3 rounded-md"></p>
+            <div className="flex items-center gap-5 mb-3">
+                <div className="bg-gray-500 h-2 w-1/5 rounded-md"></div>
+                <div className="bg-gray-500 h-2 w-1/5 px-1.5 py-[2px] rounded-md"></div>
+                <div className="bg-gray-500 h-2 w-1/5 px-1.5 py-[2px] rounded-md"></div>
+            </div>
+            <p className="mb-3 h-2 bg-gray-500 rounded-md"></p>
+            <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
+            <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
+            <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
+            <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
+            <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
+        </>
+    );
+};
 
 const HoverCard = forwardRef<HTMLDivElement, props>(
     ({ anime, handleOpenHover, handleCloseHover, cardPosition }, ref) => {
@@ -26,7 +46,9 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                     cardPosition === "top" ? "bottom-1/2" : "top-1/2"
                 }`}
             >
-                Loading
+                <Skeleton>
+                    <HoverCardSkeleton />
+                </Skeleton>
             </div>
         ) : (
             <div
