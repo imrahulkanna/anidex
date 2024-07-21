@@ -9,10 +9,6 @@ import { getAnimeDataById } from "@/app/lib/fetch";
 import HoverCardWrapper from "./HoverCardWrapper";
 
 const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestEps> | null }) => {
-    if (!latestEpsData) {
-        return null;
-    }
-
     const [animeDetails, setAnimeDetails] = useState<animeData | undefined>();
 
     const getAnimeDetails = async (id: number) => {
@@ -24,6 +20,11 @@ const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestE
             setAnimeDetails(undefined);
         }
     };
+
+    if (!latestEpsData) {
+        return null;
+    }
+
     return (
         !isDataEmptyorUndefined(latestEpsData) &&
         latestEpsData.slice(0, 10).map((anime: latestEps) => (
