@@ -72,11 +72,15 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                         {anime.episodes ? (
                             <p className="font-semibold">{anime.episodes}</p>
                         ) : (
-                            <span className="opacity-60">N/A</span>
+                            <span className="opacity-70">N/A</span>
                         )}
                     </div>
                     <div className="bg-primary px-1.5 py-[2px] rounded-sm text-center font-semibold text-white">
-                        {anime.type}
+                        {anime.type ? (
+                            anime.type
+                        ) : (
+                            <span className="font-normal opacity-70">N/A</span>
+                        )}
                     </div>
                 </div>
                 <p className="mb-3 line-clamp-3">{anime.synopsis}</p>
