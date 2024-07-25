@@ -12,6 +12,7 @@ interface props {
 const HoverCardWrapper = ({ children, anime }: props) => {
     const [showHoverCard, setShowHoverCard] = useState(false);
     const [cardPosition, setCardPosition] = useState("bottom");
+    const [isDesktopSize, setIsDesktopSize] = useState(true);
     const imageRef = useRef<HTMLDivElement | null>(null);
     const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,12 +29,26 @@ const HoverCardWrapper = ({ children, anime }: props) => {
         }
     }, [showHoverCard]);
 
-    const handleOpenHover = useCallback(() => {
-        setShowHoverCard(true);
+    // displaying hover cards only for desktop screens
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 1024) handleCloseHover();
+            setIsDesktopSize(window.innerWidth >= 1024);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
     }, []);
+
+    const handleOpenHover = useCallback(() => {
+        isDesktopSize && setShowHoverCard(true);
+    }, [isDesktopSize]);
+
     const handleCloseHover = useCallback(() => {
         setShowHoverCard(false);
     }, []);
+
     return (
         <>
             <div ref={imageRef} onMouseEnter={handleOpenHover} onMouseLeave={handleCloseHover}>
