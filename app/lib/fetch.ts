@@ -30,6 +30,15 @@ const getUniqueAnimeData = (data: Array<animeData>) => {
     });
 };
 
+const getCacheTime = (number: number = 1, type: string = "hour"): number => {
+    const oneHr: number = 3600;
+    if (type === "day") {
+        return oneHr * 24 * number;
+    } else {
+        return oneHr * number;
+    }
+}
+
 export const getTrendingAnimes = async (): Promise<any> => {
     const queryParams: queryType = {
         type: "tv",
@@ -40,7 +49,7 @@ export const getTrendingAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(3, "day") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -54,7 +63,7 @@ export const getTopAiringAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_TOP_ANIME, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(3, "day") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -68,7 +77,7 @@ export const getMostPopularAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_TOP_ANIME, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(2, "day") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -82,7 +91,7 @@ export const getMostFavoriteAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_TOP_ANIME, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(2, "day") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -99,7 +108,7 @@ export const getLatestCompletedAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "hr") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -116,7 +125,7 @@ export const getNewReleasedAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "hr") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -130,7 +139,7 @@ export const getUpcomingSeasonAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_SEASON_UPCOMING, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "day") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -141,7 +150,7 @@ export const getUpcomingSeasonAnimes = async (): Promise<any> => {
 export const getLatestEpisodes = async (): Promise<any> => {
     try {
         const url = GET_LATEST_EPISODES;
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "day") } });
         const apiData = await response.json();
         return apiData.data;
     } catch (error) {
@@ -152,7 +161,7 @@ export const getLatestEpisodes = async (): Promise<any> => {
 export const getAnimeGenres = async (): Promise<any> => {
     try {
         const url = GET_ANIME_GENRES;
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(30, "day") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -167,7 +176,7 @@ export const getScheduledReleases = async (day: string): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_SCHEDULED_RELEASES, queryParams);
-        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const response = await fetch(url, { next: { revalidate: getCacheTime(18, "hr") } });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -178,7 +187,7 @@ export const getScheduledReleases = async (day: string): Promise<any> => {
 export const getAnimeDataById = async (id: number): Promise<any> => {
     try {
         const url = `${GET_ANIME_BY_SEARCH}/${id}`;
-        const repsonse = await fetch(url, { next: { revalidate: 3600 } });
+        const repsonse = await fetch(url, { next: { revalidate: getCacheTime(7, "day") } });
         const apiData = await repsonse.json();
         return apiData.data;
     } catch (error) {
