@@ -16,10 +16,10 @@ const LoginModal = ({ closeLoginModal }: props) => {
     return (
         <>
             <div
-                className=" bg-white/70 w-full fixed top-0 left-0 h-full z-[100] overflow-hidden"
+                className=" bg-white/70 w-full fixed top-0 left-0 h-full z-[100] cursor-pointer"
                 onClick={closeLoginModal}
             ></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 w-[400px] h-auto z-[999] p-10 bg-black/80 backdrop-blur-xl text-neutral-300 rounded-md">
+            <div className="fixed top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 w-[400px] h-auto z-[999] p-10 bg-black/80 backdrop-blur-xl text-neutral-300 rounded-md">
                 <button
                     className="absolute -right-0 -top-0 rounded-tr-md bg-neutral-500 p-2 cursor-pointer"
                     onClick={closeLoginModal}

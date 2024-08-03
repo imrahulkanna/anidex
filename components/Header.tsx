@@ -14,9 +14,11 @@ const Header = ({ rowdies }: { rowdies: any }) => {
         setOpenLoginModal(!openLoginModal);
     };
 
+    const body = document.querySelector("body");
     if (openLoginModal) {
-        const body = document.querySelector("body");
         body?.classList.add("overflow-hidden");
+    } else {
+        body?.classList.remove("overflow-hidden");
     }
     return (
         <>
