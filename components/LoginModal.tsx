@@ -22,21 +22,21 @@ const LoginModal = ({ closeLoginModal }: props) => {
     };
 
     return (
-        <>
+        <div>
             <div
-                className=" bg-white/70 w-full fixed top-0 left-0 h-full z-[100] cursor-pointer"
+                className=" bg-black/50 w-full fixed top-0 left-0 h-full z-[100]"
                 onClick={closeLoginModal}
             ></div>
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 w-[400px] h-auto z-[999] p-10 bg-neutral-800 backdrop-blur-xl text-neutral-300 rounded-md">
+            <div className="fixed top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 w-[400px] h-auto z-[999] p-10 bg-white/5 backdrop-blur-md text-neutral-300 rounded-md border border-white/20">
                 <div>
                     <button
-                        className="absolute -right-0 -top-0 rounded-tr-md bg-neutral-700 p-2 cursor-pointer border-l border-b border-neutral-500"
+                        className="absolute -right-0 -top-0 rounded-tr-md m-2 cursor-pointer hover:scale-150"
                         onClick={closeLoginModal}
                     >
                         <Cross2Icon stroke="10" />
                     </button>
                     <h3 className="text-center font-semibold text-2xl py-5">Welcome back!</h3>
-                    <form className="flex flex-col gap-6 mb-8 items-end h-auto">
+                    <form className="flex flex-col gap-6 mb-6 items-end h-auto">
                         <InputBox type="email" placeholder="Email" />
                         <InputBox type={showPassword ? "text" : "password"} placeholder="Password">
                             <div
@@ -63,14 +63,14 @@ const LoginModal = ({ closeLoginModal }: props) => {
                         Register
                     </button>
                 </div>
-                <div className="w-full my-10 flex justify-center items-center gap-1">
+                <div className="w-full mt-6 mb-4 flex justify-center items-center gap-1">
                     <div className="w-full h-px bg-neutral-500" />
                     <p className="">or</p>
                     <div className="w-full h-px bg-neutral-500" />
                 </div>
                 <div>login with google</div>
             </div>
-        </>
+        </div>
     );
 };
 

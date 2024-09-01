@@ -42,7 +42,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         };
         return isDataEmptyorUndefined(anime) ? (
             <div
-                className={`p-4 absolute left-1/2 z-50 bg-black/15 backdrop-blur-xl text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
+                className={`p-4 absolute left-1/2 z-50 bg-white/5 backdrop-blur-md text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
                     cardPosition === "top" ? "bottom-1/2" : "top-1/2"
                 }`}
             >
@@ -52,7 +52,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             </div>
         ) : (
             <div
-                className={`p-4 absolute left-1/2 z-50 bg-black/15 backdrop-blur-xl text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
+                className={`p-4 absolute left-1/2 z-50 bg-black/15 backdrop-blur-lg text-neutral-300 rounded-md h-auto w-[300px] text-xs border border-white/20 ${
                     cardPosition === "top" ? "bottom-1/2" : "top-1/2"
                 }`}
                 onMouseOver={handleOpenHover}
