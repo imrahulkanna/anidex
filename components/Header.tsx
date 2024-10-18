@@ -3,15 +3,24 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import LoginModal from "./LoginModal";
+import { signOut, useSession } from "next-auth/react";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+    const {data: session, status} = useSession();
 
     const handleLoginModal = (
         e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
     ) => {
         e.preventDefault();
         setOpenLoginModal(!openLoginModal);
+    };
+
+    const handleLogout = (
+        e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
+    ) => {
+        e.preventDefault();
+        signOut();
     };
 
     const body = document.querySelector("body");
@@ -30,13 +39,25 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                             AniDex
                         </p>
                     </div>
-                    <Button
-                        variant="secondary"
-                        className="bg-primary font-semibold hover:bg-primary/80 hover:scale-105"
-                        onClick={handleLoginModal}
-                    >
-                        Login
-                    </Button>
+                    {
+                        status === "authenticated" ? (
+                            <Button
+                                variant="secondary"
+                                className="bg-neutral-100 font-semibold hover:bg-neutral-100/80 hover:scale-105"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="secondary"
+                                className="bg-primary font-semibold hover:bg-primary/80 hover:scale-105"
+                                onClick={handleLoginModal}
+                            >
+                                Login
+                            </Button>
+                        )
+                    }
                 </div>
             </header>
             {openLoginModal && <LoginModal closeLoginModal={handleLoginModal} />}

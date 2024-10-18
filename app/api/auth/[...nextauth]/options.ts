@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/app/lib/dbConnect";
 import UserModel from "@/model/User";
@@ -43,7 +44,18 @@ export const authOptions: NextAuthOptions = {
                     throw new Error(error);
                 }
             }
-        })
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
+                }
+            }
+        }),
     ],
     callbacks: {
         async jwt({ token, user }) {
@@ -67,4 +79,7 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
+    // pages: {
+    //     signIn: "/*"
+    // }
 }

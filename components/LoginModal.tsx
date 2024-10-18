@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Cross2Icon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import InputBox from "./InputBox";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 interface props {
     closeLoginModal: (e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>) => void;
@@ -23,7 +24,14 @@ const LoginModal = ({ closeLoginModal }: props) => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log("submit button clicked");
+        var data = new FormData(e.currentTarget as HTMLFormElement);
+        let formObject = Object.fromEntries(data.entries());
+
+        const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
+        signIn(button.value);
     };
 
     return (
@@ -41,7 +49,7 @@ const LoginModal = ({ closeLoginModal }: props) => {
                         <Cross2Icon stroke="10" />
                     </button>
                     <h3 className="text-center font-semibold text-2xl py-5">Welcome back!</h3>
-                    <form action={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                             <InputBox type="email" placeholder="Email" />
                             <InputBox
