@@ -29,9 +29,18 @@ const LoginModal = ({ closeLoginModal }: props) => {
         console.log("submit button clicked");
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
+        console.log("data", data);
 
         const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
-        signIn(button.value);
+        if (["signin", "signup"].includes(button.value)) {
+            signIn("credentials", {
+                email: formObject.email,
+                password: formObject.password,
+                redirect: false,
+            })
+        } else {
+            signIn(button.value);
+        }
     };
 
     return (
@@ -70,14 +79,16 @@ const LoginModal = ({ closeLoginModal }: props) => {
                         <button
                             className="bg-primary w-full py-2 mb-4 rounded text-neutral-800 font-bold"
                             type="submit"
+                            value="signin"
                         >
-                            Login
+                            Sign In
                         </button>
                         <button
                             className="bg-neutral-100 w-full py-2 rounded text-neutral-800 font-bold"
                             type="submit"
+                            value="signup"
                         >
-                            Register
+                            Create an account
                         </button>
                         <div className="w-full mt-6 mb-4 flex justify-center items-center gap-1">
                             <div className="w-full h-px bg-neutral-500" />

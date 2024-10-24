@@ -19,8 +19,8 @@ export const authOptions: NextAuthOptions = {
                 try {
                     const user = await UserModel.findOne({
                         $or: [
-                            {email: credentials.identifier.email},
-                            {username: credentials.identifier.username},
+                            {email: credentials.email},
+                            {username: credentials.username},
                         ]
                     })
 
@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
                         throw new Error("Password is incorrect");
                     }
                 } catch (error: any) {
-                    console.log("Failed to connect db");
+                    console.log("Failed to connect db", error);
                     throw new Error(error);
                 }
             }
@@ -79,7 +79,7 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
-    // pages: {
-    //     signIn: "/*"
-    // }
+    pages: {
+        signIn: "components/Login"
+    }
 }
