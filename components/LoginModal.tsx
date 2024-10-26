@@ -28,7 +28,7 @@ const SignInForm = ({ handleSubmit, showPassword, toggleShowPassword }: signInFo
                     <InputBox type="email" placeholder="Email" />
                     <InputBox type={showPassword ? "text" : "password"} placeholder="Password">
                         <div
-                            className="absolute right-2 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
                             onClick={toggleShowPassword}
                         >
                             {showPassword ? <EyeOpenIcon /> : <EyeClosedIcon />}
@@ -75,10 +75,29 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
     const openSignForm = () => {
         setShowSignUpForm(false);
     };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        var data = new FormData(e.currentTarget as HTMLFormElement);
+        let formObject = Object.fromEntries(data.entries());
+
+        const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
+
+        if (button.value === "signup") {
+            signIn("credentials", {
+                email: formObject.email,
+                password: formObject.password,
+                redirect: false,
+            });
+        } else {
+            signIn(button.value);
+        }
+    };
+
     return (
         <div id="sign-up-form">
             <h3 className="text-center font-semibold text-2xl pb-5">Create an account</h3>
-            <form onSubmit={() => {}}>
+            <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                     <div className="flex gap-5">
                         <InputBox type="text" placeholder="First Name" />
