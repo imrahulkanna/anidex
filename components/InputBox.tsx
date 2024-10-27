@@ -4,14 +4,16 @@ interface props {
     type: string;
     placeholder: string;
     children?: React.ReactNode;
+    onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const InputBox = ({ children, type, placeholder }: props) => {
+const InputBox = ({ children, type, placeholder, onInputChange }: props) => {
     const [inputValue, setInputValue] = useState("");
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         setInputValue(e.target.value);
+        onInputChange && onInputChange(e);
     };
 
     const handleOnClick = (e: React.MouseEvent<HTMLInputElement>) => {

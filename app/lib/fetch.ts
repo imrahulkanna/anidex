@@ -12,7 +12,7 @@ interface queryType {
     [key: string]: string | number | boolean;
 }
 
-const constructUrl = (baseUrl: string, queryParams: queryType) => {
+export const constructUrl = (baseUrl: string, queryParams: queryType) => {
     const queryString = Object.keys(queryParams)
         .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(queryParams[key])}`)
         .join("&");
