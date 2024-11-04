@@ -19,12 +19,12 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
     const [usernameError, setUsernameError] = useState<userNameErrorType>(initUsernameValue);
 
     useEffect(() => {
-        setTimeout(() => {
-            if (usernameError.success && usernameError.message) {
+        if (usernameError.success && usernameError.message) {
+            setTimeout(() => {
                 setUsernameError(initUsernameValue);
-            }
-        }, 3000);
-    }, [usernameError])
+            }, 3000);
+        }
+    }, [usernameError]);
 
     const openSignForm = () => {
         setShowSignUpForm(false);
@@ -57,7 +57,7 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
             const data = await res.json();
             setUsernameError(data);
         } catch (error) {
-            console.log("failing checking username");
+            console.log("failed checking username");
         }
     };
 
@@ -65,15 +65,29 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
         e.preventDefault();
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
+        console.log("formObject", formObject);
 
         const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
 
         if (button.value === "signup") {
-            signIn("credentials", {
+            const requestBody = {
+                username: formObject.username,
                 email: formObject.email,
                 password: formObject.password,
-                redirect: false,
+            };
+            console.log("requestBody", requestBody);
+
+            const res = await fetch("/api/sign-up", {
+                method: "POST",
+                cache: "no-cache",
+                body: JSON.stringify(requestBody),
             });
+
+            // signIn("credentials", {
+            //     email: formObject.email,
+            //     password: formObject.password,
+            //     redirect: false,
+            // });
         } else {
             signIn(button.value);
         }
@@ -85,14 +99,15 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                     <div className="flex gap-5">
-                        <InputBox type="text" placeholder="First Name" />
-                        <InputBox type="text" placeholder="Last Name" />
+                        <InputBox type="text" placeholder="First Name" name="firstname" />
+                        <InputBox type="text" placeholder="Last Name" name="lastname" />
                     </div>
                     <div className="flex flex-col w-full">
                         <InputBox
                             type="text"
                             placeholder="Username"
                             onInputChange={handleUsernameCheck}
+                            name="username"
                         />
                         {!usernameError?.success ? (
                             <p className="mt-2 text-xs text-red-600 font-semibold ml-2">
@@ -106,8 +121,8 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
                             )
                         )}
                     </div>
-                    <InputBox type="email" placeholder="Email Address" />
-                    <InputBox type={showPassword ? "text" : "password"} placeholder="Password">
+                    <InputBox type="email" placeholder="Email Address" name="email" />
+                    <InputBox type={showPassword ? "text" : "password"} placeholder="Password" name="password">
                         <div
                             className="absolute right-3 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
                             onClick={toggleShowPassword}
