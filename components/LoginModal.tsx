@@ -7,21 +7,62 @@ import { signIn } from "next-auth/react";
 import Logo from "./Logo";
 import Image from "next/image";
 import SignUpForm from "./SignUpForm";
+import EmailVerification from "./EmailVerification";
 
 interface props {
     closeLoginModal: (
         e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
     ) => void;
 }
-
-export interface signInFormProps {
-    handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-    showPassword?: boolean;
-    toggleShowPassword?: () => void;
-    setShowSignUpForm?: React.Dispatch<React.SetStateAction<boolean>>;
+interface signInFormProps {
+    setCreateAccount: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignInForm = ({ handleSubmit, showPassword, toggleShowPassword }: signInFormProps) => {
+const CreateAccount = ({ setCreateAccount }: signInFormProps) => {
+    const [showSignUpForm, setShowSignUpForm] = useState<boolean>(true);
+    const [userDetails, setUserDetails] = useState<object>();
+    return (
+        <>
+            {showSignUpForm ? (
+                <SignUpForm
+                    setShowSignUpForm={setShowSignUpForm}
+                    setCreateAccount={setCreateAccount}
+                    setUserDetails={setUserDetails}
+                />
+            ) : (
+                <EmailVerification userDetails={userDetails} />
+            )}
+        </>
+    );
+};
+
+const SignInForm = ({ setCreateAccount }: signInFormProps) => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        var data = new FormData(e.currentTarget as HTMLFormElement);
+        let formObject = Object.fromEntries(data.entries());
+
+        const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
+
+        if (button.value === "create-account") {
+            setCreateAccount(true);
+        } else if (button.value === "signin") {
+            signIn("credentials", {
+                email: formObject.email,
+                password: formObject.password,
+                redirect: false,
+            });
+        } else {
+            signIn(button.value);
+        }
+    };
+
     return (
         <div id="sign-in-form">
             <h3 className="text-center font-semibold text-2xl pb-5">Welcome back!</h3>
@@ -74,8 +115,7 @@ const SignInForm = ({ handleSubmit, showPassword, toggleShowPassword }: signInFo
 };
 
 const LoginModal = ({ closeLoginModal }: props) => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showSignUpForm, setShowSignUpForm] = useState(false);
+    const [createAccount, setCreateAccount] = useState(false);
 
     useEffect(() => {
         const body = document.querySelector("body");
@@ -84,30 +124,6 @@ const LoginModal = ({ closeLoginModal }: props) => {
             body?.classList.remove("overflow-hidden");
         };
     }, []);
-
-    const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        var data = new FormData(e.currentTarget as HTMLFormElement);
-        let formObject = Object.fromEntries(data.entries());
-
-        const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
-
-        if (button.value === "create-account") {
-            setShowSignUpForm(true);
-        } else if (["signin", "signup"].includes(button.value)) {
-            signIn("credentials", {
-                email: formObject.email,
-                password: formObject.password,
-                redirect: false,
-            });
-        } else {
-            signIn(button.value);
-        }
-    };
 
     return (
         <div>
@@ -125,18 +141,10 @@ const LoginModal = ({ closeLoginModal }: props) => {
                 <div className="flex items-center justify-center pb-2">
                     <Logo width={150} height={50} />
                 </div>
-                {showSignUpForm ? (
-                    <SignUpForm
-                        showPassword={showPassword}
-                        toggleShowPassword={toggleShowPassword}
-                        setShowSignUpForm={setShowSignUpForm}
-                    />
+                {!createAccount ? (
+                    <CreateAccount setCreateAccount={setCreateAccount} />
                 ) : (
-                    <SignInForm
-                        handleSubmit={handleSubmit}
-                        showPassword={showPassword}
-                        toggleShowPassword={toggleShowPassword}
-                    />
+                    <SignInForm setCreateAccount={setCreateAccount} />
                 )}
             </div>
         </div>

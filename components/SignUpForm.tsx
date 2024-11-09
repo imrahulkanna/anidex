@@ -3,7 +3,6 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 import InputBox from "./InputBox";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import { signInFormProps } from "./LoginModal";
 import { constructUrl } from "@/app/lib/fetch";
 
 interface userNameErrorType {
@@ -11,12 +10,23 @@ interface userNameErrorType {
     message?: string;
 }
 
-const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () => {} }: signInFormProps) => {
+interface SignUpFormProps {
+    setShowSignUpForm: React.Dispatch<React.SetStateAction<boolean>>;
+    setCreateAccount: React.Dispatch<React.SetStateAction<boolean>>;
+    setUserDetails: React.Dispatch<React.SetStateAction<object>>;
+}
+
+const SignUpForm = ({
+    setShowSignUpForm = () => {},
+    setCreateAccount = () => {},
+    setUserDetails,
+}: SignUpFormProps) => {
     let controller: null | undefined | AbortController = null;
     const initUsernameValue = {
         success: true,
     };
     const [usernameError, setUsernameError] = useState<userNameErrorType>(initUsernameValue);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     useEffect(() => {
         if (usernameError.success && usernameError.message) {
@@ -26,8 +36,12 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
         }
     }, [usernameError]);
 
-    const openSignForm = () => {
-        setShowSignUpForm(false);
+    const openSignInForm = () => {
+        setCreateAccount(false);
+    };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
     };
 
     const handleUsernameCheck = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +79,6 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
         e.preventDefault();
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
-        console.log("formObject", formObject);
 
         const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
 
@@ -83,11 +96,8 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
                 body: JSON.stringify(requestBody),
             });
 
-            // signIn("credentials", {
-            //     email: formObject.email,
-            //     password: formObject.password,
-            //     redirect: false,
-            // });
+            setUserDetails(requestBody);
+            setShowSignUpForm(false);
         } else {
             signIn(button.value);
         }
@@ -122,7 +132,11 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
                         )}
                     </div>
                     <InputBox type="email" placeholder="Email Address" name="email" />
-                    <InputBox type={showPassword ? "text" : "password"} placeholder="Password" name="password">
+                    <InputBox
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        name="password"
+                    >
                         <div
                             className="absolute right-3 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
                             onClick={toggleShowPassword}
@@ -140,7 +154,7 @@ const SignUpForm = ({ showPassword, toggleShowPassword, setShowSignUpForm = () =
                 </button>
                 <p className="text-center text-sm">
                     Already have an account?{" "}
-                    <span className="text-blue-400 underline cursor-pointer" onClick={openSignForm}>
+                    <span className="text-blue-400 underline cursor-pointer" onClick={openSignInForm}>
                         Sign In
                     </span>
                 </p>
