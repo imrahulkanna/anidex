@@ -2,7 +2,7 @@ import React from "react";
 import InputBox from "./InputBox";
 
 interface EmailVerificationProps {
-    userDetails: object
+    userDetails: { email: string; username: string; password: string } | undefined;
 }
 
 const EmailVerification = ({ userDetails }: EmailVerificationProps) => {
@@ -10,16 +10,19 @@ const EmailVerification = ({ userDetails }: EmailVerificationProps) => {
         e.preventDefault();
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
-        const requestBody = {
-            email: userDetails.email,
-            enteredCode: formObject["verification-code"]
-        };
 
-        const res = await fetch("/api/verify-email", {
-            method: "POST",
-            cache: "no-cache",
-            body: JSON.stringify(requestBody)
-        })
+        if (userDetails) {
+            const requestBody = {
+                email: userDetails.email,
+                enteredCode: formObject["verification-code"],
+            };
+
+            const res = await fetch("/api/verify-email", {
+                method: "POST",
+                cache: "no-cache",
+                body: JSON.stringify(requestBody),
+            });
+        }
     };
 
     return (

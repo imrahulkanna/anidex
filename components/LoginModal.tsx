@@ -17,9 +17,11 @@ interface signInFormProps {
     closeLoginModal: props["closeLoginModal"];
 }
 
+export type userDetailsType = { email: string; username: string; password: string } | undefined
+
 const CreateAccount = ({ setCreateAccount }: signInFormProps) => {
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(true);
-    const [userDetails, setUserDetails] = useState<object>({});
+    const [userDetails, setUserDetails] = useState<userDetailsType>();
     return (
         <>
             {showSignUpForm ? (
@@ -59,9 +61,7 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
                     redirect: false,
                 });
                 closeLoginModal();
-            } catch (error) {
-                
-            }
+            } catch (error) {}
         } else {
             signIn(button.value);
         }
@@ -73,7 +73,11 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                     <InputBox type="email" placeholder="Email" name="email" />
-                    <InputBox type={showPassword ? "text" : "password"} placeholder="Password" name="password">
+                    <InputBox
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        name="password"
+                    >
                         <div
                             className="absolute right-3 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
                             onClick={toggleShowPassword}
@@ -146,9 +150,15 @@ const LoginModal = ({ closeLoginModal }: props) => {
                     <Logo width={150} height={50} />
                 </div>
                 {createAccount ? (
-                    <CreateAccount setCreateAccount={setCreateAccount} closeLoginModal={closeLoginModal} />
+                    <CreateAccount
+                        setCreateAccount={setCreateAccount}
+                        closeLoginModal={closeLoginModal}
+                    />
                 ) : (
-                    <SignInForm setCreateAccount={setCreateAccount} closeLoginModal={closeLoginModal} />
+                    <SignInForm
+                        setCreateAccount={setCreateAccount}
+                        closeLoginModal={closeLoginModal}
+                    />
                 )}
             </div>
         </div>

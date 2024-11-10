@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import InputBox from "./InputBox";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { constructUrl } from "@/app/lib/fetch";
+import { userDetailsType } from "./LoginModal";
 
 interface userNameErrorType {
     success: boolean;
@@ -13,7 +14,7 @@ interface userNameErrorType {
 interface SignUpFormProps {
     setShowSignUpForm: React.Dispatch<React.SetStateAction<boolean>>;
     setCreateAccount: React.Dispatch<React.SetStateAction<boolean>>;
-    setUserDetails: React.Dispatch<React.SetStateAction<object>>;
+    setUserDetails: React.Dispatch<React.SetStateAction<userDetailsType>>;
 }
 
 const SignUpForm = ({
@@ -84,9 +85,9 @@ const SignUpForm = ({
 
         if (button.value === "signup") {
             const requestBody = {
-                username: formObject.username,
-                email: formObject.email,
-                password: formObject.password,
+                username: formObject.username as string,
+                email: formObject.email as string,
+                password: formObject.password as string,
             };
 
             const res = await fetch("/api/sign-up", {
