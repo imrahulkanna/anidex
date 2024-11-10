@@ -2,17 +2,24 @@ import React from "react";
 import InputBox from "./InputBox";
 
 interface EmailVerificationProps {
-    userDetails: object | undefined
+    userDetails: object
 }
 
 const EmailVerification = ({ userDetails }: EmailVerificationProps) => {
-    const handleVerifyCode = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleVerifyCode = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
-        console.log("formObject", formObject);
-        console.log("userDetails", userDetails);
-        
+        const requestBody = {
+            email: userDetails.email,
+            enteredCode: formObject["verification-code"]
+        };
+
+        const res = await fetch("/api/verify-email", {
+            method: "POST",
+            cache: "no-cache",
+            body: JSON.stringify(requestBody)
+        })
     };
 
     return (

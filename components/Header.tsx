@@ -11,10 +11,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
     const { data: session, status } = useSession();
 
-    const handleLoginModal = (
-        e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
-    ) => {
-        e.preventDefault();
+    const handleLoginModal = () => {
         setOpenLoginModal(!openLoginModal);
     };
 

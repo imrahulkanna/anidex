@@ -10,17 +10,16 @@ import SignUpForm from "./SignUpForm";
 import EmailVerification from "./EmailVerification";
 
 interface props {
-    closeLoginModal: (
-        e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
-    ) => void;
+    closeLoginModal: () => void;
 }
 interface signInFormProps {
     setCreateAccount: React.Dispatch<React.SetStateAction<boolean>>;
+    closeLoginModal: props["closeLoginModal"];
 }
 
 const CreateAccount = ({ setCreateAccount }: signInFormProps) => {
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(true);
-    const [userDetails, setUserDetails] = useState<object>();
+    const [userDetails, setUserDetails] = useState<object>({});
     return (
         <>
             {showSignUpForm ? (
@@ -36,7 +35,7 @@ const CreateAccount = ({ setCreateAccount }: signInFormProps) => {
     );
 };
 
-const SignInForm = ({ setCreateAccount }: signInFormProps) => {
+const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const toggleShowPassword = () => {
@@ -53,11 +52,16 @@ const SignInForm = ({ setCreateAccount }: signInFormProps) => {
         if (button.value === "create-account") {
             setCreateAccount(true);
         } else if (button.value === "signin") {
-            signIn("credentials", {
-                email: formObject.email,
-                password: formObject.password,
-                redirect: false,
-            });
+            try {
+                await signIn("credentials", {
+                    email: formObject.email,
+                    password: formObject.password,
+                    redirect: false,
+                });
+                closeLoginModal();
+            } catch (error) {
+                
+            }
         } else {
             signIn(button.value);
         }
@@ -68,8 +72,8 @@ const SignInForm = ({ setCreateAccount }: signInFormProps) => {
             <h3 className="text-center font-semibold text-2xl pb-5">Welcome back!</h3>
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
-                    <InputBox type="email" placeholder="Email" />
-                    <InputBox type={showPassword ? "text" : "password"} placeholder="Password">
+                    <InputBox type="email" placeholder="Email" name="email" />
+                    <InputBox type={showPassword ? "text" : "password"} placeholder="Password" name="password">
                         <div
                             className="absolute right-3 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
                             onClick={toggleShowPassword}
@@ -141,10 +145,10 @@ const LoginModal = ({ closeLoginModal }: props) => {
                 <div className="flex items-center justify-center pb-2">
                     <Logo width={150} height={50} />
                 </div>
-                {!createAccount ? (
-                    <CreateAccount setCreateAccount={setCreateAccount} />
+                {createAccount ? (
+                    <CreateAccount setCreateAccount={setCreateAccount} closeLoginModal={closeLoginModal} />
                 ) : (
-                    <SignInForm setCreateAccount={setCreateAccount} />
+                    <SignInForm setCreateAccount={setCreateAccount} closeLoginModal={closeLoginModal} />
                 )}
             </div>
         </div>

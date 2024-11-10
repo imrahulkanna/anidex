@@ -88,7 +88,6 @@ const SignUpForm = ({
                 email: formObject.email,
                 password: formObject.password,
             };
-            console.log("requestBody", requestBody);
 
             const res = await fetch("/api/sign-up", {
                 method: "POST",
