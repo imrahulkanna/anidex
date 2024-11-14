@@ -37,7 +37,9 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                     </div>
                     {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
                         <div className="flex items-center gap-2">
-                            <p className="font-semibold">Hi, {session?.user?.name?.split(" ")[0] || "user"}</p>
+                            <p className="font-semibold">
+                                Hi, {session?.user?.name?.split(" ")[0] || session?.user?.username}
+                            </p>
                             {session?.user?.image && (
                                 <Image
                                     src={session.user.image as string}

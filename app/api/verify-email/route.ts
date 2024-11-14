@@ -21,10 +21,10 @@ export async function POST(request: Request) {
         } else {;
             return Response.json(
                 {
-                    success: true,
+                    success: false,
                     message: "Incorrect verification code. Try again",
                 },
-                { status: 200 }
+                { status: 400 }
             );
         }
         return Response.json({});

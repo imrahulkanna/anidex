@@ -19,7 +19,7 @@ interface signInFormProps {
 
 export type userDetailsType = { email: string; username: string; password: string } | undefined
 
-const CreateAccount = ({ setCreateAccount }: signInFormProps) => {
+const CreateAccount = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(true);
     const [userDetails, setUserDetails] = useState<userDetailsType>();
     return (
@@ -31,7 +31,7 @@ const CreateAccount = ({ setCreateAccount }: signInFormProps) => {
                     setUserDetails={setUserDetails}
                 />
             ) : (
-                <EmailVerification userDetails={userDetails} />
+                <EmailVerification userDetails={userDetails} closeLoginModal={closeLoginModal} />
             )}
         </>
     );
