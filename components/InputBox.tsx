@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface props {
     type: string;
     placeholder?: string;
     children?: React.ReactNode;
-    onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-    name?: string
+    onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    name?: string;
+    resetValue?: boolean;
 }
 
-const InputBox = ({ children, type, placeholder, onInputChange, name }: props) => {
+const InputBox = ({ children, type, placeholder, onInputChange, name, resetValue }: props) => {
     const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        if (resetValue) {
+            setInputValue("");
+        }
+    }, [resetValue]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
