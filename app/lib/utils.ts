@@ -33,3 +33,7 @@ export const apiCallHandler = async (func: (...args: any[]) => Promise<any>, ...
         console.log("Error while queuing:", error);
     }
 };
+
+export function isNumeric(value: string) {
+    return /^-?\d+$/.test(value);
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { log } from "util";
+import { isNumeric } from "@/app/lib/utils";
 
 interface OTPInputProps {
     length: number;
@@ -16,29 +16,41 @@ const OTPInput = ({ length, onComplete }: OTPInputProps) => {
         }
     }, []);
 
+    useEffect(() => {
+        if (OTP.every(digit => digit != "")) {
+            onComplete(OTP.join(""))
+        }
+    }, [OTP]);
+
     const handleInputChange = (input: string, index: number) => {
+        if (!(isNumeric(input) || input === "")) return;
+
         const newOTP = [...OTP];
-        input = input[input.length - 1] ?? "";
         newOTP[index] = input;
         setOTP(newOTP);
 
         if (input.length === 1 && index < length - 1) {
             inputRef.current[index + 1]?.focus();
         }
-
-        if (newOTP.every(digit => digit != "")) {
-            onComplete(newOTP.join(""))
-        }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-        console.log("index", index);
-
         if (e.key === "Backspace") {
             if (OTP[index] === "" && index > 0) {
                 inputRef.current[index - 1]?.focus();
             }
-        } 
+        } else if (e.key === "ArrowLeft" && index > 0) {
+            inputRef.current[index - 1]?.focus();
+        } else if (e.key === "ArrowRight" && index < length - 1) {
+            inputRef.current[index + 1]?.focus();
+        }
+    };
+
+    const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        const data = e.clipboardData?.getData("text").split("");
+        if (data.every(digit => isNumeric(digit))) {
+            setOTP(data);
+        }
     };
     return (
         <div className={`w-full flex justify-between gap-4 mb-4`}>
@@ -56,6 +68,8 @@ const OTPInput = ({ length, onComplete }: OTPInputProps) => {
                     className="w-1/6 h-[46px] rounded-md bg-neutral-700 text-neutral-100 border border-neutral-500 focus:outline-none focus:border-primary peer text-center text-xl"
                     autoComplete="off"
                     spellCheck={false}
+                    maxLength={1}
+                    onPaste={(e) => handlePaste(e)}
                 />
             ))}
         </div>
