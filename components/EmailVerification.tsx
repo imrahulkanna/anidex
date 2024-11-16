@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import InputBox from "./InputBox";
 import { signIn } from "next-auth/react";
+import OTPInput from "./OTPInput";
 
 interface EmailVerificationProps {
     userDetails: { email: string; username: string; password: string } | undefined;
@@ -81,13 +82,13 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
 
     return (
         <div id="verify-email-form">
-            <p className="text-center font-semibold text-2xl mb-1">Please check your email</p>
+            <p className="text-center font-semibold text-2xl mb-1">Verify your Email Address</p>
             <p className="text-center text-sm mb-6 font-light">
-                We've sent a code to <span className="font-semibold">@example.com</span>
+                We've sent a code to <span className="font-semibold">{userDetails?.email}</span>
             </p>
             <form onSubmit={handleVerifyCode}>
                 <div className="mb-4 h-auto">
-                    <InputBox type="text" name="verification-code" resetValue={resetInputValue} />
+                    <OTPInput length={6} onComplete={handleResend} />
                     {message.type === "verify" && (
                         <p className="mt-2 text-xs text-red-600 font-semibold ml-2">
                             {message.data}
