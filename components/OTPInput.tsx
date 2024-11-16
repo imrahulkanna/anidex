@@ -3,7 +3,7 @@ import { log } from "util";
 
 interface OTPInputProps {
     length: number;
-    onComplete: () => void;
+    onComplete: (otp: string) => void;
 }
 
 const OTPInput = ({ length, onComplete }: OTPInputProps) => {
@@ -25,6 +25,10 @@ const OTPInput = ({ length, onComplete }: OTPInputProps) => {
         if (input.length === 1 && index < length - 1) {
             inputRef.current[index + 1]?.focus();
         }
+
+        if (newOTP.every(digit => digit != "")) {
+            onComplete(newOTP.join(""))
+        }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
@@ -35,11 +39,6 @@ const OTPInput = ({ length, onComplete }: OTPInputProps) => {
                 inputRef.current[index - 1]?.focus();
             }
         } 
-        // else if (OTP[index].match(/^\d$/)) {
-        //     if (index < length - 1) {
-        //         inputRef.current[index + 1]?.focus();
-        //     }
-        // }
     };
     return (
         <div className={`w-full flex justify-between gap-4 mb-4`}>

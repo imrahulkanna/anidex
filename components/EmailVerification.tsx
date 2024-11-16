@@ -12,6 +12,7 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
     const initState = { type: "", data: "" };
     const [message, setMessage] = useState(initState);
     const [resetInputValue, setResetInputValue] = useState(false);
+    const [isBtnDisabled, setIsBtnDisabled] = useState<boolean>(true);
 
     useEffect(() => {
         if (message.type === "resend") {
@@ -21,18 +22,18 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
         }
     }, [message]);
 
-    const handleVerifyCode = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleVerifyCode = async (code: string = "") => {
         setMessage(initState);
         setResetInputValue(false);
-        e.preventDefault();
-        var data = new FormData(e.currentTarget as HTMLFormElement);
-        let formObject = Object.fromEntries(data.entries());
+        if (code) {
+            setIsBtnDisabled(false);
+        }
 
         if (userDetails) {
             try {
                 const requestBody = {
                     email: userDetails.email,
-                    enteredCode: formObject["verification-code"],
+                    enteredCode: code,
                 };
 
                 const res = await fetch("/api/verify-email", {
@@ -86,16 +87,25 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
             <p className="text-center text-sm mb-6 font-light">
                 We've sent a code to <span className="font-semibold">{userDetails?.email}</span>
             </p>
-            <form onSubmit={handleVerifyCode}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                }}
+            >
                 <div className="mb-4 h-auto">
-                    <OTPInput length={6} onComplete={handleResend} />
+                    <OTPInput length={6} onComplete={handleVerifyCode} />
                     {message.type === "verify" && (
                         <p className="mt-2 text-xs text-red-600 font-semibold ml-2">
                             {message.data}
                         </p>
                     )}
                 </div>
-                <button className="bg-neutral-100 w-full py-2 rounded text-neutral-800 font-semibold mb-2">
+                <button
+                    className={`bg-neutral-100 w-full py-2 rounded text-neutral-800 font-semibold mb-2${
+                        isBtnDisabled ? " opacity-50" : ""
+                    }`}
+                    disabled={isBtnDisabled}
+                >
                     Verify
                 </button>
             </form>
