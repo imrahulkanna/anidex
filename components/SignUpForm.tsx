@@ -28,6 +28,7 @@ const SignUpForm = ({
     };
     const [usernameError, setUsernameError] = useState<userNameErrorType>(initUsernameValue);
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [signUpError, setSignUpError] = useState<string>("");
 
     useEffect(() => {
         if (usernameError.success && usernameError.message) {
@@ -80,26 +81,36 @@ const SignUpForm = ({
         e.preventDefault();
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
-
+        setSignUpError("");
         const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
 
-        if (button.value === "signup") {
-            const requestBody = {
-                username: formObject.username as string,
-                email: formObject.email as string,
-                password: formObject.password as string,
-            };
+        try {
+            if (button.value === "signup") {
+                const requestBody = {
+                    username: formObject.username as string,
+                    email: formObject.email as string,
+                    password: formObject.password as string,
+                };
 
-            const res = await fetch("/api/sign-up", {
-                method: "POST",
-                cache: "no-cache",
-                body: JSON.stringify(requestBody),
-            });
+                const res = await fetch("/api/sign-up", {
+                    method: "POST",
+                    cache: "no-cache",
+                    body: JSON.stringify(requestBody),
+                });
 
-            setUserDetails(requestBody);
-            setShowSignUpForm(false);
-        } else {
-            signIn(button.value);
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.message);
+                }
+                setUserDetails(requestBody);
+                setShowSignUpForm(false);
+            } else {
+                signIn(button.value);
+            }
+        } catch (error) {
+            console.log("Error creating account", error);
+            setSignUpError("Error registering user");
         }
     };
 
@@ -107,6 +118,7 @@ const SignUpForm = ({
         <div id="sign-up-form">
             <h3 className="text-center font-semibold text-2xl pb-5">Create an account</h3>
             <form onSubmit={handleSubmit}>
+                {signUpError && <li className="bg-red-300 text-red-800 font-semibold rounded-md text-sm py-1 px-2 mb-4">{signUpError}</li>}
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                     <div className="flex gap-5">
                         <InputBox type="text" placeholder="First Name" name="firstname" />
@@ -154,7 +166,10 @@ const SignUpForm = ({
                 </button>
                 <p className="text-center text-sm">
                     Already have an account?{" "}
-                    <span className="text-blue-400 underline cursor-pointer" onClick={openSignInForm}>
+                    <span
+                        className="text-blue-400 underline cursor-pointer"
+                        onClick={openSignInForm}
+                    >
                         Sign In
                     </span>
                 </p>
