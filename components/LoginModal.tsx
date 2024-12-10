@@ -8,6 +8,7 @@ import Logo from "./Logo";
 import Image from "next/image";
 import SignUpForm from "./SignUpForm";
 import EmailVerification from "./EmailVerification";
+import { useLoading } from "@/context/LoadingContext";
 
 interface props {
     closeLoginModal: () => void;
@@ -38,6 +39,7 @@ const CreateAccount = ({ setCreateAccount, closeLoginModal }: signInFormProps) =
 };
 
 const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
+    const { setLoading } = useLoading();
     const [showPassword, setShowPassword] = useState(false);
 
     const toggleShowPassword = () => {
@@ -54,6 +56,7 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
         if (button.value === "create-account") {
             setCreateAccount(true);
         } else if (button.value === "signin") {
+            setLoading(true);
             try {
                 await signIn("credentials", {
                     email: formObject.email,

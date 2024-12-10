@@ -6,13 +6,18 @@ import LoginModal from "./LoginModal";
 import { signOut, useSession } from "next-auth/react";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import Logo from "./Logo";
+import { useLoading } from "@/context/LoadingContext";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
+    const { setLoading } = useLoading();
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
     const { data: session, status } = useSession();
 
     const handleLoginModal = () => {
         setOpenLoginModal(!openLoginModal);
+        if (openLoginModal) {
+            setLoading(false);
+        }
     };
 
     const handleLogout = (

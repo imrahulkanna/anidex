@@ -5,6 +5,7 @@ import InputBox from "./InputBox";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { constructUrl } from "@/app/lib/fetch";
 import { userDetailsType } from "./LoginModal";
+import { useLoading } from "@/context/LoadingContext";
 
 interface userNameErrorType {
     success: boolean;
@@ -26,6 +27,7 @@ const SignUpForm = ({
     const initUsernameValue = {
         success: true,
     };
+    const { setLoading } = useLoading();
     const [usernameError, setUsernameError] = useState<userNameErrorType>(initUsernameValue);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [signUpError, setSignUpError] = useState<string>("");
@@ -79,6 +81,7 @@ const SignUpForm = ({
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
         setSignUpError("");
@@ -111,6 +114,8 @@ const SignUpForm = ({
         } catch (error) {
             console.log("Error creating account", error);
             setSignUpError("Error registering user");
+        } finally {
+            setLoading(false);
         }
     };
 
