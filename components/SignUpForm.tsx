@@ -123,7 +123,11 @@ const SignUpForm = ({
         <div id="sign-up-form">
             <h3 className="text-center font-semibold text-2xl pb-5">Create an account</h3>
             <form onSubmit={handleSubmit}>
-                {signUpError && <li className="bg-red-300 text-red-800 font-semibold rounded-md text-sm py-1 px-2 mb-4">{signUpError}</li>}
+                {signUpError && (
+                    <li className="bg-red-300 text-red-800 font-semibold rounded-md text-sm py-1 px-2 mb-4">
+                        {signUpError}
+                    </li>
+                )}
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                     <div className="flex gap-5">
                         <InputBox type="text" placeholder="First Name" name="firstname" />

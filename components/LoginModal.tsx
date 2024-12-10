@@ -9,6 +9,7 @@ import Image from "next/image";
 import SignUpForm from "./SignUpForm";
 import EmailVerification from "./EmailVerification";
 import { useLoading } from "@/context/LoadingContext";
+import { string } from "zod";
 
 interface props {
     closeLoginModal: () => void;
@@ -18,7 +19,7 @@ interface signInFormProps {
     closeLoginModal: props["closeLoginModal"];
 }
 
-export type userDetailsType = { email: string; username: string; password: string } | undefined
+export type userDetailsType = { email: string; username: string; password: string } | undefined;
 
 const CreateAccount = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
     const [showSignUpForm, setShowSignUpForm] = useState<boolean>(true);
@@ -41,12 +42,14 @@ const CreateAccount = ({ setCreateAccount, closeLoginModal }: signInFormProps) =
 const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
     const { setLoading } = useLoading();
     const [showPassword, setShowPassword] = useState(false);
+    const [errorText, setErrorText] = useState("");
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        setErrorText('')
         e.preventDefault();
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
@@ -58,13 +61,29 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
         } else if (button.value === "signin") {
             setLoading(true);
             try {
-                await signIn("credentials", {
+                const res = await signIn("credentials", {
                     email: formObject.email,
                     password: formObject.password,
                     redirect: false,
                 });
+                if (!res?.ok) {
+                    throw new Error(res?.error as string);
+                }
                 closeLoginModal();
-            } catch (error) {}
+            } catch (error) {
+                const err = String(error);
+                if (err.includes("EmailNotFound")) {
+                    setErrorText("No user found with this email");
+                } else if (err.includes("NotVerified")) {
+                    setErrorText("Verfiy your account before logging");
+                } else if (err.includes("PasswordIncorrect")) {
+                    setErrorText("Password is incorrect");
+                } else {
+                    setErrorText("Unable to sign-in. Verify your credentials");
+                }
+            } finally {
+                setLoading(false);
+            }
         } else {
             signIn(button.value);
         }
@@ -74,6 +93,11 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
         <div id="sign-in-form">
             <h3 className="text-center font-semibold text-2xl pb-5">Welcome back!</h3>
             <form onSubmit={handleSubmit}>
+                {errorText && (
+                    <li className="bg-red-300 text-red-800 font-semibold rounded-md text-sm py-1 px-2 mb-4">
+                        {errorText}
+                    </li>
+                )}
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                     <InputBox type="email" placeholder="Email" name="email" />
                     <InputBox

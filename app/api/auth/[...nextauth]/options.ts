@@ -25,11 +25,11 @@ export const authOptions: NextAuthOptions = {
                     })
 
                     if (!user) {
-                        throw new Error("No user found with this email");
+                        throw new Error("EmailNotFound");
                     }
 
                     if (!user.isVerified) {
-                        throw new Error("Verfiy your account before logging")
+                        throw new Error("NotVerified")
                     }
 
                     const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
                     if (isPasswordCorrect) {
                         return user;
                     } else {
-                        throw new Error("Password is incorrect");
+                        throw new Error("PasswordIncorrect");
                     }
                 } catch (error: any) {
                     console.log("Failed to connect db", error);
