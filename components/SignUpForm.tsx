@@ -86,6 +86,7 @@ const SignUpForm = ({
         let formObject = Object.fromEntries(data.entries());
         setSignUpError("");
         const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
+        const name = `${formObject.firstname} ${formObject.lastname}`
 
         try {
             if (button.value === "signup") {
@@ -93,6 +94,7 @@ const SignUpForm = ({
                     username: formObject.username as string,
                     email: formObject.email as string,
                     password: formObject.password as string,
+                    name: name,
                 };
 
                 const res = await fetch("/api/sign-up", {

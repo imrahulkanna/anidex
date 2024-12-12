@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     await dbConnect();
 
     try {
-        const { username, email, password } = await request.json();
+        const { username, email, password, name } = await request.json();
         const existingUserVerifiedByUsername = await UserModel.findOne({
             username,
             isVerified: true,
@@ -46,6 +46,7 @@ export async function POST(request: Request) {
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10);
 
+                existingUserByEmail.name = name;
                 existingUserByEmail.password = hashedPassword;
                 existingUserByEmail.verifyCode = verifyCode;
                 existingUserByEmail.verifyCodeExpiry = expiryDate;
@@ -56,6 +57,7 @@ export async function POST(request: Request) {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const newUser = new UserModel({
+                name,
                 username,
                 email,
                 password: hashedPassword,
