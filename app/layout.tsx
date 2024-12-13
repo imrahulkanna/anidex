@@ -28,7 +28,7 @@ export default async function RootLayout({
             <AuthProvider>
                 <LoadingProvider>
                     <body
-                        className={`min-h-screen max-w-[1800px] mx-auto bg-neutral-800 px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
+                        className={`min-h-screen max-w-[1800px] mx-auto bg-obsidian px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
                     >
                         <Loader />
                         <Header rowdies={rowdies} />

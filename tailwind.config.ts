@@ -36,6 +36,7 @@ const config = {
             colors: {
                 primary: "#52dff4",
                 secondary: "#f0479d",
+                obsidian: "#161618",
             },
         },
     },
