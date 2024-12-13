@@ -59,7 +59,6 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
         if (button.value === "create-account") {
             setCreateAccount(true);
         } else if (button.value === "signin") {
-            setLoading(true);
             try {
                 const res = await signIn("credentials", {
                     email: formObject.email,
@@ -85,6 +84,7 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
                 setLoading(false);
             }
         } else {
+            setLoading(true);
             signIn(button.value);
         }
     };

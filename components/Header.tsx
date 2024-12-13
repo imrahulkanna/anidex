@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import LoginModal from "./LoginModal";
@@ -7,11 +7,26 @@ import { signOut, useSession } from "next-auth/react";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import Logo from "./Logo";
 import { useLoading } from "@/context/LoadingContext";
+import { TriangleDownIcon, PersonIcon, ExitIcon } from "@radix-ui/react-icons";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const { setLoading } = useLoading();
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+    const [openMenu, setOpenMenu] = useState<boolean>(false);
     const { data: session, status } = useSession();
+
+    useEffect(() => {
+        const body = document.querySelector("body");
+        if (openLoginModal) {
+            body?.classList.add("overflow-hidden");
+        } else {
+            body?.classList.remove("overflow-hidden");
+        }
+    }, [openLoginModal]);
+
+    useEffect(() => {
+        setLoading(false);
+    }, [session]);
 
     const handleLoginModal = () => {
         setOpenLoginModal(!openLoginModal);
@@ -20,48 +35,103 @@ const Header = ({ rowdies }: { rowdies: any }) => {
         }
     };
 
-    const handleLogout = (
+    const handleOpenMenu = (
         e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
     ) => {
         e.preventDefault();
-        signOut();
+        setOpenMenu(!openMenu);
     };
 
-    const body = document.querySelector("body");
-    if (openLoginModal) {
-        body?.classList.add("overflow-hidden");
-    } else {
-        body?.classList.remove("overflow-hidden");
-    }
+    const MenuDropdown = () => {
+        const dropdownList = ["Profile", "Sign out"];
+
+        const handleItemClick = (item: string) => {
+            switch (item) {
+                case "Profile":
+                    break;
+                case "Sign out":
+                    setLoading(true);
+                    signOut();
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        const Icon = ({ item }: { item: string }) => {
+            switch (item) {
+                case "Profile":
+                    return (
+                        <PersonIcon
+                            style={{
+                                width: "20px",
+                                height: "20px",
+                                border: "1px solid gray",
+                                borderRadius: "100%",
+                                paddingTop: "2px",
+                            }}
+                        />
+                    );
+                case "Sign out":
+                    return <ExitIcon style={{ width: "20px", height: "20px" }} />;
+                default:
+                    return <></>;
+            }
+        };
+        return (
+            <ul className="absolute top-[110%] w-[170%] right-0 flex flex-col gap-1 bg-neutral-800 border-neutral-700 border text-neutral-400 text-sm p-[6px] font-medium rounded-xl text-left">
+                {dropdownList.map((item) => (
+                    <li
+                        className="py-2 px-4 rounded-md flex items-center gap-2 hover:bg-neutral-700 hover:text-neutral-50"
+                        onClick={() => handleItemClick(item)}
+                    >
+                        <Icon item={item} />
+                        {item}
+                    </li>
+                ))}
+            </ul>
+        );
+    };
     return (
         <>
-            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-neutral-800/80 backdrop-blur">
-                <div className="w-full max-w-[1800px] mx-auto px-4 md:px-10 3xl:px-2 py-4 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
+            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/70 backdrop-blur">
+                <div className="w-full max-w-[1800px] mx-auto px-4 md:px-10 3xl:px-2 py-4 flex justify-between items-center max-h-20">
+                    <div>
                         <Logo width={150} height={50} />
                     </div>
                     {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
-                        <div className="flex items-center gap-2">
-                            <p className="font-semibold">
-                                Hi, {session?.user?.name?.split(" ")[0] || session?.user?.username}
-                            </p>
+                        <button
+                            className="flex items-center gap-1 border-neutral-700 border px-3 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
+                            onClick={handleOpenMenu}
+                        >
                             {session?.user?.image && (
                                 <Image
                                     src={session.user.image as string}
                                     alt="profile-image"
-                                    width={40}
-                                    height={40}
+                                    width={35}
+                                    height={35}
                                     className="rounded-full"
                                 ></Image>
                             )}
-                            <Button
+                            <p className="font-semibold flex items-center gap-[6px] text-neutral-200">
+                                {session?.user?.name?.split(" ")[0] || session?.user?.username}
+                                <TriangleDownIcon
+                                    style={{
+                                        color: "rgb(136, 147, 151)",
+                                        width: "20px",
+                                        height: "20px",
+                                    }}
+                                />
+                            </p>
+                            {/* <Button
                                 variant="secondary"
                                 className="bg-neutral-100 font-semibold hover:bg-neutral-100/80 hover:scale-105"
                                 onClick={handleLogout}
                             >
                                 Logout
-                            </Button>
-                        </div>
+                            </Button> */}
+                            {openMenu && <MenuDropdown />}
+                        </button>
                     ) : (
                         <Button
                             variant="secondary"
