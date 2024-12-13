@@ -49,7 +49,7 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        setErrorText('')
+        setErrorText("");
         e.preventDefault();
         var data = new FormData(e.currentTarget as HTMLFormElement);
         let formObject = Object.fromEntries(data.entries());
@@ -60,6 +60,7 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
             setCreateAccount(true);
         } else if (button.value === "signin") {
             try {
+                setLoading(true);
                 const res = await signIn("credentials", {
                     email: formObject.email,
                     password: formObject.password,
@@ -168,10 +169,10 @@ const LoginModal = ({ closeLoginModal }: props) => {
             ></div>
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 w-[440px] h-auto z-[999] p-10 bg-white/5 backdrop-blur-md text-neutral-300 rounded-md border border-white/20">
                 <button
-                    className="absolute -right-0 -top-0 rounded-tr-md m-2 cursor-pointer hover:scale-150"
+                    className="absolute -right-0 -top-0 rounded-tr-md m-2 cursor-pointer hover:scale-125"
                     onClick={closeLoginModal}
                 >
-                    <Cross2Icon stroke="10" />
+                    <Cross2Icon stroke="10" style={{ width: "20px", height: "20px" }} />
                 </button>
                 <div className="flex items-center justify-center pb-2">
                     <Logo width={150} height={50} />

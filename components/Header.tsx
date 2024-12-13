@@ -79,7 +79,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
             }
         };
         return (
-            <ul className="absolute top-[110%] w-[170%] right-0 flex flex-col gap-1 bg-neutral-800 border-neutral-700 border text-neutral-400 text-sm p-[6px] font-medium rounded-xl text-left">
+            <ul className="absolute top-[120%] w-[170%] right-0 flex flex-col gap-1 bg-neutral-800 border-neutral-700 border text-neutral-400 text-sm p-[6px] font-medium rounded-xl text-left">
                 {dropdownList.map((item) => (
                     <li
                         className="py-2 px-4 rounded-md flex items-center gap-2 hover:bg-neutral-700 hover:text-neutral-50"
@@ -94,7 +94,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
     };
     return (
         <>
-            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/70 backdrop-blur">
+            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/75 backdrop-blur">
                 <div className="w-full max-w-[1800px] mx-auto px-4 md:px-10 3xl:px-2 py-4 flex justify-between items-center max-h-20">
                     <div>
                         <Logo width={150} height={50} />
