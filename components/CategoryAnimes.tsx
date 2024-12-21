@@ -85,7 +85,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                         height={0}
                                         className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] object-cover"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-800 to-30%" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-obsidian to-30%" />
                                 </HoverCardWrapper>
                             </div>
                             <Link href="#">

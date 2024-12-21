@@ -1,9 +1,10 @@
-import React, { forwardRef, Ref } from "react";
+import React, { forwardRef, Ref, useState } from "react";
 import { animeData, genre } from "./TrendingAnimeList";
 import { StarFilledIcon, PlayIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { Skeleton } from "./Skeleton";
-
+import { Button } from "./ui/button";
+import { HeartIcon } from "@heroicons/react/24/outline";
 interface props {
     anime: animeData | undefined;
     handleOpenHover: () => void;
@@ -32,6 +33,7 @@ const HoverCardSkeleton = () => {
 
 const HoverCard = forwardRef<HTMLDivElement, props>(
     ({ anime, handleOpenHover, handleCloseHover, cardPosition }, ref) => {
+        const [addedToFav, setAddedToFav] = useState<boolean>(false);
         const getGenres = (): string => {
             let genreString = "";
             anime?.genres.forEach((data: genre, index: number) => {
@@ -62,7 +64,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                 <p className="font-extrabold text-base text-white text-wrap mb-3">
                     {anime.title_english || anime.title}
                 </p>
-                <div className="flex items-center gap-5 mb-3">
+                <div className="flex items-center gap-5 mb-4">
                     <div className="flex items-center gap-1 font-semibold">
                         <StarFilledIcon color="gold" />
                         {anime.score || "N/A"}
@@ -83,7 +85,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                         )}
                     </div>
                 </div>
-                <p className="mb-3 line-clamp-3">{anime.synopsis}</p>
+                <p className="mb-4 line-clamp-3">{anime.synopsis}</p>
                 <p className="mb-1">
                     <span>Japanese</span>:{" "}
                     <span className="text-white">{anime.title_japanese}</span>
@@ -104,6 +106,20 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                 <p className="mb-1">
                     <span>Genres</span>: <span className="text-white">{getGenres()}</span>
                 </p>
+                <div className="px-3 mt-3 flex gap-5 items-center">
+                    <Button
+                        className="w-full rounded-full font-semibold flex gap-2 items-center justify-center"
+                        variant="secondary"
+                    >
+                        Add to wishlist
+                    </Button>
+                    <HeartIcon
+                        className={`w-10 h-10 cursor-pointer${
+                            addedToFav ? " stroke-red-600 fill-red-600" : ""
+                        }`}
+                        onClick={()=>(setAddedToFav(!addedToFav))}
+                    />
+                </div>
             </div>
         );
     }
