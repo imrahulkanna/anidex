@@ -21,7 +21,6 @@ export async function POST(request: Request) {
                 { $addToSet: { animeIds: animeId } }, // Prevent duplicates
                 { upsert: true } // Create a new document if it doesn't exist
             );
-            console.log("result", result);
             
             if (result.matchedCount === 0 && result.upsertedCount === 0) {
                 return NextResponse.json(

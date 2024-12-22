@@ -62,12 +62,11 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                 });
                 const data = await result.json();
 
-                console.log("result", data);
                 if (!result.ok) {
-                    throw new Error("Error adding to favourites");
+                    throw new Error(data.message);
                 }
             } catch (error) {
-                console.log("Error adding to favourites", error);
+                console.log("update-favourites failed: ", error);
                 setAddedToFav(!addedToFav);
             }
         };
