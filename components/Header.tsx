@@ -101,7 +101,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                     </div>
                     {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
                         <button
-                            className="flex items-center gap-1 border-neutral-700 border px-3 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
+                            className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
                             onClick={handleOpenMenu}
                         >
                             {session?.user?.image && (

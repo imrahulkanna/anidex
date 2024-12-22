@@ -5,6 +5,7 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { Skeleton } from "./Skeleton";
 import { Button } from "./ui/button";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
 interface props {
     anime: animeData | undefined;
     handleOpenHover: () => void;
@@ -34,6 +35,8 @@ const HoverCardSkeleton = () => {
 const HoverCard = forwardRef<HTMLDivElement, props>(
     ({ anime, handleOpenHover, handleCloseHover, cardPosition }, ref) => {
         const [addedToFav, setAddedToFav] = useState<boolean>(false);
+        const { data: session } = useSession();
+
         const getGenres = (): string => {
             let genreString = "";
             anime?.genres.forEach((data: genre, index: number) => {
@@ -42,6 +45,33 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             });
             return genreString;
         };
+
+        const toggleFav = async () => {
+            setAddedToFav(!addedToFav);
+            try {
+                const requestBody = {
+                    userId: session?.user?._id,
+                    animeId: anime?.mal_id,
+                    requestType: addedToFav ? "remove" : "add",
+                };
+
+                const result = await fetch("/api/update-favourites", {
+                    method: "POST",
+                    cache: "no-cache",
+                    body: JSON.stringify(requestBody),
+                });
+                const data = await result.json();
+
+                console.log("result", data);
+                if (!result.ok) {
+                    throw new Error("Error adding to favourites");
+                }
+            } catch (error) {
+                console.log("Error adding to favourites", error);
+                setAddedToFav(!addedToFav);
+            }
+        };
+
         return isDataEmptyorUndefined(anime) ? (
             <div
                 className={`p-4 absolute left-1/2 z-50 bg-white/5 backdrop-blur-md text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
@@ -117,7 +147,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                         className={`w-10 h-10 cursor-pointer${
                             addedToFav ? " stroke-red-600 fill-red-600" : ""
                         }`}
-                        onClick={()=>(setAddedToFav(!addedToFav))}
+                        onClick={toggleFav}
                     />
                 </div>
             </div>

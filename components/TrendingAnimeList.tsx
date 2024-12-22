@@ -21,7 +21,7 @@ export interface genre {
     url: string;
 }
 export interface animeData {
-    mal_id: string | null;
+    mal_id: number | null;
     title_english: string | null;
     title: string;
     images: {
