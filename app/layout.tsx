@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import AuthProvider from "@/context/AuthProvider";
 import { LoadingProvider } from "@/context/LoadingContext";
 import Loader from "@/components/Loader";
+import { UserDataProvider } from "@/context/UserDataContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const rowdies = Rowdies({
@@ -27,14 +28,16 @@ export default async function RootLayout({
         <html lang="en">
             <AuthProvider>
                 <LoadingProvider>
-                    <body
-                        className={`min-h-screen max-w-[1800px] mx-auto bg-obsidian px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
-                    >
-                        <Loader />
-                        <Header rowdies={rowdies} />
-                        {children}
-                        <SpeedInsights />
-                    </body>
+                    <UserDataProvider>
+                        <body
+                            className={`min-h-screen max-w-[1800px] mx-auto bg-obsidian px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
+                        >
+                            <Loader />
+                            <Header rowdies={rowdies} />
+                            {children}
+                            <SpeedInsights />
+                        </body>
+                    </UserDataProvider>
                 </LoadingProvider>
             </AuthProvider>
         </html>
