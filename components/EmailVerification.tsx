@@ -85,7 +85,8 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
         <div id="verify-email-form">
             <p className="text-center font-semibold text-2xl mb-1">Verify your Email Address</p>
             <p className="text-center text-sm mb-6 font-light">
-                We've sent a code to <span className="font-semibold">{userDetails?.email}</span>
+                We&apos;ve sent a code to{" "}
+                <span className="font-semibold">{userDetails?.email}</span>
             </p>
             <form
                 onSubmit={(e) => {
@@ -110,7 +111,7 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
                 </button>
             </form>
             <p className="text-center text-sm">
-                Didn't recieve any email?{" "}
+                Didn&apos;t recieve any email?{" "}
                 <span
                     className="text-blue-400 underline cursor-pointer font-semibold"
                     onClick={handleResend}

@@ -84,6 +84,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                     <li
                         className="py-2 px-4 rounded-md flex items-center gap-2 hover:bg-neutral-700 hover:text-neutral-50"
                         onClick={() => handleItemClick(item)}
+                        key={item}
                     >
                         <Icon item={item} />
                         {item}
@@ -123,13 +124,6 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                                     }}
                                 />
                             </p>
-                            {/* <Button
-                                variant="secondary"
-                                className="bg-neutral-100 font-semibold hover:bg-neutral-100/80 hover:scale-105"
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </Button> */}
                             {openMenu && <MenuDropdown />}
                         </button>
                     ) : (
