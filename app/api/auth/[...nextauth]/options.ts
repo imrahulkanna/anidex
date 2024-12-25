@@ -61,11 +61,9 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                const favList = await FavouritesModel.findOne({ userId: user._id });
                 token._id = user._id?.toString();
                 token.isVerified = user.isVerified;
                 token.username = user.username;
-                token.favourites = favList?.animeIds || [];
             }
             return token
         },
@@ -74,7 +72,6 @@ export const authOptions: NextAuthOptions = {
                 session.user._id = token._id;
                 session.user.isVerified = token.isVerified;
                 session.user.username = token.username;
-                session.user.favourites = token.favourites;
             }
             return session
         },
