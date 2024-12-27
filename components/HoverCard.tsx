@@ -6,6 +6,8 @@ import { Skeleton } from "./Skeleton";
 import { Button } from "./ui/button";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
+import { useUserData } from "@/context/UserDataContext";
+
 interface props {
     anime: animeData | undefined;
     handleOpenHover: () => void;
@@ -34,7 +36,11 @@ const HoverCardSkeleton = () => {
 
 const HoverCard = forwardRef<HTMLDivElement, props>(
     ({ anime, handleOpenHover, handleCloseHover, cardPosition }, ref) => {
-        const [addedToFav, setAddedToFav] = useState<boolean>(false);
+        const { userData, setUserData } = useUserData();
+
+        const [addedToFav, setAddedToFav] = useState<boolean>(
+            userData?.favourites.includes(anime?.mal_id) ? true : false
+        );
         const { data: session } = useSession();
 
         const getGenres = (): string => {
@@ -48,6 +54,16 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
 
         const toggleFav = async () => {
             setAddedToFav(!addedToFav);
+            let updatedFavs = [...userData?.favourites];
+            if (addedToFav) {
+                updatedFavs = updatedFavs.filter((id: number) => id !== anime?.mal_id);
+            } else {
+                updatedFavs.push(anime?.mal_id);
+            }
+            setUserData((prevState: object) => {
+                return { ...prevState, favourites: updatedFavs };
+            });
+
             try {
                 const requestBody = {
                     userId: session?.user?._id,

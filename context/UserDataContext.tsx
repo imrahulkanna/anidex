@@ -25,13 +25,14 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
                 const requestBody = {
                     userId: session?.user?._id,
                 };
+
                 const response = await fetch("/api/get-user-details", {
                     method: "POST",
                     cache: "no-cache",
                     body: JSON.stringify(requestBody),
                 });
+
                 const userData = await response.json();
-                console.log("data", userData);
                 setUserData(userData.data);
             } catch (error) {
                 console.log("Error fetching user details", (error as Error).message);
