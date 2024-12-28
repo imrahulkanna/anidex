@@ -9,7 +9,7 @@ import FavouritesModel from "@/model/Favourites";
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            id:"credentials",
+            id: "credentials",
             name: "Credentials",
             credentials: {
                 email: { label: "Email", type: "text " },
@@ -19,21 +19,21 @@ export const authOptions: NextAuthOptions = {
                 await dbConnect();
                 try {
                     const user = await UserModel.findOne({
-                        $or: [
-                            {email: credentials.email},
-                            {username: credentials.username},
-                        ]
-                    })
+                        $or: [{ email: credentials.email }, { username: credentials.username }],
+                    });
 
                     if (!user) {
                         throw new Error("EmailNotFound");
                     }
 
                     if (!user.isVerified) {
-                        throw new Error("NotVerified")
+                        throw new Error("NotVerified");
                     }
 
-                    const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
+                    const isPasswordCorrect = await bcrypt.compare(
+                        credentials.password,
+                        user.password
+                    );
 
                     if (isPasswordCorrect) {
                         return user;
@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
                     console.log("Failed to connect db", error);
                     throw new Error(error);
                 }
-            }
+            },
         }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -53,9 +53,9 @@ export const authOptions: NextAuthOptions = {
                 params: {
                     prompt: "consent",
                     access_type: "offline",
-                    response_type: "code"
-                }
-            }
+                    response_type: "code",
+                },
+            },
         }),
     ],
     callbacks: {
@@ -65,7 +65,7 @@ export const authOptions: NextAuthOptions = {
                 token.isVerified = user.isVerified;
                 token.username = user.username;
             }
-            return token
+            return token;
         },
         async session({ session, token }) {
             if (token) {
@@ -73,7 +73,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.isVerified = token.isVerified;
                 session.user.username = token.username;
             }
-            return session
+            return session;
         },
     },
     session: {
@@ -81,6 +81,6 @@ export const authOptions: NextAuthOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: "components/Login"
-    }
-}
+        signIn: "components/Login",
+    },
+};
