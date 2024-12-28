@@ -59,6 +59,32 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
+        async signIn({ user, account }) {
+            await dbConnect();
+
+            if (account?.provider) {
+                const userData = await UserModel.findOne({
+                    email: user.email,
+                });
+
+                if (userData) {
+                    user._id = userData._id as string;
+                    user.name = userData.name;
+                    user.isVerified = userData.isVerified || true;
+                    user.username = userData.username;
+
+                    if (!userData.isVerified) {
+                        await UserModel.updateOne({ _id: userData._id }, { isVerified: true });
+                    }
+                    //TODO: save img if its not present in db
+                } else {
+                    //TODO: If no matching user is found, create a new user in db
+                    return false;
+                }
+            }
+
+            return true;
+        },
         async jwt({ token, user }) {
             if (user) {
                 token._id = user._id?.toString();

@@ -75,6 +75,7 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
                 if (err.includes("EmailNotFound")) {
                     setErrorText("No user found with this email");
                 } else if (err.includes("NotVerified")) {
+                    //TODO: show otp screen when user is not yet verified
                     setErrorText("Verfiy your account before logging");
                 } else if (err.includes("PasswordIncorrect")) {
                     setErrorText("Password is incorrect");
