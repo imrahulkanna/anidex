@@ -30,7 +30,7 @@ export default async function RootLayout({
                 <LoadingProvider>
                     <UserDataProvider>
                         <body
-                            className={`min-h-screen max-w-[1800px] mx-auto bg-obsidian px-4 md:px-10 3xl:px-2 text-neutral-50 ${inter.className}`}
+                            className={`min-h-screen max-w-[1800px] mx-auto bg-obsidian text-neutral-50 ${inter.className}`}
                         >
                             <Loader />
                             <Header rowdies={rowdies} />

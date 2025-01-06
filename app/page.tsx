@@ -8,9 +8,12 @@ export default function Home() {
     const featuredAnimeTitles = ["Top Airing", "Most Popular", "Most Favorite", "Latest Completed"];
     const categoryTitles = ["Latest Episodes", "New Releases", "Top Upcoming"];
     return (
-        <main className="mt-20 md:-mx-4">
+        <main className="mt-20 px-4 md:px-6 3xl:px-2">
             <TrendingAnimeList />
-            <div id="featured-animes" className="w-full mb-10 flex justify-between flex-wrap gap-x-4 gap-y-10 flex-col md:flex-row md:gap-x-0">
+            <div
+                id="featured-animes"
+                className="w-full mb-10 flex justify-between flex-wrap gap-x-4 gap-y-10 flex-col md:flex-row md:gap-x-0"
+            >
                 {featuredAnimeTitles.map((title) => (
                     <FeaturedAnimes key={title} title={title} />
                 ))}
