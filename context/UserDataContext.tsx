@@ -1,6 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import React, { useState, useContext, createContext, ReactNode, useEffect } from "react";
+import { useLoading } from "./LoadingContext";
 
 interface UserDataContextType {
     userData: any;
@@ -11,16 +12,19 @@ const UserDataContext = createContext<UserDataContextType | undefined>(undefined
 
 export const UserDataProvider = ({ children }: { children: ReactNode }) => {
     const { data: session } = useSession();
+    const { isLoading, setLoading } = useLoading();
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
         if (!session || !session?.user) {
             setUserData(null);
             console.log("user is not logged in");
+            setLoading(false);
             return;
         }
 
         const fetchUserDetails = async () => {
+            setLoading(true);
             try {
                 const requestBody = {
                     userId: session?.user?._id,
@@ -33,13 +37,15 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
                 });
 
                 const userData = await response.json();
-                setUserData(userData.data);
+                const updatedData = { ...userData.data, ...session.user };
+                setUserData(updatedData);
             } catch (error) {
                 console.log("Error fetching user details", (error as Error).message);
             }
         };
 
         fetchUserDetails();
+        setLoading(false);
     }, [session?.user]);
 
     return (

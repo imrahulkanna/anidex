@@ -16,7 +16,7 @@ export async function POST(request: Request) {
                 { status: 400 }
             );
         }
-        const userData: any = { id: userId };
+        const userData: any = { _id: userId };
 
         const userFavourites = await FavouritesModel.findOne({ userId: userId });
         userData.favourites = userFavourites?.animeIds || [];

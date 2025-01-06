@@ -8,12 +8,15 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import Logo from "./Logo";
 import { useLoading } from "@/context/LoadingContext";
 import { TriangleDownIcon, PersonIcon, ExitIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const { setLoading } = useLoading();
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     useEffect(() => {
         const body = document.querySelector("body");
@@ -48,6 +51,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
         const handleItemClick = (item: string) => {
             switch (item) {
                 case "Profile":
+                    router.push("/user/profile")
                     break;
                 case "Sign out":
                     setLoading(true);
@@ -97,9 +101,9 @@ const Header = ({ rowdies }: { rowdies: any }) => {
         <>
             <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/75 backdrop-blur">
                 <div className="w-full max-w-[1800px] mx-auto px-4 md:px-10 3xl:px-2 py-4 flex justify-between items-center max-h-20">
-                    <div>
+                    <Link href="/">
                         <Logo width={150} height={50} />
-                    </div>
+                    </Link>
                     {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
                         <button
                             className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
