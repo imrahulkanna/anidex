@@ -41,6 +41,9 @@ const CreateAccount = ({ setCreateAccount, closeLoginModal }: signInFormProps) =
 
 const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
     const { setLoading } = useLoading();
+
+    const initFormData = { email: "", password: "" };
+    const [formData, setFormData] = useState(initFormData);
     const [showPassword, setShowPassword] = useState(false);
     const [errorText, setErrorText] = useState("");
 
@@ -48,22 +51,22 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
         setShowPassword(!showPassword);
     };
 
+    const handleInputChange = (name: string, value: string) => {
+        setFormData({ ...formData, [name]: value });
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         setErrorText("");
         e.preventDefault();
-        var data = new FormData(e.currentTarget as HTMLFormElement);
-        let formObject = Object.fromEntries(data.entries());
 
         const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
 
-        if (button.value === "create-account") {
-            setCreateAccount(true);
-        } else if (button.value === "signin") {
+        if (button.value === "signin") {
             try {
                 setLoading(true);
                 const res = await signIn("credentials", {
-                    email: formObject.email,
-                    password: formObject.password,
+                    email: formData.email,
+                    password: formData.password,
                     redirect: false,
                 });
                 if (!res?.ok) {
@@ -101,11 +104,19 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
                     </li>
                 )}
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
-                    <InputBox type="email" placeholder="Email" name="email" />
+                    <InputBox
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        inputValue={formData.email}
+                        onInputChange={handleInputChange}
+                    />
                     <InputBox
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         name="password"
+                        inputValue={formData.password}
+                        onInputChange={handleInputChange}
                     >
                         <div
                             className="absolute right-3 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
@@ -129,6 +140,7 @@ const SignInForm = ({ setCreateAccount, closeLoginModal }: signInFormProps) => {
                     className="bg-neutral-100 w-full py-2 rounded text-neutral-800 font-semibold"
                     type="submit"
                     value="create-account"
+                    onClick={() => setCreateAccount(true)}
                 >
                     Create an account
                 </button>

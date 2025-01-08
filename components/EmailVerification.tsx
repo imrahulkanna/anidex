@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import InputBox from "./InputBox";
 import { signIn } from "next-auth/react";
 import OTPInput from "./OTPInput";
 
@@ -11,7 +10,6 @@ interface EmailVerificationProps {
 const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationProps) => {
     const initState = { type: "", data: "" };
     const [message, setMessage] = useState(initState);
-    const [resetInputValue, setResetInputValue] = useState(false);
     const [isBtnDisabled, setIsBtnDisabled] = useState<boolean>(true);
 
     useEffect(() => {
@@ -24,7 +22,6 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
 
     const handleVerifyCode = async (code: string = "") => {
         setMessage(initState);
-        setResetInputValue(false);
         if (code) {
             setIsBtnDisabled(false);
         }
@@ -62,7 +59,6 @@ const EmailVerification = ({ userDetails, closeLoginModal }: EmailVerificationPr
 
     const handleResend = async () => {
         setMessage(initState);
-        setResetInputValue(true);
         try {
             if (userDetails) {
                 const requestBody = {

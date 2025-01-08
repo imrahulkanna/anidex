@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-
 interface props {
     type: string;
     placeholder?: string;
     children?: React.ReactNode;
-    onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    inputValue: string;
+    onInputChange?: (name: string, value: string) => void;
     name?: string;
-    resetValue?: boolean;
     readOnly?: boolean;
 }
 
@@ -14,23 +12,14 @@ const InputBox = ({
     children,
     type,
     placeholder,
+    inputValue,
     onInputChange,
     name,
-    resetValue,
     readOnly,
 }: props) => {
-    const [inputValue, setInputValue] = useState("");
-
-    useEffect(() => {
-        if (resetValue) {
-            setInputValue("");
-        }
-    }, [resetValue]);
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        setInputValue(e.target.value);
-        onInputChange && onInputChange(e);
+        onInputChange && onInputChange(e.target.name, e.target.value);
     };
 
     const handleOnClick = (e: React.MouseEvent<HTMLInputElement>) => {
