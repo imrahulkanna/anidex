@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import InputBox from "./InputBox";
@@ -18,16 +18,20 @@ interface SignUpFormProps {
     setUserDetails: React.Dispatch<React.SetStateAction<userDetailsType>>;
 }
 
-const SignUpForm = ({
-    setShowSignUpForm = () => {},
-    setCreateAccount = () => {},
-    setUserDetails,
-}: SignUpFormProps) => {
-    let controller: null | undefined | AbortController = null;
+const SignUpForm = ({ setShowSignUpForm, setCreateAccount, setUserDetails }: SignUpFormProps) => {
+    const controllerRef = useRef<AbortController | null>(null);
     const initUsernameValue = {
         success: true,
     };
+    const initFormData = {
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        password: "",
+    };
     const { setLoading } = useLoading();
+    const [formData, setFormData] = useState(initFormData);
     const [usernameError, setUsernameError] = useState<userNameErrorType>(initUsernameValue);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [signUpError, setSignUpError] = useState<string>("");
@@ -48,52 +52,57 @@ const SignUpForm = ({
         setShowPassword(!showPassword);
     };
 
-    const handleUsernameCheck = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        try {
-            if (controller) {
-                controller.abort();
+    const handleInputChange = async (name: string, value: string) => {
+        if (name === "username") {
+            setFormData({ ...formData, username: value });
+            try {
+                if (controllerRef.current) {
+                    console.log("inside abort");
+                    controllerRef.current.abort();
+                }
+                const newController = new AbortController();
+                controllerRef.current = newController;
+                const signal = newController.signal;
+
+                if (value.length <= 2) {
+                    setUsernameError(initUsernameValue);
+                    return;
+                }
+
+                const queryParams = {
+                    username: value,
+                };
+                const url = constructUrl("/api/check-username-unique", queryParams);
+
+                const res = await fetch(url, {
+                    signal,
+                    method: "POST",
+                    cache: "no-cache",
+                });
+                const data = await res.json();
+                setUsernameError(data);
+            } catch (error) {
+                console.log("failed checking username");
             }
-            controller = new AbortController();
-            const signal = controller.signal;
-
-            const inputValue = e.target.value;
-            if (inputValue.length <= 2) {
-                setUsernameError(initUsernameValue);
-                return;
-            }
-
-            const queryParams = {
-                username: inputValue,
-            };
-            const url = constructUrl("/api/check-username-unique", queryParams);
-
-            const res = await fetch(url, {
-                signal,
-                method: "POST",
-                cache: "no-cache",
-            });
-            const data = await res.json();
-            setUsernameError(data);
-        } catch (error) {
-            console.log("failed checking username");
+        } else {
+            setFormData({ ...formData, [name]: value });
         }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
-        var data = new FormData(e.currentTarget as HTMLFormElement);
-        let formObject = Object.fromEntries(data.entries());
         setSignUpError("");
+
         const button = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
-        const name = `${formObject.firstname} ${formObject.lastname}`
+        const name = `${formData.firstName} ${formData.lastName}`;
 
         try {
             if (button.value === "signup") {
                 const requestBody = {
-                    username: formObject.username as string,
-                    email: formObject.email as string,
-                    password: formObject.password as string,
+                    username: formData.username,
+                    email: formData.email,
+                    password: formData.password,
                     name: name,
                 };
 
@@ -132,15 +141,28 @@ const SignUpForm = ({
                 )}
                 <div className="flex flex-col gap-6 mb-6 items-end h-auto">
                     <div className="flex gap-5">
-                        <InputBox type="text" placeholder="First Name" name="firstname" />
-                        <InputBox type="text" placeholder="Last Name" name="lastname" />
+                        <InputBox
+                            type="text"
+                            placeholder="First Name"
+                            name="firstName"
+                            inputValue={formData.firstName}
+                            onInputChange={handleInputChange}
+                        />
+                        <InputBox
+                            type="text"
+                            placeholder="Last Name"
+                            name="lastName"
+                            inputValue={formData.lastName}
+                            onInputChange={handleInputChange}
+                        />
                     </div>
                     <div className="flex flex-col w-full">
                         <InputBox
                             type="text"
                             placeholder="Username"
-                            onInputChange={handleUsernameCheck}
                             name="username"
+                            inputValue={formData.username}
+                            onInputChange={handleInputChange}
                         />
                         {!usernameError?.success ? (
                             <p className="mt-2 text-xs text-red-600 font-semibold ml-2">
@@ -154,11 +176,19 @@ const SignUpForm = ({
                             )
                         )}
                     </div>
-                    <InputBox type="email" placeholder="Email Address" name="email" />
+                    <InputBox
+                        type="email"
+                        placeholder="Email Address"
+                        name="email"
+                        inputValue={formData.email}
+                        onInputChange={handleInputChange}
+                    />
                     <InputBox
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         name="password"
+                        inputValue={formData.password}
+                        onInputChange={handleInputChange}
                     >
                         <div
                             className="absolute right-3 top-1/2 -translate-y-1/2 z-[51] cursor-pointer"
