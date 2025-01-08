@@ -18,10 +18,10 @@ const Profile = () => {
 
     useEffect(() => {
         const updatedFormData = {
-            email: userData?.email,
-            fullName: userData?.name,
-            username: userData?.username,
-            image: userData?.image
+            email: userData?.email || "",
+            fullName: userData?.name || "",
+            username: userData?.username || "",
+            image: userData?.image || "",
         };
         setFormData(updatedFormData);
     }, [userData]);
@@ -38,7 +38,7 @@ const Profile = () => {
         >
             <div className="mb-6 relative" id="profile-image-container">
                 <Image
-                    src={formData?.image || "/loadUserProfile2.jpg"}
+                    src={formData?.image || "/loadUserProfile.jpg"}
                     alt="profile-image"
                     width={150}
                     height={150}

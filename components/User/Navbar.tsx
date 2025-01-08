@@ -25,6 +25,7 @@ const Navbar = () => {
                                 ? " border-b-2 border-primary"
                                 : ""
                         }`}
+                        key={item}
                     >
                         {item}
                     </Link>
