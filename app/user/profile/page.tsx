@@ -31,12 +31,40 @@ const Profile = () => {
         setFormData(updatedFormData);
     };
 
+    const handleImageUpload = async (e: React.FormEvent<HTMLInputElement>) => {
+        const files = (e.target as HTMLInputElement).files;
+        if (files && files.length > 0) {
+            const imgFormData = new FormData();
+            imgFormData.append("image", files[0]);
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                cache: "no-cache",
+                body: imgFormData,
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                setFormData({ ...formData, image: data.path });
+            } else {
+                console.log("something went wrong");
+            }
+        }
+    };
+
     return (
         <div
             id="profile-container"
             className="p-4 md:px-10 mx-auto w-full md:w-[500px] flex flex-col items-center"
         >
-            <div className="mb-6 relative" id="profile-image-container">
+            <div className="mb-6 relative cursor-pointer" id="profile-image-container">
+                <input
+                    type="file"
+                    name="profileImgUploader"
+                    id="profileImgUploader"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                />
                 <Image
                     src={formData?.image || "/loadUserProfile.jpg"}
                     alt="profile-image"
