@@ -6,13 +6,19 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "cdn.myanimelist.net",
                 port: "",
-                pathname: "/**"
+                pathname: "/**",
             },
             {
                 protocol: "https",
                 hostname: "lh3.googleusercontent.com",
                 port: "",
-                pathname: "/**" 
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "storage.googleapis.com",
+                port: "",
+                pathname: "/anidex-profile-images/**",
             },
         ],
     },
