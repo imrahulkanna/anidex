@@ -1,38 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
 import path from "path";
-
-const UPLOAD_DIR = path.resolve("", "public/uploads");
+import { Storage } from "@google-cloud/storage";
 
 export const POST = async (req: NextRequest) => {
     try {
         const formData = await req.formData();
-        const file = formData.get("image") as File | null;
+        const uploadedFile = formData.get("image") as File | null;
 
-        if (!file) {
+        if (!uploadedFile) {
             return NextResponse.json(
                 { success: false, message: "No file uploaded" },
                 { status: 400 }
             );
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer());
+        const buffer = Buffer.from(await uploadedFile.arrayBuffer());
+        const contentType = uploadedFile.type || "application/octet-stream";
 
-        if (!fs.existsSync(UPLOAD_DIR)) {
-            fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-        }
+        const storage = new Storage({
+            projectId: "anidex-432019",
+            keyFilename: path.resolve(process.cwd(), "anidex-432019-6b774e7d1f36.json"),
+        });
 
-        const filePath = path.resolve(UPLOAD_DIR, file.name);
-        fs.writeFileSync(filePath, new Uint8Array(buffer));
+        const profileImgBucket = storage.bucket("anidex-profile-images");
+        const newFile = profileImgBucket.file(uploadedFile.name);
+
+        await newFile.save(buffer, {
+            metadata: {
+                contentType,
+            },
+        });
+
+        const publicUrl = `https://storage.googleapis.com/anidex-profile-images/${uploadedFile.name}`;
 
         return NextResponse.json({
             success: true,
-            path: `/uploads/${file.name}`,
+            path: publicUrl,
         });
     } catch (error) {
         console.error("File upload failed:", error);
         return NextResponse.json(
-            { success: false, message: "File upload failed" },
+            { success: false, message: `File upload failed: ${error}` },
             { status: 500 }
         );
     }

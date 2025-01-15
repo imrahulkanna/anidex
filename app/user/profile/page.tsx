@@ -4,9 +4,11 @@ import { useUserData } from "@/context/UserDataContext";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { PencilIcon, CheckBadgeIcon } from "@heroicons/react/24/solid";
+import { useLoading } from "@/context/LoadingContext";
 
 const Profile = () => {
     const { userData } = useUserData();
+    const { setLoading } = useLoading();
 
     const initFormData = {
         email: "",
@@ -34,6 +36,7 @@ const Profile = () => {
     const handleImageUpload = async (e: React.FormEvent<HTMLInputElement>) => {
         const files = (e.target as HTMLInputElement).files;
         if (files && files.length > 0) {
+            setLoading(true);
             const imgFormData = new FormData();
             imgFormData.append("image", files[0]);
 
@@ -49,6 +52,7 @@ const Profile = () => {
             } else {
                 console.log("something went wrong");
             }
+            setLoading(false);
         }
     };
 
