@@ -76,7 +76,10 @@ export const authOptions: NextAuthOptions = {
                     if (!userData.isVerified) {
                         await UserModel.updateOne({ _id: userData._id }, { isVerified: true });
                     }
-                    //TODO: save img if its not present in db
+
+                    if (!userData.image) {
+                        await UserModel.updateOne({ _id: userData._id }, { image: user.image });
+                    }
                 } else {
                     //TODO: If no matching user is found, create a new user in db
                     return false;

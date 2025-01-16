@@ -1,13 +1,14 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface User extends Document {
-    name: string,
+    name: string;
     username: string;
     email: string;
     password: string;
     verifyCode: string;
     verifyCodeExpiry: Date;
     isVerified: boolean;
+    image: string;
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -44,10 +45,13 @@ const UserSchema: Schema<User> = new Schema({
         type: Boolean,
         default: false,
     },
+    image: {
+        type: String,
+        default: "",
+    },
 });
 
 const UserModel =
-    (mongoose.models.User as mongoose.Model<User>) ||
-    mongoose.model<User>("User", UserSchema);
+    (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema);
 
 export default UserModel;
