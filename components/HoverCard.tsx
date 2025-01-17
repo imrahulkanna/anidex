@@ -5,7 +5,6 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { Skeleton } from "./Skeleton";
 import { Button } from "./ui/button";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
 import { useUserData } from "@/context/UserDataContext";
 
 interface props {
@@ -41,7 +40,6 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         const [addedToFav, setAddedToFav] = useState<boolean>(
             userData?.favourites.includes(anime?.mal_id) ? true : false
         );
-        const { data: session } = useSession();
 
         const getGenres = (): string => {
             let genreString = "";
@@ -66,7 +64,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
 
             try {
                 const requestBody = {
-                    userId: session?.user?._id,
+                    userId: userData?._id,
                     animeId: anime?.mal_id,
                     requestType: addedToFav ? "remove" : "add",
                 };

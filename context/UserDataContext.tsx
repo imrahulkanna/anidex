@@ -37,7 +37,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
                 });
 
                 const userData = await response.json();
-                const updatedData = { ...userData.data, ...session.user };
+                const updatedData = { ...session.user, ...userData.data };
                 setUserData(updatedData);
             } catch (error) {
                 console.log("Error fetching user details", (error as Error).message);

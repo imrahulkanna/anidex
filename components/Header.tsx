@@ -121,7 +121,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                                 ></Image>
                             )}
                             <p className="font-semibold flex items-center gap-[6px] text-neutral-200">
-                                {session?.user?.name?.split(" ")[0] || session?.user?.username}
+                                {userData?.name?.split(" ")[0] || userData?.username}
                                 <TriangleDownIcon
                                     style={{
                                         color: "rgb(136, 147, 151)",
