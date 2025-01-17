@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/app/lib/dbConnect";
 import FavouritesModel from "@/model/Favourites";
+import UserModel from "@/model/User";
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -16,7 +17,14 @@ export async function POST(request: Request) {
                 { status: 400 }
             );
         }
-        const userData: any = {};
+
+        const userDetails = await UserModel.findOne({ _id: userId });
+
+        const userData: any = {
+            name: userDetails?.name,
+            username: userDetails?.username,
+            image: userDetails?.image,
+        };
 
         const userFavourites = await FavouritesModel.findOne({ userId: userId });
         userData.favourites = userFavourites?.animeIds || [];

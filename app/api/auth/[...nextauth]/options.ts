@@ -69,9 +69,7 @@ export const authOptions: NextAuthOptions = {
 
                 if (userData) {
                     user._id = userData._id as string;
-                    user.name = userData.name;
                     user.isVerified = userData.isVerified || true;
-                    user.username = userData.username;
 
                     if (!userData.isVerified) {
                         await UserModel.updateOne({ _id: userData._id }, { isVerified: true });
@@ -79,22 +77,18 @@ export const authOptions: NextAuthOptions = {
 
                     if (!userData.image) {
                         await UserModel.updateOne({ _id: userData._id }, { image: user.image });
-                    } else {
-                        user.image = userData.image;
                     }
                 } else {
                     //TODO: If no matching user is found, create a new user in db
                     return false;
                 }
             }
-
             return true;
         },
         async jwt({ token, user }) {
             if (user) {
                 token._id = user._id?.toString();
                 token.isVerified = user.isVerified;
-                token.username = user.username;
             }
             return token;
         },
@@ -102,7 +96,6 @@ export const authOptions: NextAuthOptions = {
             if (token) {
                 session.user._id = token._id;
                 session.user.isVerified = token.isVerified;
-                session.user.username = token.username;
             }
             return session;
         },
