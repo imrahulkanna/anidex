@@ -2,7 +2,7 @@
 import InputBox from "@/components/InputBox";
 import { useUserData } from "@/context/UserDataContext";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PencilIcon, CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { useLoading } from "@/context/LoadingContext";
 
@@ -17,6 +17,7 @@ const Profile = () => {
         image: "",
     };
     const [formData, setFormData] = useState(initFormData);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         const updatedFormData = {
@@ -33,8 +34,16 @@ const Profile = () => {
         setFormData(updatedFormData);
     };
 
+    const openFileUploadDialog = () => {
+        if (fileInputRef && fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
     const handleImageUpload = async (e: React.FormEvent<HTMLInputElement>) => {
         const files = (e.target as HTMLInputElement).files;
+        console.log("inside func", files);
+
         if (files && files.length > 0) {
             setLoading(true);
             const imgFormData = new FormData();
@@ -65,13 +74,19 @@ const Profile = () => {
             id="profile-container"
             className="p-4 md:px-10 mx-auto w-full md:w-[500px] flex flex-col items-center"
         >
-            <div className="mb-6 relative cursor-pointer" id="profile-image-container">
+            <div
+                className="mb-6 relative cursor-pointer"
+                id="profile-image-container"
+                onClick={openFileUploadDialog}
+            >
                 <input
                     type="file"
                     name="profileImgUploader"
                     id="profileImgUploader"
                     accept="image/*"
                     onChange={handleImageUpload}
+                    className="hidden"
+                    ref={fileInputRef}
                 />
                 <Image
                     src={formData?.image || "/loadUserProfile.jpg"}
