@@ -10,9 +10,11 @@ import { useLoading } from "@/context/LoadingContext";
 import { TriangleDownIcon, PersonIcon, ExitIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useUserData } from "@/context/UserDataContext";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const { setLoading } = useLoading();
+    const { userData } = useUserData();
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const { data: session, status } = useSession();
@@ -109,13 +111,13 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                             className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
                             onClick={handleOpenMenu}
                         >
-                            {session?.user?.image && (
+                            {userData?.image && (
                                 <Image
-                                    src={session.user.image as string}
+                                    src={userData.image as string}
                                     alt="profile-image"
                                     width={35}
                                     height={35}
-                                    className="rounded-full"
+                                    className="rounded-full h-[35px] object-cover"
                                 ></Image>
                             )}
                             <p className="font-semibold flex items-center gap-[6px] text-neutral-200">

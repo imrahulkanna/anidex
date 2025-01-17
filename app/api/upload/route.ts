@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { Storage } from "@google-cloud/storage";
+import dbConnect from "@/app/lib/dbConnect";
+import UserModel from "@/model/User";
 
 export const POST = async (req: NextRequest) => {
+    await dbConnect();
+
     try {
         const formData = await req.formData();
         const uploadedFile = formData.get("image") as File | null;
+        const userId = formData.get("id");
 
         if (!uploadedFile) {
             return NextResponse.json(
@@ -32,6 +37,8 @@ export const POST = async (req: NextRequest) => {
         });
 
         const publicUrl = `https://storage.googleapis.com/anidex-profile-images/${uploadedFile.name}`;
+
+        await UserModel.updateOne({ _id: userId }, { image: publicUrl });
 
         return NextResponse.json({
             success: true,

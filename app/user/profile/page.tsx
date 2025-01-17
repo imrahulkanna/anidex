@@ -7,7 +7,7 @@ import { PencilIcon, CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { useLoading } from "@/context/LoadingContext";
 
 const Profile = () => {
-    const { userData } = useUserData();
+    const { userData, setUserData } = useUserData();
     const { setLoading } = useLoading();
 
     const initFormData = {
@@ -39,6 +39,7 @@ const Profile = () => {
             setLoading(true);
             const imgFormData = new FormData();
             imgFormData.append("image", files[0]);
+            imgFormData.append("id", userData._id);
 
             const res = await fetch("/api/upload", {
                 method: "POST",
@@ -48,6 +49,9 @@ const Profile = () => {
 
             const data = await res.json();
             if (data.success) {
+                setUserData((prevState: object) => {
+                    return { ...prevState, image: data.path };
+                });
                 setFormData({ ...formData, image: data.path });
             } else {
                 console.log("something went wrong");
@@ -74,7 +78,7 @@ const Profile = () => {
                     alt="profile-image"
                     width={150}
                     height={150}
-                    className="rounded-full"
+                    className="rounded-full h-[150px] object-cover"
                 />
                 <div className="absolute bottom-3 right-3 bg-neutral-100 p-1.5 rounded-full cursor-pointer">
                     <PencilIcon className="w-3 stroke-black fill-black" />

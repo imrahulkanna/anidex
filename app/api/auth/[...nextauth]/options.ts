@@ -79,6 +79,8 @@ export const authOptions: NextAuthOptions = {
 
                     if (!userData.image) {
                         await UserModel.updateOne({ _id: userData._id }, { image: user.image });
+                    } else {
+                        user.image = userData.image;
                     }
                 } else {
                     //TODO: If no matching user is found, create a new user in db
