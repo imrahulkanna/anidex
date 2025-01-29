@@ -57,7 +57,6 @@ const SignUpForm = ({ setShowSignUpForm, setCreateAccount, setUserDetails }: Sig
             setFormData({ ...formData, username: value });
             try {
                 if (controllerRef.current) {
-                    console.log("inside abort");
                     controllerRef.current.abort();
                 }
                 const newController = new AbortController();

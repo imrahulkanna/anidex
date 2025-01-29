@@ -7,7 +7,7 @@ import React from "react";
 const Navbar = () => {
     const { userData } = useUserData();
     const currentPage = usePathname().split("/")[2];
-    const navMenu = ["Profile", "Wishlist", "Favourites"];
+    const navMenu = ["Profile", "Watchlist", "Favourites"];
 
     return (
         <div className="flex flex-col justify-center items-center bg-white/10 px-5 relative mb-10">

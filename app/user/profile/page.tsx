@@ -42,7 +42,6 @@ const Profile = () => {
 
     const handleImageUpload = async (e: React.FormEvent<HTMLInputElement>) => {
         const files = (e.target as HTMLInputElement).files;
-        console.log("inside func", files);
 
         if (files && files.length > 0) {
             setLoading(true);
