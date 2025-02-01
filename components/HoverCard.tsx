@@ -5,6 +5,7 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { Skeleton } from "./Skeleton";
 import { Button } from "./ui/button";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import { useUserData } from "@/context/UserDataContext";
 
 interface props {
@@ -13,6 +14,8 @@ interface props {
     handleCloseHover: () => void;
     cardPosition: string;
 }
+
+type WatchlistOption = "Watching" | "On-Hold" | "Plan to Watch" | "Dropped" | "Completed";
 
 const HoverCardSkeleton = () => {
     return (
@@ -37,10 +40,19 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
     ({ anime, handleOpenHover, handleCloseHover, cardPosition }, ref) => {
         const { userData, setUserData } = useUserData();
 
+        const defaultWatchlistOptions = {
+            Watching: { selected: false },
+            "On-Hold": { selected: false },
+            "Plan to Watch": { selected: false },
+            Dropped: { selected: false },
+            Completed: { selected: false },
+        };
+
         const [addedToFav, setAddedToFav] = useState<boolean>(
             userData?.favourites.includes(anime?.mal_id) ? true : false
         );
-        const [openWatchlist, setWatchlist] = useState<boolean>(false);
+        const [openWatchlist, setOpenWatchlist] = useState<boolean>(false);
+        const [watchlistOptions, setWatchlistOptions] = useState(defaultWatchlistOptions);
 
         const getGenres = (): string => {
             let genreString = "";
@@ -86,7 +98,17 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             }
         };
 
-        const toggleWatchlist = () => setWatchlist(!openWatchlist);
+        const toggleWatchlist = () => setOpenWatchlist(!openWatchlist);
+
+        const handleOptionSelection = (optionName: WatchlistOption) => {
+            setWatchlistOptions((prevState) => {
+                return {
+                    ...defaultWatchlistOptions,
+                    [optionName]: { selected: !prevState[optionName].selected },
+                };
+            });
+            setOpenWatchlist(false);
+        };
 
         return isDataEmptyorUndefined(anime) ? (
             <div
@@ -159,26 +181,28 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                             variant="secondary"
                             onClick={toggleWatchlist}
                         >
-                            Add to watchlist
+                            {Object.entries(watchlistOptions).find(
+                                ([name, option]) => option.selected
+                            )?.[0] || "Add to watchlist"}
                         </Button>
                         {openWatchlist && (
-                            <div className="w-[90%] absolute bottom-[110%] left-1/2 -translate-x-1/2 rounded-md bg-neutral-200 text-neutral-900">
-                                <p className="w-full text-center font-medium py-1 pt-2 hover:bg-neutral-300 cursor-pointer hover:rounded-t-md">
-                                    Watching
-                                </p>
-                                <p className="w-full text-center font-medium py-1 hover:bg-neutral-300 cursor-pointer">
-                                    On-Hold
-                                </p>
-                                <p className="w-full text-center font-medium py-1 hover:bg-neutral-300 cursor-pointer">
-                                    Plan to Watch
-                                </p>
-                                <p className="w-full text-center font-medium py-1 hover:bg-neutral-300 cursor-pointer">
-                                    Dropped
-                                </p>
-                                <p className="w-full text-center font-medium py-1 pb-2 hover:bg-neutral-300 hover:rounded-b-md cursor-pointer">
-                                    Completed
-                                </p>
-                            </div>
+                            <ul className="w-[90%] absolute bottom-[110%] left-1/2 -translate-x-1/2 rounded-md bg-neutral-200 text-neutral-900">
+                                {Object.entries(watchlistOptions).map(([name, option]) => (
+                                    <li className="w-full text-center font-medium py-1 pt-2 hover:bg-neutral-300 cursor-pointer first:hover:rounded-t-md last:hover:rounded-b-md">
+                                        <p
+                                            className="flex justify-center items-baseline gap-1"
+                                            onClick={() =>
+                                                handleOptionSelection(name as WatchlistOption)
+                                            }
+                                        >
+                                            {name}{" "}
+                                            {option.selected && (
+                                                <CheckIcon className="w-3 stroke-[4]" />
+                                            )}
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
                         )}
                     </div>
                     <HeartIcon
