@@ -3,11 +3,11 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface Watchlist extends Document {
     userId: Schema.Types.ObjectId;
     watchlist: {
-        watching: number[];
-        onHold: number[];
-        planToWatch: number[];
-        dropped: number[];
-        completed: number[];
+        Watching: number[];
+        "on-Hold": number[];
+        "Plan to Watch": number[];
+        Dropped: number[];
+        Completed: number[];
     };
     createdAt: Date;
     updatedAt: Date;
@@ -21,27 +21,27 @@ const WatchlistSchema: Schema = new Schema<Watchlist>(
             unique: true,
         },
         watchlist: {
-            watching: {
+            Watching: {
                 type: [Schema.Types.Number],
                 default: [],
                 required: true,
             },
-            onHold: {
+            "on-Hold": {
                 type: [Schema.Types.Number],
                 default: [],
                 required: true,
             },
-            planToWatch: {
+            "Plan to Watch": {
                 type: [Schema.Types.Number],
                 default: [],
                 required: true,
             },
-            dropped: {
+            Dropped: {
                 type: [Schema.Types.Number],
                 default: [],
                 required: true,
             },
-            completed: {
+            Completed: {
                 type: [Schema.Types.Number],
                 default: [],
                 required: true,
@@ -53,6 +53,6 @@ const WatchlistSchema: Schema = new Schema<Watchlist>(
 
 const WatchlistModel =
     (mongoose.models.Watchlist as mongoose.Model<Watchlist>) ||
-    mongoose.model<Watchlist>("Favourites", WatchlistSchema);
+    mongoose.model<Watchlist>("Watchlist", WatchlistSchema);
 
 export default WatchlistModel;
