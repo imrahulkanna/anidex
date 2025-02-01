@@ -15,8 +15,8 @@ const Watchlist = () => {
     const [watchlist, setWatchlistData] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
         if (!userData?._id) {
-            setLoading(true);
             return;
         }
 

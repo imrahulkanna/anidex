@@ -40,6 +40,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         const [addedToFav, setAddedToFav] = useState<boolean>(
             userData?.favourites.includes(anime?.mal_id) ? true : false
         );
+        const [openWatchlist, setWatchlist] = useState<boolean>(false);
 
         const getGenres = (): string => {
             let genreString = "";
@@ -84,6 +85,8 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                 setAddedToFav(!addedToFav);
             }
         };
+
+        const toggleWatchlist = () => setWatchlist(!openWatchlist);
 
         return isDataEmptyorUndefined(anime) ? (
             <div
@@ -150,12 +153,34 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                     <span>Genres</span>: <span className="text-white">{getGenres()}</span>
                 </p>
                 <div className="px-3 mt-3 flex gap-5 items-center">
-                    <Button
-                        className="w-full rounded-full font-semibold flex gap-2 items-center justify-center"
-                        variant="secondary"
-                    >
-                        Add to wishlist
-                    </Button>
+                    <div className="w-full relative">
+                        <Button
+                            className="w-full rounded-full font-semibold flex gap-2 items-center justify-center"
+                            variant="secondary"
+                            onClick={toggleWatchlist}
+                        >
+                            Add to watchlist
+                        </Button>
+                        {openWatchlist && (
+                            <div className="w-[90%] absolute bottom-[110%] left-1/2 -translate-x-1/2 rounded-md bg-neutral-200 text-neutral-900">
+                                <p className="w-full text-center font-medium py-1 pt-2 hover:bg-neutral-300 cursor-pointer hover:rounded-t-md">
+                                    Watching
+                                </p>
+                                <p className="w-full text-center font-medium py-1 hover:bg-neutral-300 cursor-pointer">
+                                    On-Hold
+                                </p>
+                                <p className="w-full text-center font-medium py-1 hover:bg-neutral-300 cursor-pointer">
+                                    Plan to Watch
+                                </p>
+                                <p className="w-full text-center font-medium py-1 hover:bg-neutral-300 cursor-pointer">
+                                    Dropped
+                                </p>
+                                <p className="w-full text-center font-medium py-1 pb-2 hover:bg-neutral-300 hover:rounded-b-md cursor-pointer">
+                                    Completed
+                                </p>
+                            </div>
+                        )}
+                    </div>
                     <HeartIcon
                         className={`w-10 h-10 cursor-pointer${
                             addedToFav ? " stroke-red-600 fill-red-600" : ""
