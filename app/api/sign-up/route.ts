@@ -2,6 +2,8 @@ import dbConnect from "@/app/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/app/helpers/sendVerificationEmail";
+import FavouritesModel from "@/model/Favourites";
+import WatchlistModel from "@/model/Watchlist";
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -65,8 +67,25 @@ export async function POST(request: Request) {
                 verifyCodeExpiry: expiryDate,
                 isVerified: false,
             });
+            const savedUser = await newUser.save();
 
-            await newUser.save();
+            const userFavourites = new FavouritesModel({
+                userId: newUser._id,
+                animeIds: [],
+            });
+            await userFavourites.save();
+
+            const userWatchlist = new WatchlistModel({
+                userId: savedUser._id,
+                watchlist: {
+                    Watching: [],
+                    "on-Hold": [],
+                    "Plan to Watch": [],
+                    Dropped: [],
+                    Completed: [],
+                },
+            });
+            await userWatchlist.save();
         }
 
         // send verification email
