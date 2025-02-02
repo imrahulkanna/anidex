@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Bottleneck from "bottleneck";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { getAnimeDataById } from "@/app/lib/fetch";
+import WatchlistModel from "@/model/Watchlist";
 
 export async function GET(
     request: NextRequest,
@@ -13,11 +14,17 @@ export async function GET(
 
     try {
         const userId = (await params).userId;
-        const favouritesData = await FavouritesModel.findOne({ userId });
-        const favAnimeIds = favouritesData?.animeIds || [];
+        const watchlistData: { [key: string]: number[] } =
+            (await WatchlistModel.findOne({ userId }))?.watchlist || {};
+        const watchlistAnimeIds = watchlistData
+            ? Object.keys(watchlistData).reduce((acc: number[], option: string) => {
+                    acc.push(...watchlistData[option]);
+                    return acc;
+                }, [])
+            : [];
+        let watchlistAnimesData = {};
 
         const limiter = new Bottleneck({ maxConcurrent: 3, minTime: 334 });
-        const favAnimeData = [];
 
         const fetchAnimeData = async (animeId: number) => {
             const data = await getAnimeDataById(animeId);
@@ -31,15 +38,21 @@ export async function GET(
             return Promise.all(allData);
         };
 
-        if (!isDataEmptyorUndefined(favAnimeIds)) {
-            const result = await fetchAllAnimesData(favAnimeIds);
-            favAnimeData.push(...result);
+        if (!isDataEmptyorUndefined(watchlistAnimeIds)) {
+            const result = await fetchAllAnimesData(watchlistAnimeIds);
+
+            watchlistAnimesData = {
+                ...result.reduce((acc, animeData) => {
+                    acc[animeData.mal_id] = animeData;
+                    return acc;
+                }, {}),
+            };
         }
 
         return NextResponse.json(
             {
                 success: true,
-                data: favAnimeData || [],
+                data: watchlistAnimesData || {},
             },
             { status: 200 }
         );
