@@ -9,6 +9,23 @@ interface props {
     fetchWeeklyReleases: (day: string) => Promise<animeData[]>;
 }
 
+const WeeklyReleasesSkeleton = () => {
+    const loop = [1, 2, 3, 4, 5, 6, 7];
+    return (
+        <div className="w-full">
+            {loop.map((arr) => (
+                <div className="w-full pb-6 flex items-center justify-between gap-10">
+                    <div className="w-11/12 flex gap-8 font-bold">
+                        <p className="bg-gray-500 rounded h-2 w-1/12"></p>
+                        <p className="bg-gray-500 rounded h-2 w-11/12"></p>
+                    </div>
+                    <p className="w-1/5 md:w-1/12 bg-gray-500 rounded h-2 text-sm"></p>
+                </div>
+            ))}
+        </div>
+    );
+};
+
 const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const currDate = new Date();
@@ -30,7 +47,9 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
 
     const handleDayChange = (e: React.MouseEvent<HTMLButtonElement>) => {
         const target = e.target as Element;
+        if (target.id === selectedDay) return;
         setSelectedDay(target.id);
+        setAnimeData(null);
     };
 
     const handleViewMoreClick = () => {
@@ -45,7 +64,9 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
         <div id="scheduled-releases" className="md:px-4 mb-10">
             <div className="flex justify-between items-center flex-wrap mb-4">
                 <h3 className="font-bold text-2xl">Weekly Releases</h3>
-                <div className="font-medium" suppressHydrationWarning={true}>{time}</div>
+                <div className="font-medium" suppressHydrationWarning={true}>
+                    {time}
+                </div>
             </div>
             <div>
                 <div className="w-full flex items-center justify-between mb-8">
@@ -65,7 +86,7 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
                     ))}
                 </div>
                 {!isDataEmptyorUndefined(animeData) ? (
-                    <>
+                    <div>
                         <div className="w-full">
                             {animeData && animeData?.length > 0 ? (
                                 animeData
@@ -97,7 +118,9 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
                                         </Link>
                                     ))
                             ) : (
-                                <></>
+                                <p className="w-full font-bold text-center text-neutral-200">
+                                    No scheduled releases
+                                </p>
                             )}
                         </div>
                         {animeData && animeData?.length > 7 && (
@@ -108,9 +131,9 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
                                 {length === 7 ? "Show More" : "Show Less"}
                             </p>
                         )}
-                    </>
+                    </div>
                 ) : (
-                    <p className="w-full font-bold text-center text-neutral-200">No scheduled releases</p>
+                    <WeeklyReleasesSkeleton />
                 )}
             </div>
         </div>
