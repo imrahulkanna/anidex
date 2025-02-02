@@ -48,6 +48,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             Completed: { selected: false },
         };
 
+        const [animeData, setAnimeData] = useState<animeData | undefined>(undefined);
         const [addedToFav, setAddedToFav] = useState<boolean>(false);
         const [openWatchlist, setOpenWatchlist] = useState<boolean>(false);
         const [watchlistOptions, setWatchlistOptions] = useState(defaultWatchlistOptions);
@@ -55,9 +56,9 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         useEffect(() => {
             if (!userData) return;
 
-            setAddedToFav(userData?.favourites.includes(anime?.mal_id) ? true : false);
+            setAddedToFav(userData?.favourites.includes(animeData?.mal_id) ? true : false);
             const defaultOption = Object.entries(userData.watchlist).find(([_, animesArr]) => {
-                return (animesArr as number[]).includes(anime?.mal_id as number);
+                return (animesArr as number[]).includes(animeData?.mal_id as number);
             })?.[0];
 
             if (defaultOption) {
@@ -68,11 +69,19 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             }
         }, [userData]);
 
+        useEffect(() => {
+            setAnimeData(anime);
+
+            return () => {
+                setAnimeData(undefined);
+            };
+        }, [anime]);
+
         const getGenres = (): string => {
             let genreString = "";
-            anime?.genres.forEach((data: genre, index: number) => {
+            animeData?.genres.forEach((data: genre, index: number) => {
                 genreString += data.name;
-                if (index != anime.genres.length - 1) genreString += ", ";
+                if (index != animeData.genres.length - 1) genreString += ", ";
             });
             return genreString;
         };
@@ -81,9 +90,9 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             setAddedToFav(!addedToFav);
             let updatedFavs = [...userData?.favourites];
             if (addedToFav) {
-                updatedFavs = updatedFavs.filter((id: number) => id !== anime?.mal_id);
+                updatedFavs = updatedFavs.filter((id: number) => id !== animeData?.mal_id);
             } else {
-                updatedFavs.push(anime?.mal_id);
+                updatedFavs.push(animeData?.mal_id);
             }
             setUserData((prevState: object) => {
                 return { ...prevState, favourites: updatedFavs };
@@ -92,7 +101,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             try {
                 const requestBody = {
                     userId: userData?._id,
-                    animeId: anime?.mal_id,
+                    animeId: animeData?.mal_id,
                     requestType: addedToFav ? "remove" : "add",
                 };
 
@@ -122,7 +131,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                 const newOption = selectedOption === currentOption ? "" : selectedOption;
                 const requestBody = {
                     userId: userData?._id,
-                    animeId: anime?.mal_id,
+                    animeId: animeData?.mal_id,
                     newOption,
                     currentOption,
                     requestType: watchlistOptions[selectedOption].selected ? "remove" : "add",
@@ -155,7 +164,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
             setOpenWatchlist(false);
         };
 
-        return isDataEmptyorUndefined(anime) ? (
+        return isDataEmptyorUndefined(animeData) ? (
             <div
                 className={`p-4 absolute left-1/2 z-50 bg-white/5 backdrop-blur-md text-neutral-300 rounded-md h-auto w-[300px] text-xs ${
                     cardPosition === "top" ? "bottom-1/2" : "top-1/2"
@@ -175,46 +184,48 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                 ref={ref as Ref<HTMLDivElement>}
             >
                 <p className="font-extrabold text-base text-white text-wrap mb-3">
-                    {anime.title_english || anime.title}
+                    {animeData.title_english || animeData.title}
                 </p>
                 <div className="flex items-center gap-5 mb-4">
                     <div className="flex items-center gap-1 font-semibold">
                         <StarFilledIcon color="gold" />
-                        {anime.score || "N/A"}
+                        {animeData.score || "N/A"}
                     </div>
                     <div className="bg-secondary  px-1.5 py-[2px] rounded-sm text-center text-white flex gap-1">
                         <PlayIcon fill="#fff" />
-                        {anime.episodes ? (
-                            <p className="font-semibold">{anime.episodes}</p>
+                        {animeData.episodes ? (
+                            <p className="font-semibold">{animeData.episodes}</p>
                         ) : (
                             <span className="opacity-70">N/A</span>
                         )}
                     </div>
                     <div className="bg-primary px-1.5 py-[2px] rounded-sm text-center font-semibold text-white">
-                        {anime.type ? (
-                            anime.type
+                        {animeData.type ? (
+                            animeData.type
                         ) : (
                             <span className="font-normal opacity-70">N/A</span>
                         )}
                     </div>
                 </div>
-                <p className="mb-4 line-clamp-3">{anime.synopsis}</p>
+                <p className="mb-4 line-clamp-3">{animeData.synopsis}</p>
                 <p className="mb-1">
                     <span>Japanese</span>:{" "}
-                    <span className="text-white">{anime.title_japanese}</span>
+                    <span className="text-white">{animeData.title_japanese}</span>
                 </p>
                 <p className="mb-1">
                     <span>Synonyms</span>:{" "}
-                    <span className="text-white">{anime.title_synonyms.join(", ") || "N/A"}</span>
+                    <span className="text-white">
+                        {animeData.title_synonyms.join(", ") || "N/A"}
+                    </span>
                 </p>
                 <p className="mb-1">
                     <span>Aired</span>:{" "}
                     <span className="text-white">
-                        {anime.aired.string.split(" to ")[0] || "N/A"}
+                        {animeData.aired.string.split(" to ")[0] || "N/A"}
                     </span>
                 </p>
                 <p className="mb-1">
-                    <span>Status</span>: <span className="text-white">{anime.status}</span>
+                    <span>Status</span>: <span className="text-white">{animeData.status}</span>
                 </p>
                 <p className="mb-1">
                     <span>Genres</span>: <span className="text-white">{getGenres()}</span>
