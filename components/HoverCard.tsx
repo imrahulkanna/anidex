@@ -67,7 +67,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                     [defaultOption]: { selected: true },
                 });
             }
-        }, [userData]);
+        }, [userData, animeData]);
 
         useEffect(() => {
             setAnimeData(anime);
