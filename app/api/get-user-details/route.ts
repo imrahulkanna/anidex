@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/app/lib/dbConnect";
 import FavouritesModel from "@/model/Favourites";
 import UserModel from "@/model/User";
+import WatchlistModel from "@/model/Watchlist";
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -19,7 +20,6 @@ export async function POST(request: Request) {
         }
 
         const userDetails = await UserModel.findOne({ _id: userId });
-
         const userData: any = {
             name: userDetails?.name,
             username: userDetails?.username,
@@ -28,6 +28,9 @@ export async function POST(request: Request) {
 
         const userFavourites = await FavouritesModel.findOne({ userId: userId });
         userData.favourites = userFavourites?.animeIds || [];
+
+        const userWatchlist = await WatchlistModel.findOne({ userId });
+        userData.watchlist = userWatchlist?.watchlist;
 
         return NextResponse.json(
             {
