@@ -10,11 +10,10 @@ interface props {
 }
 
 const WeeklyReleasesSkeleton = () => {
-    const loop = [1, 2, 3, 4, 5, 6, 7];
     return (
         <div className="w-full">
-            {loop.map((arr) => (
-                <div className="w-full pb-6 flex items-center justify-between gap-10">
+            {[...Array(7)].map((arr) => (
+                <div className="w-full h-12 pb-6 flex items-center justify-between gap-10">
                     <div className="w-11/12 flex gap-8 font-bold">
                         <p className="bg-gray-500 rounded h-2 w-1/12"></p>
                         <p className="bg-gray-500 rounded h-2 w-11/12"></p>
@@ -22,6 +21,9 @@ const WeeklyReleasesSkeleton = () => {
                     <p className="w-1/5 md:w-1/12 bg-gray-500 rounded h-2 text-sm"></p>
                 </div>
             ))}
+            <div className="w-1/12 h-5">
+                <p className="bg-gray-500 rounded h-2"></p>
+            </div>
         </div>
     );
 };
@@ -39,8 +41,10 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await fetchWeeklyReleases(selectedDay);
-            setAnimeData(data);
+            setTimeout(async () => {
+                const data = await fetchWeeklyReleases(selectedDay);
+                setAnimeData(data);
+            }, 250);
         };
         fetchData();
     }, [selectedDay]);

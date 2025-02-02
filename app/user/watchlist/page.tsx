@@ -17,6 +17,24 @@ interface watchlistAnimeProps {
     userWatchlist: { [key: string]: number[] };
 }
 
+export const WatchlistAnimesSkeletion = () => {
+    return (
+        <div className="flex flex-wrap justify-center [&>*:nth-child(odd)]:px-2 [&>*:nth-child(even)]:px-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4 mt-4">
+            {[...Array(10)].map(() => (
+                <div className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
+                    <div className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] bg-gray-500 mb-2"></div>
+                    <p className="w-3/4 bg-gray-500 rounded h-2 whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary mb-2"></p>
+                    <div className="flex items-center gap-0.5 text-sm">
+                        <div className="w-5 bg-gray-500 rounded h-2"></div>
+                        <DotFilledIcon className={`opacity-30`} />
+                        <div className="w-12 bg-gray-500 rounded h-2"></div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+
 const DisplayAnime = ({ anime }: { anime: animeData }) => {
     return (
         <div className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
@@ -89,7 +107,6 @@ const Watchlist = () => {
     const [options, setOptions] = useState(defaultOptions);
 
     useEffect(() => {
-        setLoading(true);
         if (!userData?._id) {
             return;
         }
@@ -121,10 +138,6 @@ const Watchlist = () => {
         });
     };
 
-    if (isLoading || isDataEmptyorUndefined(userData) || isDataEmptyorUndefined(watchlist)) {
-        return <></>;
-    }
-
     return (
         <div className="mx-auto lg:w-3/4">
             <div className="w-full flex gap-x-2 md:gap-x-4 gap-y-2 justify-center flex-wrap px-2 md:px-4">
@@ -141,15 +154,19 @@ const Watchlist = () => {
                     </div>
                 ))}
             </div>
-            <WatchlistAnimes
-                selectedOption={
-                    Object.entries(options).find(
-                        ([name, option]) => option.selected
-                    )?.[0] as unknown as WatchlistOption
-                }
-                watchlistData={watchlist}
-                userWatchlist={userData?.watchlist}
-            />
+            {isDataEmptyorUndefined(userData) || isDataEmptyorUndefined(watchlist) ? (
+                <WatchlistAnimesSkeletion />
+            ) : (
+                <WatchlistAnimes
+                    selectedOption={
+                        Object.entries(options).find(
+                            ([name, option]) => option.selected
+                        )?.[0] as unknown as WatchlistOption
+                    }
+                    watchlistData={watchlist}
+                    userWatchlist={userData?.watchlist}
+                />
+            )}
         </div>
     );
 };
