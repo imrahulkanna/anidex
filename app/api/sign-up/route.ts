@@ -79,8 +79,8 @@ export async function POST(request: Request) {
                 userId: savedUser._id,
                 watchlist: {
                     Watching: [],
-                    "on-Hold": [],
-                    "Plan to Watch": [],
+                    "On-Hold": [],
+                    "Plan to watch": [],
                     Dropped: [],
                     Completed: [],
                 },

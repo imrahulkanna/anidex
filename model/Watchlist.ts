@@ -4,8 +4,8 @@ export interface Watchlist extends Document {
     userId: Schema.Types.ObjectId;
     watchlist: {
         Watching: number[];
-        "on-Hold": number[];
-        "Plan to Watch": number[];
+        "On-Hold": number[];
+        "Plan to watch": number[];
         Dropped: number[];
         Completed: number[];
     };
@@ -26,12 +26,12 @@ const WatchlistSchema: Schema = new Schema<Watchlist>(
                 default: [],
                 required: true,
             },
-            "on-Hold": {
+            "On-Hold": {
                 type: [Schema.Types.Number],
                 default: [],
                 required: true,
             },
-            "Plan to Watch": {
+            "Plan to watch": {
                 type: [Schema.Types.Number],
                 default: [],
                 required: true,
