@@ -7,10 +7,11 @@ import { signOut, useSession } from "next-auth/react";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import Logo from "./Logo";
 import { useLoading } from "@/context/LoadingContext";
-import { TriangleDownIcon, PersonIcon, ExitIcon } from "@radix-ui/react-icons";
+import { TriangleDownIcon, ExitIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUserData } from "@/context/UserDataContext";
+import { BookmarkIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const { setLoading } = useLoading();
@@ -48,12 +49,15 @@ const Header = ({ rowdies }: { rowdies: any }) => {
     };
 
     const MenuDropdown = () => {
-        const dropdownList = ["Profile", "Sign out"];
+        const dropdownList = ["Profile", "Watchlist", "Sign out"];
 
         const handleItemClick = (item: string) => {
             switch (item) {
                 case "Profile":
-                    router.push("/user/profile")
+                    router.push("/user/profile");
+                    break;
+                case "Watchlist":
+                    router.push("/user/watchlist");
                     break;
                 case "Sign out":
                     setLoading(true);
@@ -67,17 +71,9 @@ const Header = ({ rowdies }: { rowdies: any }) => {
         const Icon = ({ item }: { item: string }) => {
             switch (item) {
                 case "Profile":
-                    return (
-                        <PersonIcon
-                            style={{
-                                width: "20px",
-                                height: "20px",
-                                border: "1px solid gray",
-                                borderRadius: "100%",
-                                paddingTop: "2px",
-                            }}
-                        />
-                    );
+                    return <UserCircleIcon style={{ width: "20px", height: "20px" }} />;
+                case "Watchlist":
+                    return <BookmarkIcon style={{ width: "20px", height: "20px" }} />;
                 case "Sign out":
                     return <ExitIcon style={{ width: "20px", height: "20px" }} />;
                 default:
