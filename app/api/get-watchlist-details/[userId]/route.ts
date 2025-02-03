@@ -1,5 +1,4 @@
 import dbConnect from "@/app/lib/dbConnect";
-import FavouritesModel from "@/model/Favourites";
 import { NextRequest, NextResponse } from "next/server";
 import Bottleneck from "bottleneck";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
