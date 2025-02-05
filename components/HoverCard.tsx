@@ -7,6 +7,8 @@ import { Button } from "./ui/button";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { useUserData } from "@/context/UserDataContext";
+import { useLoginModal } from "@/context/LoginModalContext";
+import { useSession } from "next-auth/react";
 
 interface props {
     anime: animeData | undefined;
@@ -38,7 +40,9 @@ const HoverCardSkeleton = () => {
 
 const HoverCard = forwardRef<HTMLDivElement, props>(
     ({ anime, handleOpenHover, handleCloseHover, cardPosition }, ref) => {
+        const { data: session } = useSession();
         const { userData, setUserData } = useUserData();
+        const { setOpenLoginModal } = useLoginModal();
 
         const defaultWatchlistOptions = {
             Watching: { selected: false },
@@ -87,6 +91,11 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         };
 
         const toggleFav = async () => {
+            if (isDataEmptyorUndefined(session)) {
+                setOpenLoginModal(true);
+                return;
+            }
+
             setAddedToFav(!addedToFav);
             let updatedFavs = [...userData?.favourites];
             if (addedToFav) {
@@ -124,6 +133,11 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         const toggleWatchlist = () => setOpenWatchlist(!openWatchlist);
 
         const handleOptionSelection = async (selectedOption: WatchlistOption) => {
+            if (isDataEmptyorUndefined(session)) {
+                setOpenLoginModal(true);
+                return;
+            }
+
             try {
                 const currentOption =
                     Object.entries(watchlistOptions).find(([_, option]) => option.selected)?.[0] ||

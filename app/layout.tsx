@@ -7,6 +7,7 @@ import AuthProvider from "@/context/AuthProvider";
 import { LoadingProvider } from "@/context/LoadingContext";
 import Loader from "@/components/Loader";
 import { UserDataProvider } from "@/context/UserDataContext";
+import { LoginModalProvider } from "@/context/LoginModalContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const rowdies = Rowdies({
@@ -27,18 +28,20 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <AuthProvider>
-                <LoadingProvider>
-                    <UserDataProvider>
-                        <body
-                            className={`min-h-screen max-w-[1800px] mx-auto bg-obsidian text-neutral-50 ${inter.className}`}
-                        >
-                            <Loader />
-                            <Header rowdies={rowdies} />
-                            {children}
-                            <SpeedInsights />
-                        </body>
-                    </UserDataProvider>
-                </LoadingProvider>
+                <LoginModalProvider>
+                    <LoadingProvider>
+                        <UserDataProvider>
+                            <body
+                                className={`min-h-screen max-w-[1800px] mx-auto bg-obsidian text-neutral-50 ${inter.className}`}
+                            >
+                                <Loader />
+                                <Header rowdies={rowdies} />
+                                {children}
+                                <SpeedInsights />
+                            </body>
+                        </UserDataProvider>
+                    </LoadingProvider>
+                </LoginModalProvider>
             </AuthProvider>
         </html>
     );

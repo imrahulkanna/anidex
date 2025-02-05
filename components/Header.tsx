@@ -12,11 +12,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUserData } from "@/context/UserDataContext";
 import { BookmarkIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { useLoginModal } from "@/context/LoginModalContext";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const { setLoading } = useLoading();
     const { userData } = useUserData();
-    const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+    const {openLoginModal, setOpenLoginModal} = useLoginModal();
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const { data: session, status } = useSession();
     const router = useRouter();
