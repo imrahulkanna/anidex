@@ -13,7 +13,7 @@ const WeeklyReleasesSkeleton = () => {
     return (
         <div className="w-full">
             {[...Array(7)].map((arr) => (
-                <div className="w-full h-12 pb-6 flex items-center justify-between gap-10">
+                <div key={arr} className="w-full h-12 pb-6 flex items-center justify-between gap-10">
                     <div className="w-11/12 flex gap-8 font-bold">
                         <p className="bg-gray-500 rounded h-2 w-1/12"></p>
                         <p className="bg-gray-500 rounded h-2 w-11/12"></p>
