@@ -59,7 +59,7 @@ const OTPInput = ({ length, onComplete }: OTPInputProps) => {
                     key={index}
                     type="text"
                     value={OTP[index]}
-                    ref={(ref) => (inputRef.current[index] = ref as HTMLInputElement)}
+                    ref={(ref) => {inputRef.current[index] = ref as HTMLInputElement;}}
                     onChange={(e) => handleInputChange(e.target.value, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     onFocus={(e) => {
