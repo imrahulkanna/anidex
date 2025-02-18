@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: .
+    #       target: /app
+    #       ignore:
+    #         - node_modules
+    #         - .next
