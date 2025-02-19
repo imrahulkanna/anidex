@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
+    container_name: anidex
     ports:
       - "3000:3000"
     volumes:
@@ -17,3 +18,8 @@ services:
     #       ignore:
     #         - node_modules
     #         - .next
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
