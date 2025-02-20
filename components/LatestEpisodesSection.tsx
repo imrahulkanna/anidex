@@ -2,11 +2,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { latestEps } from "./CategoryAnimes";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { animeData } from "./TrendingAnimeList";
 import { getAnimeDataById } from "@/app/lib/fetch";
 import HoverCardWrapper from "./HoverCardWrapper";
+import { animeData, latestEps } from "@/types/ApiResponse";
 
 const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestEps> | null }) => {
     const [animeDetails, setAnimeDetails] = useState<animeData | undefined>();

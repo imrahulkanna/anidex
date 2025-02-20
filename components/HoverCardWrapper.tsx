@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback, ReactNode } from "react";
 import HoverCard from "./HoverCard";
-import { animeData } from "./TrendingAnimeList";
+import { animeData } from "@/types/ApiResponse";
 import Link from "next/link";
 
 interface props {

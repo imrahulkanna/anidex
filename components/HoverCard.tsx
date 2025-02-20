@@ -1,5 +1,5 @@
 import React, { forwardRef, Ref, useEffect, useState } from "react";
-import { animeData, genre } from "./TrendingAnimeList";
+import { animeData, genre } from "@/types/ApiResponse";
 import { StarFilledIcon, PlayIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { Skeleton } from "./Skeleton";

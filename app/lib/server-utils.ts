@@ -1,8 +1,6 @@
-import { animeData } from "@/types/ApiResponse";
 import RateLimiter from "./apiQueue/rateLimiter";
 import getRedisInstance from "./redis";
 import { isDataEmptyorUndefined } from "./utils";
-import { latestEps } from "@/components/CategoryAnimes";
 
 const rateLimiter = new RateLimiter(3, 1000); // 3 request per second
 

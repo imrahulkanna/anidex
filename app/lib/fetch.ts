@@ -6,7 +6,7 @@ import {
     GET_ANIME_GENRES,
     GET_SCHEDULED_RELEASES,
 } from "./constants";
-import { animeData } from "../../components/TrendingAnimeList";
+import { animeData } from "@/types/ApiResponse";
 
 interface queryType {
     [key: string]: string | number | boolean;
