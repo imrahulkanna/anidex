@@ -7,3 +7,6 @@ export const GET_SEASON_UPCOMING: string = `${APIPATH}/seasons/upcoming`;
 export const GET_LATEST_EPISODES: string = `${APIPATH}/watch/episodes`;
 export const GET_ANIME_GENRES: string = `${APIPATH}/genres/anime`;
 export const GET_SCHEDULED_RELEASES: string = `${APIPATH}/schedules`;
+export const MINUTE = 60;
+export const HOUR = 3600;
+export const DAY = 86400;
