@@ -11,13 +11,13 @@ import { TriangleDownIcon, ExitIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUserData } from "@/context/UserDataContext";
-import { BookmarkIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon, UserCircleIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { useLoginModal } from "@/context/LoginModalContext";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const { setLoading } = useLoading();
     const { userData } = useUserData();
-    const {openLoginModal, setOpenLoginModal} = useLoginModal();
+    const { openLoginModal, setOpenLoginModal } = useLoginModal();
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -50,7 +50,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
     };
 
     const MenuDropdown = () => {
-        const dropdownList = ["Profile", "Watchlist", "Sign out"];
+        const dropdownList = ["Profile", "Watchlist", "Favourites", "Sign out"];
 
         const handleItemClick = (item: string) => {
             switch (item) {
@@ -59,6 +59,9 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                     break;
                 case "Watchlist":
                     router.push("/user/watchlist");
+                    break;
+                case "Favourites":
+                    router.push("/user/favourites");
                     break;
                 case "Sign out":
                     setLoading(true);
@@ -75,6 +78,8 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                     return <UserCircleIcon style={{ width: "20px", height: "20px" }} />;
                 case "Watchlist":
                     return <BookmarkIcon style={{ width: "20px", height: "20px" }} />;
+                case "Favourites":
+                    return <HeartIcon style={{ width: "20px", height: "20px" }} />;
                 case "Sign out":
                     return <ExitIcon style={{ width: "20px", height: "20px" }} />;
                 default:
@@ -96,6 +101,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
             </ul>
         );
     };
+
     return (
         <>
             <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/75 backdrop-blur">
