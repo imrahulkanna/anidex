@@ -7,12 +7,13 @@ import {
     getMostFavoriteAnimes,
     getLatestCompletedAnimes,
 } from "@/app/lib/fetch";
-import { animeData } from "./TrendingAnimeList";
+import { animeData } from "@/types/ApiResponse";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { apiCallHandler } from "@/app/lib/utils";
+import { apiCallHandler } from "@/app/lib/server-utils";
 import HoverCardWrapper from "./HoverCardWrapper";
+import { DAY, HOUR } from "@/app/lib/constants";
 
 export interface categoryListType {
     title: string;
@@ -24,22 +25,28 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
     switch (title) {
         case "Top Airing":
             // data = await getTopAiringAnimes();
-            data = await apiCallHandler(getTopAiringAnimes);
+            data = (await apiCallHandler(getTopAiringAnimes, "TOPAIRINGANIMES", 3 * DAY)) || [];
             break;
 
         case "Most Popular":
             // data = await getMostPopularAnimes();
-            data = await apiCallHandler(getMostPopularAnimes);
+            data = (await apiCallHandler(getMostPopularAnimes, "MOSTPOPULARANIMES", 2 * DAY)) || [];
             break;
 
         case "Most Favorite":
             // data = await getMostFavoriteAnimes();
-            data = await apiCallHandler(getMostFavoriteAnimes);
+            data =
+                (await apiCallHandler(getMostFavoriteAnimes, "MOSTFAVORITEANIMES", 2 * DAY)) || [];
             break;
 
         case "Latest Completed":
             // data = await getLatestCompletedAnimes();
-            data = await apiCallHandler(getLatestCompletedAnimes);
+            data =
+                (await apiCallHandler(
+                    getLatestCompletedAnimes,
+                    "LATESTCOMPLETEDANIMES",
+                    1 * HOUR
+                )) || [];
             break;
 
         default:

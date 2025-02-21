@@ -8,47 +8,15 @@ import {
 import { getTrendingAnimes } from "../app/lib/fetch";
 import TrendingAnimeCard from "./TrendingAnimeCard";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { apiCallHandler } from "@/app/lib/utils";
-
-export interface imageType {
-    image_url: string;
-    large_image_url: string;
-}
-export interface genre {
-    mal_id: number;
-    type: string;
-    name: string;
-    url: string;
-}
-export interface animeData {
-    mal_id: number | null;
-    title_english: string | null;
-    title: string;
-    images: {
-        webp: imageType;
-        jpg?: imageType;
-    };
-    type: string;
-    episodes: number;
-    aired: {
-        from: string | null;
-        string: string;
-    };
-    duration?: string;
-    broadcast: {
-        time: string;
-    };
-    score: number;
-    synopsis: string;
-    title_japanese: string;
-    title_synonyms: string[];
-    status: string;
-    genres: genre[];
-}
+import { DAY } from "@/app/lib/constants";
+import { animeData } from "@/types/ApiResponse";
+import { apiCallHandler } from "@/app/lib/server-utils";
 
 const TrendingAnimeList = async () => {
     // const trendingAnimeData: Array<animeData> = await getTrendingAnimes();
-    const trendingAnimeData: Array<animeData> = await apiCallHandler(getTrendingAnimes);
+    const trendingAnimeData: Array<animeData> =
+        (await apiCallHandler(getTrendingAnimes, "TRENDINGANIMES", 3 * DAY)) || [];
+
     return (
         <div id="trending-animes" className="mb-10">
             <h3 className="font-bold text-2xl md:mx-4">Trending</h3>

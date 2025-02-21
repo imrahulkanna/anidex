@@ -3,28 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { getLatestEpisodes, getNewReleasedAnimes, getUpcomingSeasonAnimes } from "@/app/lib/fetch";
 import { categoryListType } from "./FeaturedAnimes";
-import { animeData, imageType } from "./TrendingAnimeList";
 import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { apiCallHandler } from "@/app/lib/utils";
+import {} from "@/app/lib/utils";
 import HoverCardWrapper from "./HoverCardWrapper";
 import LatestEpisodesSection from "./LatestEpisodesSection";
-
-export interface latestEps {
-    entry: {
-        mal_id: number;
-        title: string;
-        images: {
-            webp: imageType;
-            jpg?: imageType;
-        };
-    };
-    episodes: [
-        {
-            title: string;
-        }
-    ];
-}
+import { animeData, latestEps } from "@/types/ApiResponse";
+import { apiCallHandler } from "@/app/lib/server-utils";
+import { DAY, HOUR } from "@/app/lib/constants";
 
 const CategoryAnimes = async ({ title }: categoryListType) => {
     let data: Array<animeData> | null = null;
@@ -33,17 +19,24 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
     switch (title) {
         case "New Releases":
             // data = await getNewReleasedAnimes();
-            data = await apiCallHandler(getNewReleasedAnimes);
+            data =
+                (await apiCallHandler(getNewReleasedAnimes, "NEWRELEASEDANIMES", 1 * HOUR)) || [];
             break;
 
         case "Top Upcoming":
             // data = await getUpcomingSeasonAnimes();
-            data = await apiCallHandler(getUpcomingSeasonAnimes);
+            data =
+                (await apiCallHandler(
+                    getUpcomingSeasonAnimes,
+                    "TOPUPCOMINGANIMES",
+                    1 * DAY
+                )) || [];
             break;
 
         case "Latest Episodes":
             // latestEpsData = await getLatestEpisodes();
-            latestEpsData = await apiCallHandler(getLatestEpisodes);
+            latestEpsData =
+                (await apiCallHandler(getLatestEpisodes, "LATESTEPISODES", 1 * DAY)) || [];
             break;
 
         default:
