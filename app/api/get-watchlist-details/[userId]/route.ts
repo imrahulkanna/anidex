@@ -4,6 +4,8 @@ import Bottleneck from "bottleneck";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { getAnimeDataById } from "@/app/lib/fetch";
 import WatchlistModel from "@/model/Watchlist";
+import { getCacheData, setCacheData } from "@/app/lib/server-utils";
+import { DAY } from "@/app/lib/constants";
 
 export async function GET(
     request: NextRequest,
@@ -22,6 +24,24 @@ export async function GET(
                 }, [])
             : [];
         let watchlistAnimesData = {};
+
+        const cacheKey = `WATCHLIST_${userId}`;
+        const cacheData = await getCacheData(cacheKey);
+        const cacheAnimeIds = cacheData ? Object.keys(cacheData).sort() : [];
+
+        if (
+            cacheAnimeIds.length === watchlistAnimeIds.length &&
+            JSON.stringify(cacheAnimeIds.sort()) ===
+                JSON.stringify(watchlistAnimeIds.map(String).sort())
+        ) {
+            return NextResponse.json(
+                {
+                    success: true,
+                    data: cacheData || {},
+                },
+                { status: 200 }
+            );
+        }
 
         const limiter = new Bottleneck({ maxConcurrent: 3, minTime: 334 });
 
@@ -46,6 +66,8 @@ export async function GET(
                     return acc;
                 }, {}),
             };
+
+            await setCacheData(cacheKey, 10 * DAY, watchlistAnimesData);
         }
 
         return NextResponse.json(
