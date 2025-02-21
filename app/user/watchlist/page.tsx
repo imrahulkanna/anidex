@@ -1,7 +1,7 @@
 "use client";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import HoverCardWrapper from "@/components/HoverCardWrapper";
-import { animeData } from "@/components/TrendingAnimeList";
+import { animeData } from "@/types/ApiResponse";
 import { WatchlistAnimesSkeletion } from "@/components/WatchlistAnimesSkeletion";
 import { useLoading } from "@/context/LoadingContext";
 import { useUserData } from "@/context/UserDataContext";

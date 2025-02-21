@@ -3,7 +3,7 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { useUserData } from "@/context/UserDataContext";
 import React, { useEffect, useState } from "react";
 import { WatchlistAnimesSkeletion } from "@/components/WatchlistAnimesSkeletion";
-import { animeData } from "@/components/TrendingAnimeList";
+import { animeData } from "@/types/ApiResponse";
 import HoverCardWrapper from "@/components/HoverCardWrapper";
 import Image from "next/image";
 import Link from "next/link";

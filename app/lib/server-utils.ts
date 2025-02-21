@@ -33,13 +33,13 @@ export const apiCallHandler = async (
     }
 };
 
-const getCacheData = async (cacheKey: string) => {
+export const getCacheData = async (cacheKey: string) => {
     const redis = await getRedisInstance();
     const cacheData = await redis.get(cacheKey);
-    return cacheData ? JSON.parse(cacheData) : [];
+    return cacheData ? JSON.parse(cacheData) : null;
 };
 
-const setCacheData = async (cacheKey: string, cacheTime: number, data: any) => {
+export const setCacheData = async (cacheKey: string, cacheTime: number, data: any) => {
     const redis = await getRedisInstance();
     redis.setEx(cacheKey, cacheTime, JSON.stringify(data));
 };
