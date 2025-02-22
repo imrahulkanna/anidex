@@ -5,6 +5,7 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { animeData } from "@/types/ApiResponse";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const DisplaySearchAnimeResults = ({ data }: { data: animeData[] | [] }) => {
     return (
@@ -88,8 +89,16 @@ const SearchBox = () => {
                 onInputChange={handleInputChange}
                 name="search-box"
                 readOnly={false}
-                colorStyling="bg-neutral-200 text-neutral-900 placeholder-neutral-700"
-            />
+                colorStyling="bg-neutral-200 text-neutral-900 placeholder-neutral-600 font-medium"
+            >
+                <MagnifyingGlassIcon
+                    width={18}
+                    height={18}
+                    stroke="black"
+                    strokeWidth={2}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                />
+            </InputBox>
             {showDropdown && <DisplaySearchAnimeResults data={searchData} />}
         </div>
     );
