@@ -37,7 +37,7 @@ const getCacheTime = (number: number = 1, type: string = "hour"): number => {
     } else {
         return oneHr * number;
     }
-}
+};
 
 export const getTrendingAnimes = async (): Promise<any> => {
     const queryParams: queryType = {
@@ -194,4 +194,22 @@ export const getAnimeDataById = async (id: number): Promise<any> => {
         console.log(error);
         return {};
     }
-}
+};
+
+export const getAnimesBySearch = async (searchKey: string, signal: AbortSignal): Promise<any> => {
+    const queryParams: queryType = {
+        q: searchKey,
+    };
+    try {
+        const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
+        const response = await fetch(url, {
+            signal,
+            next: { revalidate: getCacheTime(10, "day") }
+        });
+        const apiData = await response.json();
+        return getUniqueAnimeData(apiData.data);
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+};
