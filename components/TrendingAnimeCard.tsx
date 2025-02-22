@@ -2,7 +2,7 @@ import React from "react";
 import { CarouselItem } from "./ui/carousel";
 import NumberSVG from "./NumberSVG";
 import Image from "next/image";
-import { animeData } from "./TrendingAnimeList";
+import { animeData } from "@/types/ApiResponse";
 
 const TrendingAnimeCard = ({ anime, index }: { anime: animeData; index: number }) => {
     return (

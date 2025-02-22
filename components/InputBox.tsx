@@ -6,6 +6,7 @@ interface props {
     onInputChange?: (name: string, value: string) => void;
     name?: string;
     readOnly?: boolean;
+    colorStyling?: string;
 }
 
 const InputBox = ({
@@ -16,7 +17,10 @@ const InputBox = ({
     onInputChange,
     name,
     readOnly,
+    colorStyling,
 }: props) => {
+    const style = colorStyling ? colorStyling : "bg-neutral-700 text-neutral-100"; 
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         onInputChange && onInputChange(e.target.name, e.target.value);
@@ -34,7 +38,7 @@ const InputBox = ({
                 name={name}
                 id={placeholder}
                 placeholder={placeholder}
-                className={`w-full py-2 px-4 rounded bg-neutral-700 text-neutral-100 text-sm border border-neutral-500 focus:outline-none focus:border-primary peer ${
+                className={`w-full py-2 px-4 rounded text-sm border border-neutral-500 focus:outline-none focus:border-primary peer ${style} ${
                     children ? "pr-8" : ""
                 } ${name === "verification-code" ? "text-center" : ""} ${
                     readOnly ? "cursor-not-allowed" : ""

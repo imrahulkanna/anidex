@@ -13,14 +13,16 @@ import Link from "next/link";
 import { useUserData } from "@/context/UserDataContext";
 import { BookmarkIcon, UserCircleIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { useLoginModal } from "@/context/LoginModalContext";
+import SearchBox from "./SearchBox";
 
 const Header = ({ rowdies }: { rowdies: any }) => {
     const { setLoading } = useLoading();
     const { userData } = useUserData();
     const { openLoginModal, setOpenLoginModal } = useLoginModal();
-    const [openMenu, setOpenMenu] = useState<boolean>(false);
     const { data: session, status } = useSession();
     const router = useRouter();
+
+    const [openMenu, setOpenMenu] = useState<boolean>(false);
 
     useEffect(() => {
         const body = document.querySelector("body");
@@ -106,9 +108,12 @@ const Header = ({ rowdies }: { rowdies: any }) => {
         <>
             <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/75 backdrop-blur">
                 <div className="w-full max-w-[1800px] mx-auto px-4 md:px-10 3xl:px-2 py-4 flex justify-between items-center max-h-20">
-                    <Link href="/">
-                        <Logo width={150} height={50} />
-                    </Link>
+                    <div className="flex gap-10 items-center">
+                        <Link href="/">
+                            <Logo width={150} height={50} />
+                        </Link>
+                        <SearchBox />
+                    </div>
                     {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
                         <button
                             className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
