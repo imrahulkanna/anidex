@@ -7,7 +7,7 @@ import { signOut, useSession } from "next-auth/react";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import Logo from "./Logo";
 import { useLoading } from "@/context/LoadingContext";
-import { TriangleDownIcon, ExitIcon } from "@radix-ui/react-icons";
+import { TriangleDownIcon, ExitIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUserData } from "@/context/UserDataContext";
@@ -23,6 +23,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
     const router = useRouter();
 
     const [openMenu, setOpenMenu] = useState<boolean>(false);
+    const [showSearchBox, setShowSearchBox] = useState<boolean>(false);
 
     useEffect(() => {
         const body = document.querySelector("body");
@@ -49,6 +50,10 @@ const Header = ({ rowdies }: { rowdies: any }) => {
     ) => {
         e.preventDefault();
         setOpenMenu(!openMenu);
+    };
+
+    const handleDisplaySearch = () => {
+        setShowSearchBox(!showSearchBox);
     };
 
     const MenuDropdown = () => {
@@ -106,50 +111,66 @@ const Header = ({ rowdies }: { rowdies: any }) => {
 
     return (
         <>
-            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/75 backdrop-blur">
-                <div className="w-full max-w-[1800px] mx-auto px-4 md:px-10 3xl:px-2 py-4 flex justify-between items-center max-h-20">
-                    <div className="flex gap-10 items-center">
+            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/75 backdrop-blur px-4 md:px-10 3xl:px-2 py-4 ">
+                <div className="w-full max-w-[1800px] mx-auto flex justify-between items-center max-h-20">
+                    <div className="flex md:gap-5 lg:gap-10 items-center">
                         <Link href="/">
                             <Logo width={150} height={50} />
                         </Link>
+                        <div id="searchbox" className="hidden md:block">
+                            <SearchBox />
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div onClick={handleDisplaySearch}>
+                            <MagnifyingGlassIcon
+                                width={30}
+                                height={30}
+                                className={showSearchBox ? "stroke-primary" : ""}
+                            />
+                        </div>
+                        {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
+                            <button
+                                className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
+                                onClick={handleOpenMenu}
+                            >
+                                {userData?.image && (
+                                    <Image
+                                        src={userData.image as string}
+                                        alt="profile-image"
+                                        width={35}
+                                        height={35}
+                                        className="rounded-full h-[35px] object-cover"
+                                    ></Image>
+                                )}
+                                <p className="font-semibold flex items-center gap-[6px] text-neutral-200">
+                                    {userData?.name?.split(" ")[0] || userData?.username}
+                                    <TriangleDownIcon
+                                        style={{
+                                            color: "rgb(136, 147, 151)",
+                                            width: "20px",
+                                            height: "20px",
+                                        }}
+                                    />
+                                </p>
+                                {openMenu && <MenuDropdown />}
+                            </button>
+                        ) : (
+                            <Button
+                                variant="secondary"
+                                className="bg-primary font-semibold hover:bg-primary/80 hover:scale-105"
+                                onClick={handleLoginModal}
+                            >
+                                Login
+                            </Button>
+                        )}
+                    </div>
+                </div>
+                {showSearchBox && (
+                    <div className="w-full mt-2 flex items-center justify-center md:hidden">
                         <SearchBox />
                     </div>
-                    {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
-                        <button
-                            className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
-                            onClick={handleOpenMenu}
-                        >
-                            {userData?.image && (
-                                <Image
-                                    src={userData.image as string}
-                                    alt="profile-image"
-                                    width={35}
-                                    height={35}
-                                    className="rounded-full h-[35px] object-cover"
-                                ></Image>
-                            )}
-                            <p className="font-semibold flex items-center gap-[6px] text-neutral-200">
-                                {userData?.name?.split(" ")[0] || userData?.username}
-                                <TriangleDownIcon
-                                    style={{
-                                        color: "rgb(136, 147, 151)",
-                                        width: "20px",
-                                        height: "20px",
-                                    }}
-                                />
-                            </p>
-                            {openMenu && <MenuDropdown />}
-                        </button>
-                    ) : (
-                        <Button
-                            variant="secondary"
-                            className="bg-primary font-semibold hover:bg-primary/80 hover:scale-105"
-                            onClick={handleLoginModal}
-                        >
-                            Login
-                        </Button>
-                    )}
-                </div>
+                )}
             </header>
             {openLoginModal && <LoginModal closeLoginModal={handleLoginModal} />}
         </>
