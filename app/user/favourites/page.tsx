@@ -2,7 +2,7 @@
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { useUserData } from "@/context/UserDataContext";
 import React, { useEffect, useState } from "react";
-import { WatchlistAnimesSkeletion } from "@/components/WatchlistAnimesSkeletion";
+import { WatchlistAnimesSkeleton } from "@/components/WatchlistAnimesSkeleton";
 import { animeData } from "@/types/ApiResponse";
 import HoverCardWrapper from "@/components/HoverCardWrapper";
 import Image from "next/image";
@@ -34,7 +34,7 @@ const Favourites = () => {
     return (
         <div className="mx-auto lg:w-3/4">
             {isDataEmptyorUndefined(userData) || isDataEmptyorUndefined(favouriteAnimes) ? (
-                <WatchlistAnimesSkeletion />
+                <WatchlistAnimesSkeleton />
             ) : (
                 <div className="flex flex-wrap justify-center [&>*:nth-child(odd)]:px-2 [&>*:nth-child(even)]:px-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4">
                     {favouriteAnimes.map((anime: animeData) => (

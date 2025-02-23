@@ -2,7 +2,7 @@
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import HoverCardWrapper from "@/components/HoverCardWrapper";
 import { animeData } from "@/types/ApiResponse";
-import { WatchlistAnimesSkeletion } from "@/components/WatchlistAnimesSkeletion";
+import { WatchlistAnimesSkeleton } from "@/components/WatchlistAnimesSkeleton";
 import { useLoading } from "@/context/LoadingContext";
 import { useUserData } from "@/context/UserDataContext";
 import { DotFilledIcon } from "@radix-ui/react-icons";
@@ -61,9 +61,9 @@ const WatchlistAnimes = ({
     const animeIdArr =
         selectedOption === "All"
             ? Object.values(userWatchlist).reduce((acc: number[], arr: number[]) => {
-                    acc = [...acc, ...arr];
-                    return acc;
-                }, [] as number[])
+                acc = [...acc, ...arr];
+                return acc;
+            }, [] as number[])
             : userWatchlist[selectedOption];
     return (
         <div className="flex flex-wrap justify-center [&>*:nth-child(odd)]:px-2 [&>*:nth-child(even)]:px-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4">
@@ -139,7 +139,7 @@ const Watchlist = () => {
                 ))}
             </div>
             {isDataEmptyorUndefined(userData) || isDataEmptyorUndefined(watchlist) ? (
-                <WatchlistAnimesSkeletion />
+                <WatchlistAnimesSkeleton />
             ) : (
                 <WatchlistAnimes
                     selectedOption={

@@ -1,8 +1,8 @@
-import { DotFilledIcon } from '@radix-ui/react-icons';
+import { DotFilledIcon } from "@radix-ui/react-icons";
 
-export const WatchlistAnimesSkeletion = () => {
+export const WatchlistAnimesSkeleton = () => {
     return (
-        <div className="flex flex-wrap justify-center [&>*:nth-child(odd)]:px-2 [&>*:nth-child(even)]:px-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4 mt-4">
+        <div className="flex flex-wrap justify-center [&>*:nth-child(odd)]:px-2 [&>*:nth-child(even)]:px-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4 mt-4 animate-pulse">
             {[...Array(10)].map((_, index) => (
                 <div key={index} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
                     <div className="w-full h-[250px] md:h-[300px] xl:h-[250px] 2xl:h-[320px] bg-gray-500 mb-2"></div>

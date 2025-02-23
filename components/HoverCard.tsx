@@ -2,7 +2,6 @@ import React, { forwardRef, Ref, useEffect, useState } from "react";
 import { animeData, genre } from "@/types/ApiResponse";
 import { StarFilledIcon, PlayIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { Skeleton } from "./Skeleton";
 import { Button } from "./ui/button";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { CheckIcon } from "@heroicons/react/24/outline";
@@ -21,7 +20,7 @@ type WatchlistOption = "Watching" | "On-Hold" | "Plan to watch" | "Dropped" | "C
 
 const HoverCardSkeleton = () => {
     return (
-        <>
+        <div className="animate-pulse">
             <p className="bg-gray-500 h-2 mb-3 rounded-md"></p>
             <div className="flex items-center gap-5 mb-3">
                 <div className="bg-gray-500 h-2 w-1/5 rounded-md"></div>
@@ -34,7 +33,7 @@ const HoverCardSkeleton = () => {
             <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
             <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
             <p className="mb-2 h-2 w-3/4 bg-gray-500 rounded-md"></p>
-        </>
+        </div>
     );
 };
 
@@ -184,9 +183,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                     cardPosition === "top" ? "bottom-1/2" : "top-1/2"
                 }`}
             >
-                <Skeleton>
-                    <HoverCardSkeleton />
-                </Skeleton>
+                <HoverCardSkeleton />
             </div>
         ) : (
             <div

@@ -11,7 +11,7 @@ interface props {
 
 const WeeklyReleasesSkeleton = () => {
     return (
-        <div className="w-full">
+        <div className="w-full animate-pulse">
             {[...Array(7)].map((_, index) => (
                 <div
                     key={index}
@@ -47,7 +47,7 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
             setTimeout(async () => {
                 const data = await fetchWeeklyReleases(selectedDay);
                 setAnimeData(data);
-            }, 250);
+            }, 500);
         };
         fetchData();
     }, [selectedDay]);
