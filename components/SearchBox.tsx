@@ -11,11 +11,16 @@ import Link from "next/link";
 interface SeachAnimePropTypes {
     data: animeData[] | [] | null;
     showLoader: boolean;
+    showDropdown: boolean;
 }
 
-const DisplaySearchAnimeResults = ({ data, showLoader }: SeachAnimePropTypes) => {
+const DisplaySearchAnimeResults = ({ data, showLoader, showDropdown }: SeachAnimePropTypes) => {
     return (
-        <div className="absolute w-full top-[102%] bg-neutral-700 shadow-[5px_20px_20px_rgba(0,0,0,0.6)] text-xs text-white font-semibold rounded">
+        <div
+            className={`absolute w-full top-[102%] bg-neutral-700 shadow-[5px_20px_20px_rgba(0,0,0,0.6)] text-xs text-white font-semibold rounded transition-[max-height] duration-300 overflow-hidden ${
+                showDropdown ? "max-h-[549px]" : "max-h-0"
+            }`}
+        >
             {showLoader && (
                 <div className="w-full flex items-center justify-center p-3 gap-5">
                     <span className="rounded-[100%] w-4 h-4 border bg-neutral-50 animate-loader-bounce "></span>
@@ -138,9 +143,12 @@ const SearchBox = () => {
                     className="absolute right-3 top-1/2 -translate-y-1/2"
                 />
             </InputBox>
-            {(showDropdown || showLoader) && (
-                <DisplaySearchAnimeResults data={searchData} showLoader={showLoader} />
-            )}
+
+            <DisplaySearchAnimeResults
+                data={searchData}
+                showLoader={showLoader}
+                showDropdown={showDropdown || showLoader}
+            />
         </div>
     );
 };
