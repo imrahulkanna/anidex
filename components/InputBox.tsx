@@ -1,4 +1,4 @@
-interface props {
+interface InputBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string;
     placeholder?: string;
     children?: React.ReactNode;
@@ -9,7 +9,7 @@ interface props {
     colorStyling?: string;
 }
 
-const InputBox = ({
+const InputBox: React.FC<InputBoxProps> = ({
     children,
     type,
     placeholder,
@@ -18,8 +18,9 @@ const InputBox = ({
     name,
     readOnly,
     colorStyling,
-}: props) => {
-    const style = colorStyling ? colorStyling : "bg-neutral-700 text-neutral-100"; 
+    ...props
+}) => {
+    const style = colorStyling ? colorStyling : "bg-neutral-700 text-neutral-100";
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -48,6 +49,7 @@ const InputBox = ({
                 onChange={handleInputChange}
                 onClick={handleOnClick}
                 readOnly={readOnly}
+                {...props}
             ></input>
             {children}
         </div>

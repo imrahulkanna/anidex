@@ -68,6 +68,7 @@ const SearchBox = () => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [showLoader, setShowLoader] = useState<boolean>(false);
     const previousController = useRef<AbortController | null>(null);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         if (searchKey.length < 2) {
@@ -103,8 +104,22 @@ const SearchBox = () => {
         setSearchKey(value);
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setShowDropdown(false);
+            }
+        };
+
+        window.addEventListener("click", handleClickOutside);
+
+        return () => {
+            window.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className="w-[300px] relative">
+        <div className="w-[300px] relative" ref={dropdownRef}>
             <InputBox
                 type="text"
                 placeholder="Search anime ..."
@@ -113,6 +128,7 @@ const SearchBox = () => {
                 name="search-box"
                 readOnly={false}
                 colorStyling="bg-neutral-200 text-neutral-900 placeholder-neutral-600 font-medium"
+                onFocus={() => setShowDropdown(true)}
             >
                 <MagnifyingGlassIcon
                     width={18}
