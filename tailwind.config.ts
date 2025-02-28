@@ -44,9 +44,29 @@ const config = {
                 secondary: "#f0479d",
                 obsidian: "#161618",
             },
+            backgroundImage: {
+                "mask-gradient":
+                    "linear-gradient(270deg,transparent 0%, rgb(32,31,49) 30%, rgb(32,31,49) 70%, transparent)",
+            },
         },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [
+        require("tailwindcss-animate"),
+        function ({
+            addUtilities,
+        }: {
+            addUtilities: (utilities: Record<string, string | Record<string, string>>) => void;
+        }) {
+            addUtilities({
+                ".mask-gradient": {
+                    "-webkit-mask-image":
+                        "linear-gradient(270deg,transparent 0%, rgb(32,31,49) 30%, rgb(32,31,49) 70%, transparent)",
+                    "mask-image":
+                        "linear-gradient(270deg,transparent 0%, rgb(32,31,49) 40%, rgb(32,31,49) 60%, transparent)",
+                },
+            });
+        },
+    ],
 } satisfies Config;
 
 export default config;
