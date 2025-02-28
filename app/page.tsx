@@ -3,14 +3,14 @@ import FeaturedAnimes from "@/components/FeaturedAnimes";
 import CategoryAnimes from "@/components/CategoryAnimes";
 import AnimeGenres from "@/components/AnimeGenres";
 import WeeklyReleases from "@/components/WeeklyReleases";
-import RecentReleases from "@/components/RecentReleases";
+import SpotlightAnimes from "@/components/SpotlightAnimes";
 
 export default function Home() {
     const featuredAnimeTitles = ["Top Airing", "Most Popular", "Most Favorite", "Latest Completed"];
     const categoryTitles = ["Latest Episodes", "New Releases", "Top Upcoming"];
     return (
         <main>
-            <RecentReleases />
+            <SpotlightAnimes />
             <div className="px-4 md:px-6 3xl:px-2">
                 <TrendingAnimeList />
             </div>
