@@ -8,13 +8,9 @@ import { DotFilledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 
-const SpotlightAnimes = async () => {
-    const animeData: animeData[] =
-        (await apiCallHandler(getTrendingAnimes, "TRENDINGANIMES", 3 * DAY)) || [];
-    const anime: animeData = animeData[0];
-
+const AnimeSlide = ({ anime }: { anime: animeData }) => {
     return (
-        <div className="w-full relative flex mb-10 h-[550px] md:h-screen">
+        <div className="slide slideShow">
             <div className="hidden lg:block lg:w-1/3"></div>
             <div className="w-full lg:w-2/3 overflow-hidden mask-gradient">
                 <Image
@@ -62,6 +58,19 @@ const SpotlightAnimes = async () => {
                     <ChevronRightIcon strokeWidth={2.5} className="w-3 h-3 inline-block" />
                 </Link>
             </div>
+        </div>
+    );
+};
+
+const SpotlightAnimes = async () => {
+    const animeData: animeData[] =
+        (await apiCallHandler(getTrendingAnimes, "TRENDINGANIMES", 3 * DAY)) || [];
+
+    return (
+        <div className="w-full relative flex mb-10 h-[550px] md:h-screen">
+            {animeData.map((anime: animeData) => (
+                <AnimeSlide key={anime.mal_id} anime={anime} />
+            ))}
             <SpotlightNavigator animeData={animeData} />
         </div>
     );
