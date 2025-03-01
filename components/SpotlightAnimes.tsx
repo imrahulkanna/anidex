@@ -1,3 +1,4 @@
+import SpotlightNavigator from "./SpotlightNavigator";
 import { DAY } from "@/app/lib/constants";
 import { getTrendingAnimes } from "@/app/lib/fetch";
 import { apiCallHandler } from "@/app/lib/server-utils";
@@ -6,11 +7,11 @@ import { ChevronRightIcon, ClockIcon, PlayCircleIcon } from "@heroicons/react/24
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const SpotlightAnimes = async () => {
-    const anime: animeData =
-        (await apiCallHandler(getTrendingAnimes, "TRENDINGANIMES", 3 * DAY))[0] || [];
+    const animeData: animeData[] =
+        (await apiCallHandler(getTrendingAnimes, "TRENDINGANIMES", 3 * DAY)) || [];
+    const anime: animeData = animeData[0];
 
     return (
         <div className="w-full relative flex mb-10 h-[550px] md:h-screen">
@@ -61,6 +62,7 @@ const SpotlightAnimes = async () => {
                     <ChevronRightIcon strokeWidth={2.5} className="w-3 h-3 inline-block" />
                 </Link>
             </div>
+            <SpotlightNavigator animeData={animeData} />
         </div>
     );
 };
