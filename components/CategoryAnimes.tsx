@@ -115,7 +115,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                 {title === "Top Upcoming" && (
                                     <>
                                         <DotFilledIcon className="opacity-30" />
-                                        <div className="opacity-60 font-medium">
+                                        <div className="opacity-60 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                                             {anime.aired.string.split(" to ")[0]}
                                         </div>
                                     </>
