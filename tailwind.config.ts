@@ -45,8 +45,7 @@ const config = {
                 obsidian: "#161618",
             },
             backgroundImage: {
-                "mask-gradient":
-                    "linear-gradient(270deg,transparent 0%, rgb(32,31,49) 30%, rgb(32,31,49) 70%, transparent)",
+                "mask-gradient":"linear-gradient(90deg,transparent, #161618 45%)",
             },
         },
     },
@@ -60,9 +59,9 @@ const config = {
             addUtilities({
                 ".mask-gradient": {
                     "-webkit-mask-image":
-                        "linear-gradient(270deg,transparent 0%, rgb(32,31,49) 30%, rgb(32,31,49) 70%, transparent)",
-                    "mask-image":
-                        "linear-gradient(270deg,transparent 0%, rgb(32,31,49) 40%, rgb(32,31,49) 60%, transparent)",
+                        "linear-gradient(270deg,transparent 0%, #161618 40%, #161618 55%, transparent)",
+                    // "mask-image": "linear-gradient(90deg, #161618)",
+                    "mask-image": "linear-gradient(90deg, transparent, #161618 45%)",
                 },
             });
         },
