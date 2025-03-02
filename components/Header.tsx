@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import LoginModal from "./LoginModal";
@@ -21,6 +21,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
     const { openLoginModal, setOpenLoginModal } = useLoginModal();
     const { data: session, status } = useSession();
     const router = useRouter();
+    const dropdownRef = useRef<HTMLButtonElement | null>(null);
 
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [showSearchBox, setShowSearchBox] = useState<boolean>(false);
@@ -56,10 +57,18 @@ const Header = ({ rowdies }: { rowdies: any }) => {
             }
         };
 
+        const handleDropdownClose = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setOpenMenu(false);
+            }
+        };
+
         window.addEventListener("scroll", handleScroll);
+        window.addEventListener("click", handleDropdownClose);
 
         return () => {
             window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("click", handleDropdownClose);
         };
     }, []);
 
@@ -158,6 +167,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                             <button
                                 className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative bg-obsidian/50"
                                 onClick={handleOpenMenu}
+                                ref={dropdownRef}
                             >
                                 {userData?.image && (
                                     <Image
