@@ -122,7 +122,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div onClick={handleDisplaySearch}>
+                        <div className="lg:hidden" onClick={handleDisplaySearch}>
                             <MagnifyingGlassIcon
                                 width={30}
                                 height={30}

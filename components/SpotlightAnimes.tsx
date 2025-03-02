@@ -8,7 +8,7 @@ import { DotFilledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 
-const AnimeSlide = ({ anime }: { anime: animeData }) => {
+const AnimeSlide = ({ anime, rank }: { anime: animeData, rank: number }) => {
     return (
         <div className="slide slideShow">
             <div className="hidden lg:block lg:w-1/3"></div>
@@ -22,16 +22,16 @@ const AnimeSlide = ({ anime }: { anime: animeData }) => {
                 />
             </div>
             <div className="absolute bottom-[20px] lg:bottom-[20%] left-0 pl-10 3xl:pl-0 lg:w-1/2">
-                <p className="text-primary font-medium text-lg mb-2">#1 Spotlight</p>
+                <p className="text-primary font-medium text-lg mb-2">#{rank} Spotlight</p>
                 <p className="font-bold text-2xl lg:text-5xl mb-8">
                     {anime.title_english || anime.title}
                 </p>
                 <div className="flex gap-5 items-center mb-5 text-sm font-bold">
                     <p className="p-1 px-3 bg-cyan-600 rounded-sm">{anime.type}</p>
                     <div className="p-1 px-2 flex gap-1 items-center justify-center bg-secondary rounded-sm">
-                        <PlayCircleIcon className="w-4 h-4" />
+                        <PlayCircleIcon className="w-5 h-5" strokeWidth={2} />
                         {anime.episodes ? (
-                            <span className="font-medium">{anime.episodes}</span>
+                            <span>{anime.episodes}</span>
                         ) : (
                             <span>N/A</span>
                         )}
@@ -53,7 +53,7 @@ const AnimeSlide = ({ anime }: { anime: animeData }) => {
                         <div className="py-1 px-4 border rounded-3xl text-sm">{genre.name}</div>
                     ))}
                 </div>
-                <Link href="" className="underline text-sm">
+                <Link href="" className="underline text-sm hover:text-primary">
                     <span>More Details</span>
                     <ChevronRightIcon strokeWidth={2.5} className="w-3 h-3 inline-block" />
                 </Link>
@@ -68,8 +68,8 @@ const SpotlightAnimes = async () => {
 
     return (
         <div className="w-full relative flex mb-10 h-[550px] md:h-screen">
-            {animeData.map((anime: animeData) => (
-                <AnimeSlide key={anime.mal_id} anime={anime} />
+            {animeData.map((anime: animeData, index: number) => (
+                <AnimeSlide key={anime.mal_id} anime={anime} rank={index+1} />
             ))}
             <SpotlightNavigator animeData={animeData} />
         </div>

@@ -1,17 +1,25 @@
 "use client";
 import { animeData } from "@/types/ApiResponse";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface componentProps {
     animeData: animeData[];
 }
 
 const SpotlightNavigator = ({ animeData }: componentProps) => {
-    useEffect(() => {
-        handleSlideChange(0);
-    }, []);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-    const handleSlideChange = (selectedIndex: number) => {
+    useEffect(() => {
+        startSlideShow(currentSlide);
+
+        return () => stopSlideShow();
+    }, [currentSlide]);
+
+    const startSlideShow = (selectedIndex: number) => {
+        stopSlideShow();
+        setCurrentSlide(selectedIndex);
+
         const slides = document.getElementsByClassName("slide");
         for (let index = 0; index < animeData.length; index++) {
             (slides[index] as HTMLElement).style.display = "none";
@@ -23,6 +31,17 @@ const SpotlightNavigator = ({ animeData }: componentProps) => {
             dots[index].className = dots[index].className.replace(" active", "");
         }
         dots[selectedIndex].className += " active";
+
+        timeoutRef.current = setTimeout(
+            () => startSlideShow((selectedIndex + 1) % animeData.length),
+            5000
+        );
+    };
+
+    const stopSlideShow = () => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
     };
 
     return (
@@ -32,7 +51,7 @@ const SpotlightNavigator = ({ animeData }: componentProps) => {
                     <span
                         key={index}
                         className="dot hover:bg-obsidian/60"
-                        onClick={() => handleSlideChange(index)}
+                        onClick={() => startSlideShow(index)}
                     ></span>
                 ))}
             </div>
