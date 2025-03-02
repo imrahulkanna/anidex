@@ -38,6 +38,31 @@ const Header = ({ rowdies }: { rowdies: any }) => {
         setLoading(false);
     }, [session]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const headerTag = document.getElementsByTagName("header")[0];
+
+            if (window.scrollY) {
+                if (headerTag && !headerTag.className.includes("bg-obsidian/75 backdrop-blur")) {
+                    headerTag.className += " bg-obsidian/75 backdrop-blur";
+                }
+            } else {
+                if (headerTag && headerTag.className.includes("bg-obsidian/75 backdrop-blur")) {
+                    headerTag.className = headerTag.className.replace(
+                        " bg-obsidian/75 backdrop-blur",
+                        ""
+                    );
+                }
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
     const handleLoginModal = () => {
         setOpenLoginModal(!openLoginModal);
         if (openLoginModal) {
@@ -111,7 +136,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
 
     return (
         <>
-            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full bg-obsidian/75 backdrop-blur px-4 md:px-10 3xl:px-2 py-4 ">
+            <header className="z-50 top-0 left-1/2 right-0 -translate-x-1/2 fixed w-full px-4 md:px-10 3xl:px-2 py-4">
                 <div className="w-full max-w-[1800px] mx-auto flex justify-between items-center max-h-20">
                     <div className="flex md:gap-5 lg:gap-10 items-center">
                         <Link href="/">
@@ -131,7 +156,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                         </div>
                         {status === "authenticated" && !isDataEmptyorUndefined(session) ? (
                             <button
-                                className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative"
+                                className="flex items-center gap-1 border-neutral-700 border pl-4 pr-2 py-[6px] rounded-full transition-all hover:border-neutral-600 hover:shadow-[#525252_0px_0px_0px_2px] relative bg-obsidian/50"
                                 onClick={handleOpenMenu}
                             >
                                 {userData?.image && (
@@ -145,13 +170,7 @@ const Header = ({ rowdies }: { rowdies: any }) => {
                                 )}
                                 <p className="font-semibold flex items-center gap-[6px] text-neutral-200">
                                     {userData?.name?.split(" ")[0] || userData?.username}
-                                    <TriangleDownIcon
-                                        style={{
-                                            color: "rgb(136, 147, 151)",
-                                            width: "20px",
-                                            height: "20px",
-                                        }}
-                                    />
+                                    <TriangleDownIcon className="w-5 h-5" />
                                 </p>
                                 {openMenu && <MenuDropdown />}
                             </button>
