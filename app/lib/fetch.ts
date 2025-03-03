@@ -186,7 +186,7 @@ export const getScheduledReleases = async (day: string): Promise<any> => {
 
 export const getAnimeDataById = async (id: number): Promise<any> => {
     try {
-        const url = `${GET_ANIME_BY_SEARCH}/${id}`;
+        const url = `${GET_ANIME_BY_SEARCH}/${id}/full`;
         const repsonse = await fetch(url, { next: { revalidate: getCacheTime(7, "day") } });
         const apiData = await repsonse.json();
         return apiData.data;

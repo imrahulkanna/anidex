@@ -10,12 +10,12 @@ import { DAY } from "@/app/lib/constants";
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Promise<{ userId: string }> }
+    { params }: { params: { userId: string } }
 ) {
     await dbConnect();
 
     try {
-        const userId = (await params).userId;
+        const userId = params.userId;
 
         if (isDataEmptyorUndefined(userId)) {
             return NextResponse.json(
