@@ -1,5 +1,10 @@
 import { getAnimeDataById } from "@/app/lib/fetch";
+import { ViewMoreLessBtn } from "@/components/UtilityComponents";
+import { ClockIcon, DotFilledIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+import {PlayCircleIcon} from "@heroicons/react/24/outline";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
@@ -15,7 +20,54 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                     ></div>
                 </div>
                 <div className="w-full flex">
-                    <div className="w-3/4 flex"></div>
+                    {/* main column */}
+                    <div className="w-3/4 z-20 py-16">
+                        <div className="mx-auto my-auto flex gap-10 items-start justify-center w-10/12 2xl:w-7/12">
+                            <Image
+                                src={animeData.images.webp.large_image_url}
+                                alt={animeData.title_english || animeData.title}
+                                height={0}
+                                width={140}
+                                className="w-52"
+                            />
+                            <div className="flex flex-col gap-5 text-sm">
+                                <h1 className="text-5xl font-bold">
+                                    {animeData.title_english || animeData.title}
+                                </h1>
+                                <div className="flex gap-1 items-center">
+                                    <div className="p-1 px-2 bg-neutral-100 text-neutral-900 rounded-sm font-semibold">
+                                        {animeData.rating.split(" -")[0]}
+                                    </div>
+                                    <div className="p-1 px-2 flex gap-1 items-center justify-center bg-secondary rounded-sm">
+                                        <PlayCircleIcon className="w-5 h-5" strokeWidth={2} />
+                                        <span className="font-semibold">
+                                            {animeData.episodes ? animeData.episodes : "N/A"}
+                                        </span>
+                                    </div>
+                                    <DotFilledIcon className="opacity-60" />
+                                    <Link href="" className="hover:text-primary">
+                                        {animeData.type}
+                                    </Link>
+                                    <DotFilledIcon className="opacity-60" />
+                                    <div className="flex gap-1 items-center">
+                                        <ClockIcon className="w-4 h-4" />
+                                        <p>{animeData.duration?.split(" per ep")}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="line-clamp-3 leading-relaxed text-sm" id="synopsis-container">
+                                        {animeData.synopsis}
+                                    </p>
+                                    <ViewMoreLessBtn
+                                        styles="text-xs font-semibold"
+                                        id="synopsis-container"
+                                    />
+                                </div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
                     {/* side column */}
                     <div className="w-[calc(25%-30px)] flex flex-col gap-3 text-sm px-7 py-16 bg-white/5 backdrop-blur-xl">
                         <div>
@@ -49,7 +101,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                         <div className="flex items-center gap-2 flex-wrap border-y-[0.5px] border-y-white/30 py-3">
                             <span className="font-bold">Genres:</span>
                             {animeData.genres.map((genre: { name: string }) => (
-                                <div className="py-1 px-2 border border-white/30 rounded-3xl text-xs">
+                                <div key={genre.name} className="py-1 px-2 border border-white/30 rounded-3xl text-xs">
                                     {genre.name}
                                 </div>
                             ))}
