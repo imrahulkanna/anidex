@@ -35,3 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 anidex-432019-6b774e7d1f36.json
+
+.idea

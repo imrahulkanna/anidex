@@ -30,7 +30,7 @@ const AnimeSlide = ({ anime, rank }: { anime: animeData; rank: number }) => {
                     <p className="p-1 px-3 bg-cyan-600 rounded-sm">{anime.type}</p>
                     <div className="p-1 px-2 flex gap-1 items-center justify-center bg-secondary rounded-sm">
                         <PlayCircleIcon className="w-5 h-5" strokeWidth={2} />
-                        {anime.episodes ? <span>{anime.episodes}</span> : <span>N/A</span>}
+                        <span>{anime.episodes ? anime.episodes : "N/A"}</span>
                     </div>
                 </div>
                 <div className="hidden lg:flex gap-1 items-center mb-5">
@@ -46,7 +46,7 @@ const AnimeSlide = ({ anime, rank }: { anime: animeData; rank: number }) => {
                 </p>
                 <div className="hidden lg:flex gap-5 mb-5">
                     {anime.genres.map((genre) => (
-                        <div className="py-1 px-4 border border-white/30 rounded-3xl text-sm">
+                        <div key={genre.name} className="py-1 px-4 border border-white/30 rounded-3xl text-sm">
                             {genre.name}
                         </div>
                     ))}
