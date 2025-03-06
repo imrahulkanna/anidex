@@ -4,7 +4,9 @@ import { ClockIcon, DotFilledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import {PlayCircleIcon} from "@heroicons/react/24/outline";
+import { PlayIcon, PlayCircleIcon } from "@heroicons/react/16/solid";
+import {Button} from "@/components/ui/button";
+import AddToListButton from "@/components/AddToListButton";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
@@ -22,7 +24,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                 <div className="w-full flex">
                     {/* main column */}
                     <div className="w-3/4 z-20 py-16">
-                        <div className="mx-auto my-auto flex gap-10 items-start justify-center w-10/12 2xl:w-7/12">
+                        <div className="mx-auto my-auto flex gap-10 items-start justify-center w-10/12 2xl:w-8/12">
                             <Image
                                 src={animeData.images.webp.large_image_url}
                                 alt={animeData.title_english || animeData.title}
@@ -35,12 +37,12 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                     {animeData.title_english || animeData.title}
                                 </h1>
                                 <div className="flex gap-1 items-center">
-                                    <div className="p-1 px-2 bg-neutral-100 text-neutral-900 rounded-sm font-semibold">
+                                    <div className="p-1 px-1.5 bg-neutral-100 text-neutral-900 rounded-sm font-semibold text-xs">
                                         {animeData.rating.split(" -")[0]}
                                     </div>
-                                    <div className="p-1 px-2 flex gap-1 items-center justify-center bg-secondary rounded-sm">
-                                        <PlayCircleIcon className="w-5 h-5" strokeWidth={2} />
-                                        <span className="font-semibold">
+                                    <div className="p-1 px-1.5 flex gap-1 items-center justify-center bg-secondary rounded-sm">
+                                        <PlayCircleIcon className="w-4 h-4" strokeWidth={2} />
+                                        <span className="font-semibold text-xs">
                                             {animeData.episodes ? animeData.episodes : "N/A"}
                                         </span>
                                     </div>
@@ -53,6 +55,15 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                         <ClockIcon className="w-4 h-4" />
                                         <p>{animeData.duration?.split(" per ep")}</p>
                                     </div>
+                                </div>
+                                <div className="flex gap-3 justify-start items-center">
+                                    <button
+                                        className="h-9 px-5 py-2 shadow rounded-full font-semibold flex gap-1 items-center justify-center bg-primary text-neutral-900 text-base hover:bg-primary/80"
+                                    >
+                                        <PlayIcon className="w-5 h-5" />
+                                        Watch
+                                    </button>
+                                    <AddToListButton anime={animeData} dropDownPositionStyle="top" btnStyle="w-44 px-5 text-base" />
                                 </div>
                                 <div>
                                     <p className="line-clamp-3 leading-relaxed text-sm" id="synopsis-container">
