@@ -56,3 +56,5 @@ export interface latestEps {
         }
     ];
 }
+
+export type WatchlistOption = "Watching" | "On-Hold" | "Plan to watch" | "Dropped" | "Completed";

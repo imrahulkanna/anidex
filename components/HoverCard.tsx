@@ -2,12 +2,11 @@ import React, { forwardRef, Ref, useEffect, useState } from "react";
 import { animeData, genre } from "@/types/ApiResponse";
 import { StarFilledIcon, PlayIcon } from "@radix-ui/react-icons";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { Button } from "./ui/button";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { CheckIcon } from "@heroicons/react/24/outline";
 import { useUserData } from "@/context/UserDataContext";
 import { useLoginModal } from "@/context/LoginModalContext";
 import { useSession } from "next-auth/react";
+import AddToListButton from "@/components/AddToListButton";
 
 interface props {
     anime: animeData | undefined;
@@ -15,8 +14,6 @@ interface props {
     handleCloseHover: () => void;
     cardPosition: string;
 }
-
-type WatchlistOption = "Watching" | "On-Hold" | "Plan to watch" | "Dropped" | "Completed";
 
 const HoverCardSkeleton = () => {
     return (
@@ -43,33 +40,13 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
         const { userData, setUserData } = useUserData();
         const { setOpenLoginModal } = useLoginModal();
 
-        const defaultWatchlistOptions = {
-            Watching: { selected: false },
-            "On-Hold": { selected: false },
-            "Plan to watch": { selected: false },
-            Dropped: { selected: false },
-            Completed: { selected: false },
-        };
-
         const [animeData, setAnimeData] = useState<animeData | undefined>(undefined);
         const [addedToFav, setAddedToFav] = useState<boolean>(false);
-        const [openWatchlist, setOpenWatchlist] = useState<boolean>(false);
-        const [watchlistOptions, setWatchlistOptions] = useState(defaultWatchlistOptions);
 
         useEffect(() => {
             if (!userData) return;
 
-            setAddedToFav(userData?.favourites.includes(animeData?.mal_id) ? true : false);
-            const defaultOption = Object.entries(userData.watchlist).find(([_, animesArr]) => {
-                return (animesArr as number[]).includes(animeData?.mal_id as number);
-            })?.[0];
-
-            if (defaultOption) {
-                setWatchlistOptions({
-                    ...defaultWatchlistOptions,
-                    [defaultOption]: { selected: true },
-                });
-            }
+            setAddedToFav(!!userData?.favourites.includes(animeData?.mal_id));
         }, [userData, animeData]);
 
         useEffect(() => {
@@ -127,54 +104,6 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                 console.log("update-favourites failed: ", error);
                 setAddedToFav(!addedToFav);
             }
-        };
-
-        const toggleWatchlist = () => setOpenWatchlist(!openWatchlist);
-
-        const handleOptionSelection = async (selectedOption: WatchlistOption) => {
-            if (isDataEmptyorUndefined(session)) {
-                setOpenLoginModal(true);
-                return;
-            }
-
-            try {
-                const currentOption =
-                    Object.entries(watchlistOptions).find(([_, option]) => option.selected)?.[0] ||
-                    "";
-                const newOption = selectedOption === currentOption ? "" : selectedOption;
-                const requestBody = {
-                    userId: userData?._id,
-                    animeId: animeData?.mal_id,
-                    newOption,
-                    currentOption,
-                    requestType: watchlistOptions[selectedOption].selected ? "remove" : "add",
-                };
-
-                const result = await fetch("/api/update-watchlist", {
-                    method: "POST",
-                    cache: "no-cache",
-                    body: JSON.stringify(requestBody),
-                });
-
-                const response = await result.json();
-                setUserData((prevState: any) => {
-                    return {
-                        ...prevState,
-                        watchlist: response.data,
-                    };
-                });
-
-                setWatchlistOptions((prevState) => {
-                    return {
-                        ...defaultWatchlistOptions,
-                        [selectedOption]: { selected: !prevState[selectedOption].selected },
-                    };
-                });
-            } catch (error) {
-                console.log("update watchlist failed: ", error);
-            }
-
-            setOpenWatchlist(false);
         };
 
         return isDataEmptyorUndefined(animeData) ? (
@@ -242,39 +171,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                     <span>Genres</span>: <span className="text-white">{getGenres()}</span>
                 </p>
                 <div className="px-3 mt-3 flex gap-5 items-center">
-                    <div className="w-full relative">
-                        <Button
-                            className="w-full rounded-full font-semibold flex gap-2 items-center justify-center"
-                            variant="secondary"
-                            onClick={toggleWatchlist}
-                        >
-                            {Object.entries(watchlistOptions).find(
-                                ([name, option]) => option.selected
-                            )?.[0] || "Add to watchlist"}
-                        </Button>
-                        {openWatchlist && (
-                            <ul className="w-[90%] absolute bottom-[110%] left-1/2 -translate-x-1/2 rounded-md bg-neutral-200 text-neutral-900">
-                                {Object.entries(watchlistOptions).map(([name, option]) => (
-                                    <li
-                                        key={name}
-                                        className="w-full text-center font-medium py-1 pt-2 hover:bg-neutral-300 cursor-pointer first:hover:rounded-t-md last:hover:rounded-b-md"
-                                    >
-                                        <p
-                                            className="flex justify-center items-baseline gap-1"
-                                            onClick={() =>
-                                                handleOptionSelection(name as WatchlistOption)
-                                            }
-                                        >
-                                            {name}{" "}
-                                            {option.selected && (
-                                                <CheckIcon className="w-3 stroke-[4]" />
-                                            )}
-                                        </p>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
+                    <AddToListButton anime={animeData} dropDownPositionStyle="bottom" btnStyle="w-full" />
                     <HeartIcon
                         className={`w-10 h-10 cursor-pointer${
                             addedToFav ? " stroke-red-600 fill-red-600" : ""
