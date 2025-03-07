@@ -15,6 +15,11 @@ export interface genre {
     url: string;
 }
 
+export interface streamingPartner {
+    name: string;
+    url: string;
+}
+
 export interface animeData {
     mal_id: number | null;
     title_english: string | null;
@@ -39,6 +44,7 @@ export interface animeData {
     title_synonyms: string[];
     status: string;
     genres: genre[];
+    streaming?: streamingPartner[];
 }
 
 export interface latestEps {

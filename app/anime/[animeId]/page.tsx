@@ -4,9 +4,10 @@ import { ClockIcon, DotFilledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import  {PlayCircleIcon as PlayCircleOutline} from "@heroicons/react/24/outline"
 import { PlayIcon, PlayCircleIcon } from "@heroicons/react/16/solid";
-import {Button} from "@/components/ui/button";
 import AddToListButton from "@/components/AddToListButton";
+import {streamingPartner} from "@/types/ApiResponse";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
@@ -74,7 +75,27 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                         id="synopsis-container"
                                     />
                                 </div>
-                                <div></div>
+                                { animeData.streaming.length > 0 && (
+                                    <div>
+                                        <div className="font-semibold text-lg text-primary">Streaming on</div>
+                                        <div className="grid grid-cols-2 gap-x-16 gap-y-3 px-4 font-medium">
+                                            {animeData.streaming.map((stream: streamingPartner) => (
+                                                <Link
+                                                    href={stream.url}
+                                                    target={`_blank`}
+                                                    key={stream.name}
+                                                    className="flex gap-1 items-center justify-between py-2 border-b-[0.5px] border-b-white/60 text-neutral-200 hover:underline hover:decoration-blue-300"
+                                                >
+                                                    <div>{stream.name}</div>
+                                                    <div className="flex justify-center items-center gap-2 rounded-full border-[0.5px] border-b-white/60 py-1 px-3">
+                                                        <PlayCircleOutline className="w-5 h-5 stroke-blue-300 stroke-2" />
+                                                        Watch
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                                 <div></div>
                             </div>
                         </div>
