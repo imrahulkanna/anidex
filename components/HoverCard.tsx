@@ -171,7 +171,7 @@ const HoverCard = forwardRef<HTMLDivElement, props>(
                     <span>Genres</span>: <span className="text-white">{getGenres()}</span>
                 </p>
                 <div className="px-3 mt-3 flex gap-5 items-center">
-                    <AddToListButton anime={animeData} dropDownPositionStyle="bottom" btnStyle="w-full" />
+                    <AddToListButton anime={animeData} dropDownPositionStyle="bottom" btnWidth="w-full" />
                     <HeartIcon
                         className={`w-10 h-10 cursor-pointer${
                             addedToFav ? " stroke-red-600 fill-red-600" : ""

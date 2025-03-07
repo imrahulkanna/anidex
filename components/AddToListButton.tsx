@@ -11,10 +11,11 @@ import {isDataEmptyorUndefined} from "@/app/lib/utils";
 interface Props {
     anime: animeData;
     dropDownPositionStyle: string;
-    btnStyle: string;
+    btnStyle?: string;
+    btnWidth: string;
 }
 
-const AddToListButton = ({anime, dropDownPositionStyle, btnStyle}: Props) => {
+const AddToListButton = ({anime, dropDownPositionStyle, btnStyle, btnWidth}: Props) => {
     const { data: session } = useSession();
     const { userData, setUserData } = useUserData();
     const { setOpenLoginModal } = useLoginModal();
@@ -93,9 +94,9 @@ const AddToListButton = ({anime, dropDownPositionStyle, btnStyle}: Props) => {
     };
 
     return (
-        <div className={`relative ${btnStyle}`}>
+        <div className={`relative ${btnWidth}`}>
             <Button
-                className="w-full rounded-full font-semibold flex gap-2 items-center justify-center"
+                className={`w-full rounded-full font-semibold flex gap-2 items-center justify-center ${btnStyle}`}
                 variant="secondary"
                 onClick={toggleWatchlist}
             >

@@ -63,7 +63,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                         <PlayIcon className="w-5 h-5" />
                                         Watch
                                     </button>
-                                    <AddToListButton anime={animeData} dropDownPositionStyle="top" btnStyle="w-44 px-5 text-base" />
+                                    <AddToListButton anime={animeData} dropDownPositionStyle="top" btnStyle="px-5 text-base" btnWidth="w-44" />
                                 </div>
                                 <div>
                                     <p className="line-clamp-3 leading-relaxed text-sm" id="synopsis-container">
