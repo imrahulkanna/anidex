@@ -64,3 +64,16 @@ export interface latestEps {
 }
 
 export type WatchlistOption = "Watching" | "On-Hold" | "Plan to watch" | "Dropped" | "Completed";
+
+export interface character {
+    character: {
+        mal_id: number;
+        name: string;
+        images: {
+            webp: imageType;
+            jpg?: imageType;
+        };
+    };
+    role: string;
+    voice_actors: any;
+}

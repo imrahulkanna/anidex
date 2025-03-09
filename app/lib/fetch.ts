@@ -187,8 +187,8 @@ export const getScheduledReleases = async (day: string): Promise<any> => {
 export const getAnimeDataById = async (id: number): Promise<any> => {
     try {
         const url = `${GET_ANIME_BY_SEARCH}/${id}/full`;
-        const repsonse = await fetch(url, { next: { revalidate: getCacheTime(7, "day") } });
-        const apiData = await repsonse.json();
+        const response = await fetch(url, { next: { revalidate: getCacheTime(7, "day") } });
+        const apiData = await response.json();
         return apiData.data;
     } catch (error) {
         console.log(error);
@@ -211,5 +211,17 @@ export const getAnimesBySearch = async (searchKey: string, signal: AbortSignal):
     } catch (error) {
         console.log(error);
         return [];
+    }
+};
+
+export const getAnimeCharacters = async (id: number): Promise<any> => {
+    try {
+        const url = `${GET_ANIME_BY_SEARCH}/${id}/characters`;
+        const response = await fetch(url, { next: { revalidate: getCacheTime(7, "day") } });
+        const apiData = await response.json();
+        return apiData.data;
+    } catch (error) {
+        console.log(error);
+        return {};
     }
 };

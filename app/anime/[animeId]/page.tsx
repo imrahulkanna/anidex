@@ -1,17 +1,19 @@
-import { getAnimeDataById } from "@/app/lib/fetch";
-import { ViewMoreLessBtn } from "@/components/UtilityComponents";
-import { ClockIcon, DotFilledIcon } from "@radix-ui/react-icons";
+import {getAnimeCharacters, getAnimeDataById} from "@/app/lib/fetch";
+import {ViewMoreLessBtn} from "@/components/UtilityComponents";
+import {ClockIcon, DotFilledIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import  {PlayCircleIcon as PlayCircleOutline} from "@heroicons/react/24/outline"
-import { PlayIcon, PlayCircleIcon } from "@heroicons/react/16/solid";
+import {PlayCircleIcon as PlayCircleOutline} from "@heroicons/react/24/outline"
+import {PlayCircleIcon, PlayIcon } from "@heroicons/react/16/solid";
 import AddToListButton from "@/components/AddToListButton";
-import {streamingPartner} from "@/types/ApiResponse";
+import {character, streamingPartner} from "@/types/ApiResponse";
+import {getAnimeData} from "@/app/anime/[animeId]/getAnimeData";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
     const animeData = await getAnimeDataById(parseInt(animeId));
+    const characters = await getAnimeCharacters(parseInt(animeId));
+
     return (
         <div className="mt-[84px]">
             {/* description section */}
@@ -101,7 +103,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                         </div>
                     </div>
                     {/* side column */}
-                    <div className="w-[calc(25%-30px)] flex flex-col gap-3 text-sm px-7 py-16 bg-white/5 backdrop-blur-xl">
+                    <div className="w-[calc(25%-30px)] flex flex-col justify-center gap-3 text-sm px-7 py-16 bg-white/5 backdrop-blur-xl">
                         <div>
                             <span className="font-bold">Japanese:</span>{" "}
                             <span>{animeData.title_japanese}</span>
@@ -157,7 +159,41 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                     </div>
                 </div>
             </div>
-            <div></div>
+            <div className='w-full flex flex-col xl:flex-row px-4 md:px-6 3xl:px-2'>
+                {/* characters section */}
+                {characters && (
+                    <div id="characters" className="mt-10 md:px-4">
+                        <h2 className="text-2xl font-bold text-primary mb-5">Characters & Voice Actors</h2>
+                        <div className="flex flex-wrap gap-4 mx-auto">
+                            {characters.splice(0,9).map((character: character) => (
+                                <div key={character.character.mal_id} className="flex flex-grow items-center p-3 bg-white/10 rounded-md">
+                                    <Image
+                                        src={character.character.images.webp.image_url}
+                                        alt={character.character.name}
+                                        height={0}
+                                        width={200}
+                                        className="w-11 h-11 rounded-full object-cover"
+                                    />
+                                    <div className="w-52 px-2 py-1 flex flex-col gap-1 justify-between text-sm">
+                                        <p>
+                                            <span className="font-bold">{character.character.name}</span>{", "}
+                                            <span className="text-xs">{character.role}</span>
+                                        </p>
+                                        <p className="text-right">{character.voice_actors[0].person.name}</p>
+                                    </div>
+                                    <Image
+                                        src={character.voice_actors[0].person.images.jpg.image_url}
+                                        alt={character.voice_actors[0].person.name}
+                                        height={0}
+                                        width={200}
+                                        className="w-11 h-11 rounded-full object-cover grayscale"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

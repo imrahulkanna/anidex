@@ -20,6 +20,12 @@ const nextConfig = {
                 port: "",
                 pathname: "/anidex-profile-images/**",
             },
+            {
+                protocol: "https",
+                hostname: "myanimelist.net",
+                port: "",
+                pathname: "/**",
+            },
         ],
     },
 };
