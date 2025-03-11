@@ -7,6 +7,7 @@ export interface ApiResponse {
 export interface imageType {
     image_url: string;
     large_image_url: string;
+    maximum_image_url?: string;
 }
 export interface genre {
     mal_id: number;
@@ -76,4 +77,12 @@ export interface character {
     };
     role: string;
     voice_actors: any;
+}
+
+export interface promoVideos {
+    title: string;
+    trailer: {
+        embed_url: string;
+        images: imageType;
+    }
 }

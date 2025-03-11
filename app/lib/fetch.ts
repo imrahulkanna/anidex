@@ -225,3 +225,15 @@ export const getAnimeCharacters = async (id: number): Promise<any> => {
         return {};
     }
 };
+
+export const getAnimePromotionalVideos = async (id: number): Promise<any> => {
+    try {
+        const url = `${GET_ANIME_BY_SEARCH}/${id}/videos`;
+        const response = await fetch(url, { next: { revalidate: getCacheTime(15, "day") } });
+        const apiData = await response.json();
+        return  apiData.data.promo;
+    } catch (error) {
+        console.log(error);
+        return {};
+    }
+}
