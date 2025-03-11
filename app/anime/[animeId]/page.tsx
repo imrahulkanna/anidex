@@ -1,18 +1,18 @@
-import {getAnimeCharacters, getAnimeDataById} from "@/app/lib/fetch";
-import {ViewMoreLessBtn} from "@/components/UtilityComponents";
+import {getAnimeCharacters, getAnimeDataById, getAnimePromotionalVideos} from "@/app/lib/fetch";
+import {PromotionalVideo, ViewMoreLessBtn} from "@/components/UtilityComponents";
 import {ClockIcon, DotFilledIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import {PlayCircleIcon as PlayCircleOutline} from "@heroicons/react/24/outline"
 import {PlayCircleIcon, PlayIcon } from "@heroicons/react/16/solid";
 import AddToListButton from "@/components/AddToListButton";
-import {character, streamingPartner} from "@/types/ApiResponse";
-import {getAnimeData} from "@/app/anime/[animeId]/getAnimeData";
+import {character, promoVideos, streamingPartner} from "@/types/ApiResponse";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
     const animeData = await getAnimeDataById(parseInt(animeId));
     const characters = await getAnimeCharacters(parseInt(animeId));
+    const promoVideos = await getAnimePromotionalVideos(parseInt(animeId));
 
     return (
         <div className="mt-[84px]">
@@ -159,7 +159,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                     </div>
                 </div>
             </div>
-            <div className='w-full flex flex-col xl:flex-row px-4 md:px-6 3xl:px-2'>
+            <div className='w-full px-4 md:px-6 3xl:px-2'>
                 {/* characters section */}
                 {characters && (
                     <div id="characters" className="mt-10 md:px-4">
@@ -189,6 +189,17 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                         className="w-11 h-11 rounded-full object-cover grayscale"
                                     />
                                 </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+                {/* promotional videos section */}
+                {promoVideos && (
+                    <div id="promo-videos" className="my-10 md:px-4">
+                        <h2 className="text-2xl font-bold text-primary mb-5">Promotion Videos</h2>
+                        <div className="flex flex-wrap gap-4 mx-auto">
+                            {promoVideos.splice(0,4).map((video: promoVideos, index: number) => (
+                                <PromotionalVideo key={video.title} video={video} index={index} />
                             ))}
                         </div>
                     </div>
