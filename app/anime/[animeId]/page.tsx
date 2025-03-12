@@ -1,18 +1,25 @@
 import {getAnimeCharacters, getAnimeDataById, getAnimePromotionalVideos} from "@/app/lib/fetch";
-import {PromotionalVideo, ViewMoreLessBtn} from "@/components/UtilityComponents";
+import {ViewMoreLessBtn} from "@/components/UtilityComponents";
 import {ClockIcon, DotFilledIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import {PlayCircleIcon as PlayCircleOutline} from "@heroicons/react/24/outline"
 import {PlayCircleIcon, PlayIcon } from "@heroicons/react/16/solid";
 import AddToListButton from "@/components/AddToListButton";
-import {character, promoVideos, streamingPartner} from "@/types/ApiResponse";
+import {character, streamingPartner} from "@/types/ApiResponse";
+import dynamic from "next/dynamic";
+import {isDataEmptyorUndefined} from "@/app/lib/utils";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
     const animeData = await getAnimeDataById(parseInt(animeId));
     const characters = await getAnimeCharacters(parseInt(animeId));
     const promoVideos = await getAnimePromotionalVideos(parseInt(animeId));
+
+    const PromotionVideoContainer = dynamic(
+        () => import('../../../components/PromotionVideoContainer'),
+        { ssr: false }
+    );
 
     return (
         <div className="mt-[84px]">
@@ -74,7 +81,6 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                     </p>
                                     <ViewMoreLessBtn
                                         styles="text-xs font-semibold"
-                                        id="synopsis-container"
                                     />
                                 </div>
                                 { animeData.streaming.length > 0 && (
@@ -194,15 +200,8 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                     </div>
                 )}
                 {/* promotional videos section */}
-                {promoVideos && (
-                    <div id="promo-videos" className="my-10 md:px-4">
-                        <h2 className="text-2xl font-bold text-primary mb-5">Promotion Videos</h2>
-                        <div className="flex flex-wrap gap-4 mx-auto">
-                            {promoVideos.splice(0,4).map((video: promoVideos, index: number) => (
-                                <PromotionalVideo key={video.title} video={video} index={index} />
-                            ))}
-                        </div>
-                    </div>
+                {!isDataEmptyorUndefined(promoVideos) && (
+                    <PromotionVideoContainer promoVideos={promoVideos.splice(0,4)} />
                 )}
             </div>
         </div>

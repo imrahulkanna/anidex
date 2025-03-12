@@ -4,12 +4,16 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 import {PlayIcon} from "@heroicons/react/16/solid";
 
-const PromotionalVideo = ({video, index, YTplayer}: {video: promoVideos, index: number, YTplayer: (typeof window.YT.Player | null)}) => {
+const PromotionalVideo = ({video, index, YTplayer}: {
+    video: promoVideos,
+    index: number,
+    YTplayer: (typeof window.YT.Player | null)
+}) => {
     const [play, setPlay] = useState(false);
 
     const handleClick = () => {
         setPlay(!play);
-        console.log("clicked", !play);
+        console.log("clicked", !play)
     };
 
     useEffect(() => {
@@ -23,7 +27,11 @@ const PromotionalVideo = ({video, index, YTplayer}: {video: promoVideos, index: 
     }, [play]);
 
     return (
-        <div key={video.title} className="h-52 min-w-[280px] flex flex-col flex-grow items-center relative" onClick={handleClick}>
+        <div
+            key={video.title}
+            className="h-52 min-w-[280px] flex flex-col flex-grow items-center relative"
+            onClick={handleClick}
+        >
             {!play && (
                 <div className="absolute top-0 left-0 w-full h-full cursor-pointer">
                     <div className="bg-black/35 absolute top-0 left-0 w-full h-full z-20"></div>
@@ -34,17 +42,15 @@ const PromotionalVideo = ({video, index, YTplayer}: {video: promoVideos, index: 
                         height={0}
                         className="absolute top-0 left-0 w-full h-full object-cover"
                     />
-                    <PlayIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 z-30" />
+                    <PlayIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 z-30"/>
                 </div>
             )}
-            {/*<div className="w-full h-full">*/}
-                <div id={`youtube-player-${index}`} className="w-full h-full"></div>
-            {/*</div>*/}
+            <div id={`youtube-player-${index}`} className="w-full h-full"></div>
         </div>
     );
 }
 
-const PromotionVideoContainer = ({promoVideos}: {promoVideos: promoVideos[]}) => {
+const PromotionVideoContainer = ({promoVideos}: { promoVideos: promoVideos[] }) => {
     const [players, setPlayers] = useState<(typeof window.YT.Player | null)[]>([]);
 
     useEffect(() => {
@@ -58,8 +64,7 @@ const PromotionVideoContainer = ({promoVideos}: {promoVideos: promoVideos[]}) =>
 
                 return new window.YT.Player(`youtube-player-${index}`, {
                     videoId: videoId,
-                    events: {
-                    },
+                    events: {},
                 });
             });
 
@@ -85,7 +90,7 @@ const PromotionVideoContainer = ({promoVideos}: {promoVideos: promoVideos[]}) =>
             <h2 className="text-2xl font-bold text-primary mb-5">Promotion Videos</h2>
             <div className="flex flex-wrap gap-4 mx-auto">
                 {promoVideos.map((video: promoVideos, index: number) => (
-                    <PromotionalVideo key={video.title} video={video} index={index} YTplayer={players[index]} />
+                    <PromotionalVideo key={video.title} video={video} index={index} YTplayer={players[index]}/>
                 ))}
             </div>
         </div>
