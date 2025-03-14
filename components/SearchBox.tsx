@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import InputBox from "./InputBox";
-import { getAnimesBySearch } from "@/app/lib/fetch";
-import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { animeData } from "@/types/ApiResponse";
-import { DotFilledIcon } from "@radix-ui/react-icons";
+import {getAnimesBySearch} from "@/app/lib/fetch";
+import {animeData} from "@/types/ApiResponse";
+import {DotFilledIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 interface SeachAnimePropTypes {
@@ -35,7 +34,7 @@ const DisplaySearchAnimeResults = ({ data, showLoader, showDropdown }: SeachAnim
                     ) : (
                         data.slice(0, 5).map((anime: animeData) => (
                             <Link
-                                href=""
+                                href={`/anime/${anime.mal_id}`}
                                 key={anime.mal_id}
                                 className="w-full flex p-3 gap-2 border-b border-white/20 last:border-none hover:bg-white/10 group"
                             >

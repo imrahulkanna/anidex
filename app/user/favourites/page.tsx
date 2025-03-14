@@ -1,13 +1,13 @@
 "use client";
-import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { useUserData } from "@/context/UserDataContext";
-import React, { useEffect, useState } from "react";
-import { WatchlistAnimesSkeleton } from "@/components/WatchlistAnimesSkeleton";
-import { animeData } from "@/types/ApiResponse";
+import {isDataEmptyorUndefined} from "@/app/lib/utils";
+import {useUserData} from "@/context/UserDataContext";
+import React, {useEffect, useState} from "react";
+import {WatchlistAnimesSkeleton} from "@/components/WatchlistAnimesSkeleton";
+import {animeData} from "@/types/ApiResponse";
 import HoverCardWrapper from "@/components/HoverCardWrapper";
 import Image from "next/image";
 import Link from "next/link";
-import { DotFilledIcon } from "@radix-ui/react-icons";
+import {DotFilledIcon} from "@radix-ui/react-icons";
 
 const Favourites = () => {
     const { userData } = useUserData();
@@ -18,7 +18,7 @@ const Favourites = () => {
             return;
         }
 
-        const fetchFavouritAnimesData = async () => {
+        const fetchFavouriteAnimesData = async () => {
             const response = await fetch(`/api/get-favourites-details/${userData._id}`, {
                 method: "GET",
                 cache: "no-cache",
@@ -28,7 +28,7 @@ const Favourites = () => {
             setFavouriteAnimes(data.data);
         };
 
-        fetchFavouritAnimesData();
+        fetchFavouriteAnimesData();
     }, [userData]);
 
     return (
@@ -38,7 +38,7 @@ const Favourites = () => {
             ) : (
                 <div className="flex flex-wrap justify-center [&>*:nth-child(odd)]:px-2 [&>*:nth-child(even)]:px-2 md:[&>*:nth-child(odd)]:px-4 md:[&>*:nth-child(even)]:px-4">
                     {favouriteAnimes.map((anime: animeData) => (
-                        <div key={anime.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
+                        <div key={anime.mal_id} className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4 group">
                             <div className="my-4 relative">
                                 <HoverCardWrapper anime={anime}>
                                     <Image
@@ -51,8 +51,8 @@ const Favourites = () => {
                                     <div className="absolute inset-0 bg-gradient-to-t from-obsidian to-30%" />
                                 </HoverCardWrapper>
                             </div>
-                            <Link href="#">
-                                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary">
+                            <Link href={`/anime/${anime.mal_id}`}>
+                                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold group-hover:text-primary">
                                     {anime.title_english || anime.title}
                                 </p>
                             </Link>

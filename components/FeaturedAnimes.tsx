@@ -2,18 +2,17 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-    getTopAiringAnimes,
-    getMostPopularAnimes,
-    getMostFavoriteAnimes,
     getLatestCompletedAnimes,
+    getMostFavoriteAnimes,
+    getMostPopularAnimes,
+    getTopAiringAnimes,
 } from "@/app/lib/fetch";
-import { animeData } from "@/types/ApiResponse";
-import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { DotFilledIcon } from "@radix-ui/react-icons";
-import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { apiCallHandler } from "@/app/lib/server-utils";
+import {animeData} from "@/types/ApiResponse";
+import {ChevronRightIcon, DotFilledIcon} from "@radix-ui/react-icons";
+import {isDataEmptyorUndefined} from "@/app/lib/utils";
+import {apiCallHandler} from "@/app/lib/server-utils";
 import HoverCardWrapper from "./HoverCardWrapper";
-import { DAY, HOUR } from "@/app/lib/constants";
+import {DAY, HOUR} from "@/app/lib/constants";
 
 export interface categoryListType {
     title: string;
@@ -78,7 +77,7 @@ const FeaturedAnimes = async ({ title }: categoryListType) => {
                                 </HoverCardWrapper>
                             </div>
                             <div className="text-sm w-[calc(100%-96px)]">
-                                <Link href="#">
+                                <Link href={`/anime/${anime.mal_id}`}>
                                     <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary">
                                         {anime.title_english || anime.title}
                                     </p>

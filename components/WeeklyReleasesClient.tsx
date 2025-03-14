@@ -1,8 +1,7 @@
 "use client";
-import React, { ButtonHTMLAttributes, useEffect, useState } from "react";
-import { animeData } from "@/types/ApiResponse";
-import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { ChevronRightIcon } from "@radix-ui/react-icons";
+import React, {useEffect, useState} from "react";
+import {animeData} from "@/types/ApiResponse";
+import {isDataEmptyorUndefined} from "@/app/lib/utils";
 import Link from "next/link";
 
 interface props {
@@ -105,7 +104,7 @@ const WeeklyReleasesClient = ({ fetchWeeklyReleases }: props) => {
                                     )
                                     .map((anime: animeData) => (
                                         <Link
-                                            href=""
+                                            href={`/anime/${anime.mal_id}`}
                                             key={anime.mal_id}
                                             className="w-full pb-6 flex items-center justify-between hover:text-primary group"
                                         >

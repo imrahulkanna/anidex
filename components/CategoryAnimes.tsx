@@ -1,16 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getLatestEpisodes, getNewReleasedAnimes, getUpcomingSeasonAnimes } from "@/app/lib/fetch";
-import { categoryListType } from "./FeaturedAnimes";
-import { DotFilledIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import {} from "@/app/lib/utils";
+import {getLatestEpisodes, getNewReleasedAnimes, getUpcomingSeasonAnimes} from "@/app/lib/fetch";
+import {categoryListType} from "./FeaturedAnimes";
+import {ChevronRightIcon, DotFilledIcon} from "@radix-ui/react-icons";
+import {isDataEmptyorUndefined} from "@/app/lib/utils";
 import HoverCardWrapper from "./HoverCardWrapper";
 import LatestEpisodesSection from "./LatestEpisodesSection";
-import { animeData, latestEps } from "@/types/ApiResponse";
-import { apiCallHandler } from "@/app/lib/server-utils";
-import { DAY, HOUR } from "@/app/lib/constants";
+import {animeData, latestEps} from "@/types/ApiResponse";
+import {apiCallHandler} from "@/app/lib/server-utils";
+import {DAY, HOUR} from "@/app/lib/constants";
 
 const CategoryAnimes = async ({ title }: categoryListType) => {
     let data: Array<animeData> | null = null;
@@ -81,7 +80,7 @@ const CategoryAnimes = async ({ title }: categoryListType) => {
                                     <div className="absolute inset-0 bg-gradient-to-t from-obsidian to-30%" />
                                 </HoverCardWrapper>
                             </div>
-                            <Link href="#">
+                            <Link href={`/anime/${anime.mal_id}`}>
                                 <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary">
                                     {anime.title_english || anime.title}
                                 </p>

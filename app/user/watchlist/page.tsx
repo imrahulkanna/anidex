@@ -1,14 +1,14 @@
 "use client";
-import { isDataEmptyorUndefined } from "@/app/lib/utils";
+import {isDataEmptyorUndefined} from "@/app/lib/utils";
 import HoverCardWrapper from "@/components/HoverCardWrapper";
-import { animeData } from "@/types/ApiResponse";
-import { WatchlistAnimesSkeleton } from "@/components/WatchlistAnimesSkeleton";
-import { useLoading } from "@/context/LoadingContext";
-import { useUserData } from "@/context/UserDataContext";
-import { DotFilledIcon } from "@radix-ui/react-icons";
+import {animeData} from "@/types/ApiResponse";
+import {WatchlistAnimesSkeleton} from "@/components/WatchlistAnimesSkeleton";
+import {useLoading} from "@/context/LoadingContext";
+import {useUserData} from "@/context/UserDataContext";
+import {DotFilledIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
 type WatchlistOption = "All" | "Watching" | "On-Hold" | "Plan to watch" | "Dropped" | "Completed";
 
@@ -20,7 +20,7 @@ interface watchlistAnimeProps {
 
 const DisplayAnime = ({ anime }: { anime: animeData }) => {
     return (
-        <div className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4">
+        <div className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-4 group">
             <div className="my-4 relative">
                 <HoverCardWrapper anime={anime}>
                     <Image
@@ -33,8 +33,8 @@ const DisplayAnime = ({ anime }: { anime: animeData }) => {
                     <div className="absolute inset-0 bg-gradient-to-t from-obsidian to-30%" />
                 </HoverCardWrapper>
             </div>
-            <Link href="#">
-                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold">
+            <Link href={`/anime/${anime.mal_id}`}>
+                <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold group-hover:text-primary">
                     {anime.title_english || anime.title}
                 </p>
             </Link>

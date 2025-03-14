@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect, useRef, useCallback, ReactNode } from "react";
+import {ReactNode, useCallback, useEffect, useRef, useState} from "react";
 import HoverCard from "./HoverCard";
-import { animeData } from "@/types/ApiResponse";
+import {animeData} from "@/types/ApiResponse";
 import Link from "next/link";
 
 interface props {
@@ -52,7 +52,7 @@ const HoverCardWrapper = ({ children, anime }: props) => {
     return (
         <>
             <div ref={imageRef} onMouseEnter={handleOpenHover} onMouseLeave={handleCloseHover}>
-                <Link href="#">{children}</Link>
+                <Link href={`/anime/${anime?.mal_id}`}>{children}</Link>
             </div>
             {showHoverCard && (
                 <HoverCard

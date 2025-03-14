@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import {useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { isDataEmptyorUndefined } from "@/app/lib/utils";
-import { getAnimeDataById } from "@/app/lib/fetch";
+import {isDataEmptyorUndefined} from "@/app/lib/utils";
+import {getAnimeDataById} from "@/app/lib/fetch";
 import HoverCardWrapper from "./HoverCardWrapper";
-import { animeData, latestEps } from "@/types/ApiResponse";
+import {animeData, latestEps} from "@/types/ApiResponse";
 
 const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestEps> | null }) => {
     const [animeDetails, setAnimeDetails] = useState<animeData | undefined>();
@@ -43,7 +43,7 @@ const LatestEpisodesSection = ({ latestEpsData }: { latestEpsData: Array<latestE
                         <div className="absolute inset-0 bg-gradient-to-t from-obsidian to-30%" />
                     </HoverCardWrapper>
                 </div>
-                <Link href="#">
+                <Link href={`/anime/${anime.entry.mal_id}`}>
                     <p className="whitespace-nowrap overflow-hidden text-ellipsis font-bold hover:text-primary">
                         {anime.entry.title}
                     </p>
