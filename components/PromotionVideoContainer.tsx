@@ -1,5 +1,16 @@
 "use client"
 import {promoVideos} from "@/types/ApiResponse";
+
+declare global {
+    interface Window {
+        YT: any;
+    }
+    namespace YT {
+        interface OnStateChangeEvent {
+            data: any;
+        }
+    }
+}
 import {useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import {PlayIcon} from "@heroicons/react/16/solid";
