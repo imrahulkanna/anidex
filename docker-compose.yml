@@ -5,11 +5,15 @@ services:
       dockerfile: Dockerfile
       target: development
     container_name: anidex
+    depends_on:
+      - redis
     ports:
       - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
+    environment:
+      - REDIS_URL=redis://redis:6379
     # develop:
     #   watch:
     #     - action: sync

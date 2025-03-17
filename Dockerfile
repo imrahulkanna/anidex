@@ -1,4 +1,4 @@
-FROM node:23.5.0-alpine AS base
+FROM node:22.14.0-alpine AS base
 RUN apk add --no-cache libc6-compat
 ENV APP_DIR=/app
 WORKDIR ${APP_DIR}
@@ -19,7 +19,12 @@ COPY . .
 RUN npm run build
 
 FROM base AS production
+ENV NODE_ENV=production
+
+# Copy only necessary files from builder
+COPY package*.json .
+COPY --from=deps ${APP_DIR}/node_modules ./node_modules
 COPY --from=builder ${APP_DIR}/.next ./.next
 COPY --from=builder ${APP_DIR}/public ./public
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
