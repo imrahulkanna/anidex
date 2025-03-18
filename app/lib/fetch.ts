@@ -49,7 +49,9 @@ export const getTrendingAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(3, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -63,7 +65,9 @@ export const getTopAiringAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_TOP_ANIME, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(3, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -77,7 +81,9 @@ export const getMostPopularAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_TOP_ANIME, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(2, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -91,7 +97,9 @@ export const getMostFavoriteAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_TOP_ANIME, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(2, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -108,7 +116,9 @@ export const getLatestCompletedAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "hr") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -125,7 +135,9 @@ export const getNewReleasedAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "hr") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -139,7 +151,9 @@ export const getUpcomingSeasonAnimes = async (): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_SEASON_UPCOMING, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -150,7 +164,9 @@ export const getUpcomingSeasonAnimes = async (): Promise<any> => {
 export const getLatestEpisodes = async (): Promise<any> => {
     try {
         const url = GET_LATEST_EPISODES;
-        const response = await fetch(url, { next: { revalidate: getCacheTime(1, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return apiData.data;
     } catch (error) {
@@ -161,7 +177,9 @@ export const getLatestEpisodes = async (): Promise<any> => {
 export const getAnimeGenres = async (): Promise<any> => {
     try {
         const url = GET_ANIME_GENRES;
-        const response = await fetch(url, { next: { revalidate: getCacheTime(30, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -176,7 +194,9 @@ export const getScheduledReleases = async (day: string): Promise<any> => {
     };
     try {
         const url = constructUrl(GET_SCHEDULED_RELEASES, queryParams);
-        const response = await fetch(url, { next: { revalidate: getCacheTime(18, "hr") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
     } catch (error) {
@@ -187,7 +207,9 @@ export const getScheduledReleases = async (day: string): Promise<any> => {
 export const getAnimeDataById = async (id: number): Promise<any> => {
     try {
         const url = `${GET_ANIME_BY_SEARCH}/${id}/full`;
-        const response = await fetch(url, { next: { revalidate: getCacheTime(7, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return apiData.data;
     } catch (error) {
@@ -204,7 +226,7 @@ export const getAnimesBySearch = async (searchKey: string, signal: AbortSignal):
         const url = constructUrl(GET_ANIME_BY_SEARCH, queryParams);
         const response = await fetch(url, {
             signal,
-            next: { revalidate: getCacheTime(10, "day") }
+            cache: "no-store",
         });
         const apiData = await response.json();
         return getUniqueAnimeData(apiData.data);
@@ -217,7 +239,9 @@ export const getAnimesBySearch = async (searchKey: string, signal: AbortSignal):
 export const getAnimeCharacters = async (id: number): Promise<any> => {
     try {
         const url = `${GET_ANIME_BY_SEARCH}/${id}/characters`;
-        const response = await fetch(url, { next: { revalidate: getCacheTime(7, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
         return apiData.data;
     } catch (error) {
@@ -229,11 +253,13 @@ export const getAnimeCharacters = async (id: number): Promise<any> => {
 export const getAnimePromotionalVideos = async (id: number): Promise<any> => {
     try {
         const url = `${GET_ANIME_BY_SEARCH}/${id}/videos`;
-        const response = await fetch(url, { next: { revalidate: getCacheTime(15, "day") } });
+        const response = await fetch(url, {
+            cache: "no-store",
+        });
         const apiData = await response.json();
-        return  apiData.data.promo;
+        return apiData.data.promo;
     } catch (error) {
         console.log(error);
         return {};
     }
-}
+};

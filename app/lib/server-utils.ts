@@ -35,11 +35,15 @@ export const apiCallHandler = async (
 
 export const getCacheData = async (cacheKey: string) => {
     const redis = await getRedisInstance();
+    if (!redis) return null;
+
     const cacheData = await redis.get(cacheKey);
     return cacheData ? JSON.parse(cacheData) : null;
 };
 
 export const setCacheData = async (cacheKey: string, cacheTime: number, data: any) => {
     const redis = await getRedisInstance();
+    if (!redis) return null;
+
     redis.setEx(cacheKey, cacheTime, JSON.stringify(data));
 };
