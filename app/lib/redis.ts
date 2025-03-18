@@ -3,7 +3,7 @@ import { createClient } from "redis";
 let redisInstance: ReturnType<typeof createClient> | null = null;
 
 const getRedisInstance = async () => {
-    if (!redisInstance) {
+    if (!redisInstance && !process.env?.BUILD_ENV) {
         redisInstance = createClient({
             url: "redis://redis:6379", //connecting to the redis running in a container
         });
