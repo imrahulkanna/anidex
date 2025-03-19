@@ -23,6 +23,8 @@ ENV NODE_ENV=production
 
 # Copy only necessary files from builder
 COPY package*.json .
+COPY next.config.mjs .
+COPY anidex-432019-6b774e7d1f36.json .
 COPY --from=deps ${APP_DIR}/node_modules ./node_modules
 COPY --from=builder ${APP_DIR}/.next ./.next
 COPY --from=builder ${APP_DIR}/public ./public
