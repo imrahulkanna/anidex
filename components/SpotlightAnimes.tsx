@@ -6,7 +6,7 @@ import { animeData } from "@/types/ApiResponse";
 import { ChevronRightIcon, ClockIcon, PlayCircleIcon } from "@heroicons/react/24/outline";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import Link from "next/link";
+import { ButtonLink } from "./UtilityComponents";
 
 const AnimeSlide = ({ anime, rank }: { anime: animeData; rank: number }) => {
     return (
@@ -46,18 +46,22 @@ const AnimeSlide = ({ anime, rank }: { anime: animeData; rank: number }) => {
                 </p>
                 <div className="hidden lg:flex gap-5 mb-5">
                     {anime.genres.map((genre) => (
-                        <div key={genre.name} className="py-1 px-4 border border-white/30 rounded-3xl text-sm">
+                        <div
+                            key={genre.name}
+                            className="py-1 px-4 border border-white/30 rounded-3xl text-sm"
+                        >
                             {genre.name}
                         </div>
                     ))}
                 </div>
-                <Link
-                    href={`/anime/${anime.mal_id}`}
-                    className="underline text-sm hover:text-primary"
+                <ButtonLink
+                    link={`/anime/${anime.mal_id}`}
+                    styles="underline text-sm hover:text-primary"
+                    startLoading={true}
                 >
                     <span>More Details</span>
                     <ChevronRightIcon strokeWidth={2.5} className="w-3 h-3 inline-block" />
-                </Link>
+                </ButtonLink>
             </div>
         </div>
     );

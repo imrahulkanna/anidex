@@ -1,5 +1,5 @@
 import {getAnimeCharacters, getAnimeDataById, getAnimePromotionalVideos} from "@/app/lib/fetch";
-import {ViewMoreLessBtn} from "@/components/UtilityComponents";
+import {StopLoading, ViewMoreLessBtn} from "@/components/UtilityComponents";
 import {ClockIcon, DotFilledIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,6 +23,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
 
     return (
         <div className="mt-[84px]">
+            <StopLoading />
             {/* description section */}
             <div className="relative">
                 <div className="absolute w-full top-0 left-0 right-0 bottom-0 overflow-hidden grayscale">

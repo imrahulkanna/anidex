@@ -1,8 +1,10 @@
 "use client";
-import {useState} from "react";
-import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/16/solid";
+import { useEffect, useState } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/16/solid";
+import { useLoading } from "@/context/LoadingContext";
+import Link from "next/link";
 
-export const ViewMoreLessBtn = ({styles}: { styles: string }) => {
+export const ViewMoreLessBtn = ({ styles }: { styles: string }) => {
     const [showMore, setShowMore] = useState(false);
 
     const handleClick = () => {
@@ -19,13 +21,54 @@ export const ViewMoreLessBtn = ({styles}: { styles: string }) => {
         }
     };
     return (
-        <div className="inline-flex items-center cursor-pointer hover:text-primary" onClick={handleClick}>
-            <span className={styles} style={{"display": "inline"}}>
+        <div
+            className="inline-flex items-center cursor-pointer hover:text-primary"
+            onClick={handleClick}
+        >
+            <span className={styles} style={{ display: "inline" }}>
                 {showMore ? "View less" : "View more"}
             </span>
-            {
-                showMore ? <ChevronUpIcon className="w-4 h-4"/> : <ChevronDownIcon className="w-4 h-4"/>
-            }
+            {showMore ? (
+                <ChevronUpIcon className="w-4 h-4" />
+            ) : (
+                <ChevronDownIcon className="w-4 h-4" />
+            )}
         </div>
     );
 };
+
+export const ButtonLink = ({
+    children,
+    link,
+    styles,
+    startLoading,
+}: {
+    children: React.ReactNode;
+    link: string;
+    styles?: string;
+    startLoading?: boolean;
+}) => {
+    const { setLoading } = useLoading();
+
+    const handleOnClick = () => {
+        if (startLoading) setLoading(true);
+    };
+
+    return (
+        <Link href={link} onClick={handleOnClick} className={styles}>
+            {children}
+        </Link>
+    );
+};
+
+
+export const StopLoading = () => {
+    const { setLoading } = useLoading();
+
+    useEffect(() => {
+        setLoading(false);
+    
+    }, []);
+    
+    return <></>
+}
