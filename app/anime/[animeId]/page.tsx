@@ -10,12 +10,34 @@ import { character, streamingPartner } from "@/types/ApiResponse";
 import dynamic from "next/dynamic";
 import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import AnimeGenres from "@/components/AnimeGenres";
+import { ANIME, ANIMECHARACTERS, DAY, PROMOTIONALVIDEOS } from "@/app/lib/constants";
+import { getCacheData, setCacheData } from "@/app/lib/server-utils";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
-    const animeData = await getAnimeDataById(parseInt(animeId));
-    const characters = await getAnimeCharacters(parseInt(animeId));
-    const promoVideos = await getAnimePromotionalVideos(parseInt(animeId));
+
+    const animeCacheKey = `${ANIME}_${animeId}`;
+    const charactersCacheKey = `${ANIMECHARACTERS}_${animeId}`;
+    const promoVideoCacheKey = `${PROMOTIONALVIDEOS}_${animeId}`;
+
+    let animeData = await getCacheData(animeCacheKey);
+    let characters = await getCacheData(charactersCacheKey);
+    let promoVideos = await getCacheData(promoVideoCacheKey);
+
+    if (!animeData) {
+        animeData = await getAnimeDataById(parseInt(animeId));
+        await setCacheData(animeCacheKey, 4 * DAY, animeData);
+    }
+
+    if (!characters) {
+        characters = await getAnimeCharacters(parseInt(animeId));
+        await setCacheData(charactersCacheKey, 4 * DAY, characters);
+    }
+
+    if (!promoVideos) {
+        promoVideos = await getAnimePromotionalVideos(parseInt(animeId));
+        await setCacheData(promoVideoCacheKey, 4 * DAY, promoVideos);
+    }
 
     const PromotionVideoContainer = dynamic(
         () => import("../../../components/PromotionVideoContainer"),
@@ -203,7 +225,9 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                                     {character.character.name}
                                                 </span>
                                                 {", "}
-                                                <span className="text-xs">{character.role}</span>
+                                                <span className="text-[10px]">
+                                                    {character.role}
+                                                </span>
                                             </p>
                                             <p className="text-right">
                                                 {character.voice_actors[0].person.name}
@@ -226,7 +250,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                     )}
                     {/* promotional videos section */}
                     {!isDataEmptyorUndefined(promoVideos) && (
-                        <PromotionVideoContainer promoVideos={promoVideos.splice(0, 4)} />
+                        <PromotionVideoContainer promoVideos={promoVideos} />
                     )}
                 </div>
                 <div className="w-full xl:w-1/4">

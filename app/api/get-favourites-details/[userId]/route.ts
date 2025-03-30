@@ -8,10 +8,7 @@ import { getCacheData, setCacheData } from "@/app/lib/server-utils";
 import { animeData } from "@/types/ApiResponse";
 import { DAY } from "@/app/lib/constants";
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { userId: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { userId: string } }) {
     await dbConnect();
 
     try {
