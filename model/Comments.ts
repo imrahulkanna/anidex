@@ -1,15 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface Reply extends Document {
-    userId: Schema.Types.ObjectId;
-    userName: string;
-    userImg: string;
-    content: string;
-    upVotes: number;
-    downVotes: number;
-    replies: Reply[];
-}
-
 export interface Comment extends Document {
     userId: Schema.Types.ObjectId;
     userName: string;
@@ -18,40 +8,9 @@ export interface Comment extends Document {
     content: string;
     upVotes: number;
     downVotes: number;
-    replies: Reply[];
+    replies: Comment[];
+    parentId: Schema.Types.ObjectId | null;
 }
-
-const ReplySchema: Schema<Reply> = new Schema<Reply>(
-    {
-        userId: {
-            type: Schema.Types.ObjectId,
-            required: true,
-            ref: "User",
-        },
-        userName: {
-            type: String,
-            required: true,
-        },
-        userImg: {
-            type: String,
-        },
-        content: {
-            type: String,
-            required: true,
-        },
-        upVotes: {
-            type: Number,
-            default: 0,
-        },
-        downVotes: {
-            type: Number,
-            default: 0,
-        },
-    },
-    { timestamps: true }
-);
-
-ReplySchema.add({ replies: { type: [ReplySchema], default: [] } });
 
 const CommentSchema: Schema<Comment> = new Schema<Comment>(
     {
@@ -83,13 +42,20 @@ const CommentSchema: Schema<Comment> = new Schema<Comment>(
             type: Number,
             default: 0,
         },
-        replies: {
-            type: [ReplySchema],
-            default: [],
+        parentId: {
+            type: Schema.Types.ObjectId,
+            default: null,
         },
     },
     { timestamps: true }
 );
+
+CommentSchema.add({
+    replies: {
+        type: [CommentSchema],
+        default: [],
+    },
+});
 
 const CommentsModel =
     (mongoose.models.Comments as mongoose.Model<Comment>) ||
