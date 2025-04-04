@@ -10,6 +10,8 @@ export interface Comment extends Document {
     downVotes: number;
     replies: Comment[];
     parentId: Schema.Types.ObjectId | null;
+    createdAt: String;
+    updatedAt: String;
 }
 
 const CommentSchema: Schema<Comment> = new Schema<Comment>(

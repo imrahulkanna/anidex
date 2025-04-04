@@ -12,6 +12,7 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import AnimeGenres from "@/components/AnimeGenres";
 import { ANIME, ANIMECHARACTERS, DAY, PROMOTIONALVIDEOS } from "@/app/lib/constants";
 import { getCacheData, setCacheData } from "@/app/lib/server-utils";
+import CommentSection from "@/components/CommentSection";
 
 const Anime = async ({ params }: { params: { animeId: string } }) => {
     const { animeId } = params;
@@ -252,6 +253,8 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                     {!isDataEmptyorUndefined(promoVideos) && (
                         <PromotionVideoContainer promoVideos={promoVideos} />
                     )}
+                    {/* comments section */}
+                    <CommentSection animeId={animeId} />
                 </div>
                 <div className="w-full xl:w-1/4">
                     <AnimeGenres />
