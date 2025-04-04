@@ -67,6 +67,7 @@ const Comment = ({ comment }: { comment: CommentType }) => {
 const CommentSection = ({ animeId }: { animeId: string }) => {
     const [comments, setComments] = useState<CommentType[] | []>([]);
     const [userInput, setUserInput] = useState<string>("");
+    const [displayCommentBtns, setDisplayCommentBtns] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchAllComments = async () => {
@@ -87,27 +88,51 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
     }, []);
 
     const handleInputChange = (name: string, value: string) => {
-        setUserInput(value);
+        setUserInput(value.trim());
+    };
+
+    const handleCommentButton = () => {};
+
+    const handleCancelButton = () => {
+        if (userInput.length > 0) {
+            setUserInput("");
+        }
+        setDisplayCommentBtns(false);
     };
 
     return (
         <div>
             <h2 className="text-2xl font-bold text-primary mb-5">Comments</h2>
-            <div className="flex w-full gap-3 items-center">
-                <Image
-                    src="/loadUserProfile.jpg"
-                    alt="user profile"
-                    width={40}
-                    height={40}
-                    className="rounded-full"
-                />
+            <div className="w-full flex flex-col">
                 <InputBox
                     type="text"
                     placeholder="Add a comment"
                     name="comment"
                     inputValue={userInput}
                     onInputChange={handleInputChange}
+                    onFocus={() => setDisplayCommentBtns(true)}
                 />
+                {displayCommentBtns && (
+                    <div className="mt-3 flex flex-row-reverse gap-2 text-sm font-semibold">
+                        <button
+                            disabled={userInput.length === 0}
+                            className={`px-4 py-2 rounded-full ${
+                                userInput.length === 0
+                                    ? "bg-neutral-600 opacity-50"
+                                    : " bg-primary/75 hover:bg-primary text-black"
+                            }`}
+                            onClick={handleCommentButton}
+                        >
+                            Comment
+                        </button>
+                        <button
+                            className="px-4 py-2 rounded-full hover:bg-neutral-600"
+                            onClick={handleCancelButton}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                )}
             </div>
             <div className="mt-5">
                 {comments.map((comment) => (
