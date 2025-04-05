@@ -4,14 +4,17 @@ import React, { useEffect, useState } from "react";
 import InputBox from "./InputBox";
 import Image from "next/image";
 import { DotFilledIcon, ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
-import { ChatBubbleBottomCenterIcon, ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
+import { useUserData } from "@/context/UserDataContext";
+import { useSession } from "next-auth/react";
+import { ObjectId } from "mongoose";
+import { isDataEmptyorUndefined } from "@/app/lib/utils";
+import { useLoginModal } from "@/context/LoginModalContext";
 
 const Comment = ({ comment }: { comment: CommentType }) => {
     const currentDate: Date = new Date();
     const createdDate: Date = new Date(comment.createdAt.toString());
     const relativeTime: number = (currentDate.getTime() - createdDate.getTime()) / 1000;
-    console.log("relativeTime", relativeTime);
-
     let displayTime: string;
 
     if (relativeTime >= 60 * 60 * 24) {
@@ -29,7 +32,7 @@ const Comment = ({ comment }: { comment: CommentType }) => {
     return (
         <div className="flex gap-3 w-full text-sm">
             <Image
-                src="/loadUserProfile.jpg"
+                src={comment.userImg || "/loadUserProfile.jpg"}
                 alt="user profile"
                 width={30}
                 height={30}
@@ -65,6 +68,10 @@ const Comment = ({ comment }: { comment: CommentType }) => {
 };
 
 const CommentSection = ({ animeId }: { animeId: string }) => {
+    const { data: session, status } = useSession();
+    const { userData } = useUserData();
+    const { setOpenLoginModal } = useLoginModal();
+
     const [comments, setComments] = useState<CommentType[] | []>([]);
     const [userInput, setUserInput] = useState<string>("");
     const [displayCommentBtns, setDisplayCommentBtns] = useState<boolean>(false);
@@ -91,7 +98,33 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
         setUserInput(value.trim());
     };
 
-    const handleCommentButton = () => {};
+    const handleCommentButton = () => {
+        if (isDataEmptyorUndefined(session) || status != "authenticated") {
+            setOpenLoginModal(true);
+            return;
+        }
+
+        const newComment = {
+            _id: crypto.randomUUID(), // Generate a unique ID for the comment
+            userId: session?.user._id as unknown as ObjectId,
+            userName: userData.username,
+            userImg: userData.image,
+            animeId: parseInt(animeId),
+            content: userInput,
+            parentId: null,
+            upVotes: 0,
+            downVotes: 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            replies: [],
+        } as unknown as CommentType;
+
+        const updatedComments = [...comments];
+        updatedComments.unshift(newComment);
+        setComments(updatedComments);
+        setUserInput("");
+        setDisplayCommentBtns(false);
+    };
 
     const handleCancelButton = () => {
         if (userInput.length > 0) {
