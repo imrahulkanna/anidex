@@ -24,7 +24,7 @@ const Comment = ({ comment }: { comment: CommentType }) => {
     } else if (relativeTime >= 60) {
         displayTime = `${Math.floor(relativeTime / 60)}m ago`;
     } else if (relativeTime > 1) {
-        displayTime = `${relativeTime}s ago`;
+        displayTime = `${Math.floor(relativeTime)}s ago`;
     } else {
         displayTime = "a moment ago";
     }
@@ -95,10 +95,10 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
     }, []);
 
     const handleInputChange = (name: string, value: string) => {
-        setUserInput(value.trim());
+        setUserInput(value);
     };
 
-    const handleCommentButton = () => {
+    const handleCommentButton = async () => {
         if (isDataEmptyorUndefined(session) || status != "authenticated") {
             setOpenLoginModal(true);
             return;
@@ -110,7 +110,7 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
             userName: userData.username,
             userImg: userData.image,
             animeId: parseInt(animeId),
-            content: userInput,
+            content: userInput.trim(),
             parentId: null,
             upVotes: 0,
             downVotes: 0,
@@ -118,6 +118,24 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
             updatedAt: new Date().toISOString(),
             replies: [],
         } as unknown as CommentType;
+
+        try {
+            const requestBody = {
+                userId: session?.user._id as unknown as ObjectId,
+                userName: userData.username,
+                userImg: userData.image,
+                animeId: parseInt(animeId),
+                content: userInput.trim(),
+                parentId: null,
+            };
+            await fetch("/api/comments", {
+                method: "POST",
+                cache: "no-cache",
+                body: JSON.stringify(requestBody),
+            });
+        } catch (error) {
+            console.log("Failed to save the comment", error);
+        }
 
         const updatedComments = [...comments];
         updatedComments.unshift(newComment);
@@ -127,9 +145,7 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
     };
 
     const handleCancelButton = () => {
-        if (userInput.length > 0) {
-            setUserInput("");
-        }
+        setUserInput("");
         setDisplayCommentBtns(false);
     };
 
@@ -148,9 +164,9 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
                 {displayCommentBtns && (
                     <div className="mt-3 flex flex-row-reverse gap-2 text-sm font-semibold">
                         <button
-                            disabled={userInput.length === 0}
+                            disabled={userInput.trim().length === 0}
                             className={`px-4 py-2 rounded-full ${
-                                userInput.length === 0
+                                userInput.trim().length === 0
                                     ? "bg-neutral-600 opacity-50"
                                     : " bg-primary/75 hover:bg-primary text-black"
                             }`}
