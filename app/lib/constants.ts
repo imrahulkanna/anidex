@@ -17,3 +17,4 @@ export const DAY = 86400;
 export const ANIME = "ANIME";
 export const PROMOTIONALVIDEOS = "PROMOTIONALVIDEOS";
 export const ANIMECHARACTERS = "ANIMECHARACTERS";
+export const ANIMECOMMENTS = "ANIMECOMMENTS";

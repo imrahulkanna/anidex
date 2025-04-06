@@ -47,3 +47,10 @@ export const setCacheData = async (cacheKey: string, cacheTime: number, data: an
 
     redis.setEx(cacheKey, cacheTime, JSON.stringify(data));
 };
+
+export const deleteCacheData = async (cacheKey: string) => {
+    const redis = await getRedisInstance();
+    if (!redis) return null;
+
+    await redis.del(cacheKey);
+};
