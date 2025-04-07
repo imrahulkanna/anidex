@@ -1,6 +1,6 @@
 "use client";
 import { Comment as CommentType } from "@/model/Comments";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InputBox from "./InputBox";
 import Image from "next/image";
 import { DotFilledIcon, ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
@@ -26,6 +26,7 @@ const Comment = ({
 
     const [replyInput, setReplyInput] = useState<string>("");
     const [displayReplyBox, setDisplayReplyBox] = useState<boolean>(false);
+    const inputRef = useRef<null | HTMLInputElement>(null);
 
     const currentDate: Date = new Date();
     const createdDate: Date = new Date(comment.createdAt.toString());
@@ -43,6 +44,12 @@ const Comment = ({
     } else {
         displayTime = "a moment ago";
     }
+
+    useEffect(() => {
+        if (displayReplyBox) {
+            inputRef.current && inputRef.current.focus();
+        }
+    }, [displayReplyBox]);
 
     const handleReplyInputChange = (name: string, value: string) => {
         setReplyInput(value);
@@ -122,6 +129,7 @@ const Comment = ({
                             name="comment"
                             inputValue={replyInput}
                             onInputChange={handleReplyInputChange}
+                            inputRef={inputRef}
                         />
                         <div className="mt-3 flex flex-row-reverse gap-2 text-sm font-semibold">
                             <button
@@ -175,9 +183,11 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
                 });
 
                 const data = await response.json();
-                data.data.forEach((comment:CommentType) => {
+                data.data.forEach((comment: CommentType) => {
                     comment.replies.sort(
-                        (a: CommentType, b: CommentType) => new Date(b.createdAt.toString()).getTime() - new Date(a.createdAt.toString()).getTime()
+                        (a: CommentType, b: CommentType) =>
+                            new Date(b.createdAt.toString()).getTime() -
+                            new Date(a.createdAt.toString()).getTime()
                     );
                 });
                 setComments(data.data);

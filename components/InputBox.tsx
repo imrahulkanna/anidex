@@ -7,6 +7,7 @@ interface InputBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
     name?: string;
     readOnly?: boolean;
     colorStyling?: string;
+    inputRef?: React.MutableRefObject<null | HTMLInputElement>
 }
 
 const InputBox: React.FC<InputBoxProps> = ({
@@ -18,6 +19,7 @@ const InputBox: React.FC<InputBoxProps> = ({
     name,
     readOnly,
     colorStyling,
+    inputRef,
     ...props
 }) => {
     const style = colorStyling ? colorStyling : "bg-neutral-700 text-neutral-100";
@@ -49,6 +51,7 @@ const InputBox: React.FC<InputBoxProps> = ({
                 onChange={handleInputChange}
                 onClick={handleOnClick}
                 readOnly={readOnly}
+                ref={inputRef}
                 {...props}
             ></input>
             {children}
