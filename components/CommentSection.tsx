@@ -3,7 +3,13 @@ import { Comment as CommentType } from "@/model/Comments";
 import React, { useEffect, useRef, useState } from "react";
 import InputBox from "./InputBox";
 import Image from "next/image";
-import { DotFilledIcon, ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
+import {
+    ChevronDownIcon,
+    ChevronUpIcon,
+    DotFilledIcon,
+    ThickArrowDownIcon,
+    ThickArrowUpIcon,
+} from "@radix-ui/react-icons";
 import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
 import { useUserData } from "@/context/UserDataContext";
 import { useSession } from "next-auth/react";
@@ -26,6 +32,7 @@ const Comment = ({
 
     const [replyInput, setReplyInput] = useState<string>("");
     const [displayReplyBox, setDisplayReplyBox] = useState<boolean>(false);
+    const [showReplies, setShowReplies] = useState<boolean>(false);
     const inputRef = useRef<null | HTMLInputElement>(null);
 
     const currentDate: Date = new Date();
@@ -88,22 +95,28 @@ const Comment = ({
     };
 
     return (
-        <div className="flex gap-3 w-full text-sm">
-            <Image
-                src={comment.userImg || "/loadUserProfile.jpg"}
-                alt="user profile"
-                width={30}
-                height={30}
-                className="rounded-full w-8 h-8"
-            />
+        <div className="flex w-full text-sm">
+            <div className="flex flex-col">
+                <Image
+                    src={comment.userImg || "/loadUserProfile.jpg"}
+                    alt="user profile"
+                    width={30}
+                    height={30}
+                    className="rounded-full w-8 h-8"
+                />
+                {/* <div className="w-full h-full relative">
+                    <div className="w-[1px] h-full mx-auto bg-neutral-700"></div>
+                    <div className="absolute right-0 top-0 w-4 h-4 border-b-[1px] rounded-bl-2xl border-neutral-700"></div>
+                </div> */}
+            </div>
             <div className="w-full mt-1 flex flex-col">
-                <div className="mb-2 flex gap-1 items-center">
+                <div className="mb-1 ml-2 flex gap-1 items-center">
                     <div className="font-medium">@{comment.userName}</div>
                     <DotFilledIcon width={10} height={10} color="gray" />
                     <div className="text-xs text-neutral-500">{displayTime}</div>
                 </div>
-                <div className="text-neutral-400 mb-2">{comment.content}</div>
-                <div className="flex items-center text-xs text-neutral-400 mb-4">
+                <div className="text-neutral-400 mb-1 ml-2">{comment.content}</div>
+                <div className="flex items-center text-xs text-neutral-400">
                     <div className="flex items-center">
                         <div className="p-2 cursor-pointer rounded-full hover:bg-neutral-600 hover:text-neutral-50">
                             <ThickArrowUpIcon width={20} height={20} className="" />
@@ -122,7 +135,7 @@ const Comment = ({
                     </div>
                 </div>
                 {displayReplyBox && (
-                    <div className="w-full flex flex-col mb-1">
+                    <div className="w-full flex flex-col my-1">
                         <InputBox
                             type="text"
                             placeholder="Add a comment"
@@ -152,14 +165,30 @@ const Comment = ({
                         </div>
                     </div>
                 )}
-                {comment.replies.map((reply) => (
-                    <Comment
-                        comment={reply}
-                        key={reply._id as string}
-                        submitComment={submitComment}
-                        animeId={animeId}
-                    />
-                ))}
+                {comment.replies.length > 0 && (
+                    <div className="flex mb-2">
+                        <div
+                            onClick={() => setShowReplies((prevState) => !prevState)}
+                            className="flex gap-1 justify-start items-center text-sm text-sky-500 px-4 py-2 rounded-full hover:bg-white/10  cursor-pointer font-semibold"
+                        >
+                            {showReplies ? (
+                                <ChevronUpIcon width={20} height={20} />
+                            ) : (
+                                <ChevronDownIcon width={20} height={20} />
+                            )}
+                            {comment.replies.length} replies
+                        </div>
+                    </div>
+                )}
+                {showReplies &&
+                    comment.replies.map((reply) => (
+                        <Comment
+                            comment={reply}
+                            key={reply._id as string}
+                            submitComment={submitComment}
+                            animeId={animeId}
+                        />
+                    ))}
             </div>
         </div>
     );
