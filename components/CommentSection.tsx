@@ -18,11 +18,11 @@ import { isDataEmptyorUndefined } from "@/app/lib/utils";
 import { useLoginModal } from "@/context/LoginModalContext";
 
 const Comment = ({
-    comment,
+    commentObj,
     submitComment,
     animeId,
 }: {
-    comment: CommentType;
+    commentObj: CommentType;
     submitComment: (arg: CommentType) => void;
     animeId: string;
 }) => {
@@ -30,6 +30,7 @@ const Comment = ({
     const { userData } = useUserData();
     const { setOpenLoginModal } = useLoginModal();
 
+    const [comment, setComment] = useState<CommentType>(commentObj);
     const [replyInput, setReplyInput] = useState<string>("");
     const [displayReplyBox, setDisplayReplyBox] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
@@ -94,6 +95,39 @@ const Comment = ({
         setDisplayReplyBox(false);
     };
 
+    const handleVoteClick = async (type: string) => {
+        if (isDataEmptyorUndefined(session) || status != "authenticated") {
+            setOpenLoginModal(true);
+            return;
+        }
+
+        try {
+            if (type === "upVote") {
+                setComment((prevState) => ({
+                    ...(prevState.toObject ? prevState.toObject() : prevState),
+                    upVotes: prevState.upVotes + 1,
+                }));
+            } else {
+                setComment((prevState) => ({
+                    ...(prevState.toObject ? prevState.toObject() : prevState),
+                    downVotes: prevState.downVotes + 1,
+                }));
+            }
+
+            const reqBody = {
+                commentId: comment._id,
+                type: type,
+                userId: session?.user._id as unknown as ObjectId,
+            };
+
+            await fetch("/api/update-vote", {
+                method: "POST",
+                cache: "no-cache",
+                body: JSON.stringify(reqBody),
+            });
+        } catch (error) {}
+    };
+
     return (
         <div className="flex w-full text-sm">
             <div className="flex flex-col">
@@ -117,12 +151,18 @@ const Comment = ({
                 </div>
                 <div className="text-neutral-400 mb-1 ml-2">{comment.content}</div>
                 <div className="flex items-center text-xs text-neutral-400">
-                    <div className="flex items-center">
-                        <div className="p-2 cursor-pointer rounded-full hover:bg-neutral-600 hover:text-neutral-50">
+                    <div className="flex items-center gap-[2px]">
+                        <div
+                            className="p-2 cursor-pointer rounded-full hover:bg-neutral-600 hover:text-neutral-50"
+                            onClick={() => handleVoteClick("upVote")}
+                        >
                             <ThickArrowUpIcon width={20} height={20} className="" />
                         </div>
                         <div>{comment.upVotes - comment.downVotes}</div>
-                        <div className="p-2 cursor-pointer rounded-full hover:bg-neutral-600 hover:text-neutral-50">
+                        <div
+                            className="p-2 cursor-pointer rounded-full hover:bg-neutral-600 hover:text-neutral-50"
+                            onClick={() => handleVoteClick("downVote")}
+                        >
                             <ThickArrowDownIcon width={20} height={20} className="" />
                         </div>
                     </div>
@@ -183,7 +223,7 @@ const Comment = ({
                 {showReplies &&
                     comment.replies.map((reply) => (
                         <Comment
-                            comment={reply}
+                            commentObj={reply}
                             key={reply._id as string}
                             submitComment={submitComment}
                             animeId={animeId}
@@ -340,7 +380,7 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
             <div className="mt-5">
                 {comments.map((comment) => (
                     <Comment
-                        comment={comment}
+                        commentObj={comment}
                         key={comment._id as string}
                         submitComment={submitComment}
                         animeId={animeId}
