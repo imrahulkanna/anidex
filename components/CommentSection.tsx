@@ -34,6 +34,8 @@ const Comment = ({
     const [replyInput, setReplyInput] = useState<string>("");
     const [displayReplyBox, setDisplayReplyBox] = useState<boolean>(false);
     const [showReplies, setShowReplies] = useState<boolean>(false);
+    const [isUpVoted, setIsUpVoted] = useState<boolean>(false);
+    const [isDownVoted, setIsDownVoted] = useState<boolean>(false);
     const inputRef = useRef<null | HTMLInputElement>(null);
 
     const currentDate: Date = new Date();
@@ -103,21 +105,52 @@ const Comment = ({
 
         try {
             if (type === "upVote") {
-                setComment((prevState) => ({
-                    ...(prevState.toObject ? prevState.toObject() : prevState),
-                    upVotes: prevState.upVotes + 1,
-                }));
+                if (isUpVoted) {
+                    setComment((prevState) => ({
+                        ...(prevState.toObject ? prevState.toObject() : prevState),
+                        upVotes: prevState.upVotes - 1,
+                    }));
+                } else {
+                    setComment((prevState) => ({
+                        ...(prevState.toObject ? prevState.toObject() : prevState),
+                        upVotes: prevState.upVotes + 1,
+                    }));
+                    if (isDownVoted) {
+                        setIsDownVoted(false);
+                        setComment((prevState) => ({
+                            ...(prevState.toObject ? prevState.toObject() : prevState),
+                            downVotes: prevState.upVotes - 1,
+                        }));
+                    }
+                }
+                setIsUpVoted(!isUpVoted);
             } else {
-                setComment((prevState) => ({
-                    ...(prevState.toObject ? prevState.toObject() : prevState),
-                    downVotes: prevState.downVotes + 1,
-                }));
+                if (isDownVoted) {
+                    setComment((prevState) => ({
+                        ...(prevState.toObject ? prevState.toObject() : prevState),
+                        downVotes: prevState.downVotes - 1,
+                    }));
+                } else {
+                    setComment((prevState) => ({
+                        ...(prevState.toObject ? prevState.toObject() : prevState),
+                        downVotes: prevState.downVotes + 1,
+                    }));
+                    if (isUpVoted) {
+                        setIsUpVoted(false);
+                        setComment((prevState) => ({
+                            ...(prevState.toObject ? prevState.toObject() : prevState),
+                            upVotes: prevState.upVotes - 1,
+                        }));
+                    }
+                }
+                setIsDownVoted(!isDownVoted);
             }
 
             const reqBody = {
                 commentId: comment._id,
                 type: type,
                 userId: session?.user._id as unknown as ObjectId,
+                animeId: parseInt(animeId),
             };
 
             await fetch("/api/update-vote", {
@@ -156,14 +189,22 @@ const Comment = ({
                             className="p-2 cursor-pointer rounded-full hover:bg-neutral-600 hover:text-neutral-50"
                             onClick={() => handleVoteClick("upVote")}
                         >
-                            <ThickArrowUpIcon width={20} height={20} className="" />
+                            <ThickArrowUpIcon
+                                width={20}
+                                height={20}
+                                className={`${isUpVoted ? "text-primary" : ""}`}
+                            />
                         </div>
                         <div>{comment.upVotes - comment.downVotes}</div>
                         <div
                             className="p-2 cursor-pointer rounded-full hover:bg-neutral-600 hover:text-neutral-50"
                             onClick={() => handleVoteClick("downVote")}
                         >
-                            <ThickArrowDownIcon width={20} height={20} className="" />
+                            <ThickArrowDownIcon
+                                width={20}
+                                height={20}
+                                className={`${isDownVoted ? "text-primary" : ""}`}
+                            />
                         </div>
                     </div>
                     <div
