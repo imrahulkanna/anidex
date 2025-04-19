@@ -57,6 +57,8 @@ const Header = ({ rowdies }: { rowdies: any }) => {
             }
         };
 
+        handleScroll();
+
         const handleDropdownClose = (e: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
                 setOpenMenu(false);

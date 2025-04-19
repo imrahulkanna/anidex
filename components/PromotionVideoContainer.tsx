@@ -102,7 +102,7 @@ const PromotionVideoContainer = ({promoVideos}: { promoVideos: promoVideos[] }) 
     }, [promoVideos]);
 
     return (
-        <div id="promo-videos" className="my-10 md:px-4">
+        <div id="promo-videos" className="mt-10 md:px-4">
             <h2 className="text-2xl font-bold text-primary mb-5">Promotion Videos</h2>
             <div className="flex flex-wrap gap-4 mx-auto">
                 {promoVideos.map((video: promoVideos, index: number) => (
