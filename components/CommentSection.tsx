@@ -61,6 +61,13 @@ const Comment = ({
         }
     }, [displayReplyBox]);
 
+    useEffect(() => {
+        if (!isDataEmptyorUndefined(session?.user._id)) {
+            setIsUpVoted(comment.upVotedUsers.includes(session.user._id));
+            setIsDownVoted(comment.downVotedUsers.includes(session.user._id));
+        }
+    }, [session?.user]);
+
     const handleReplyInputChange = (name: string, value: string) => {
         setReplyInput(value);
     };
@@ -84,6 +91,8 @@ const Comment = ({
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             replies: [],
+            upVotedUsers: [],
+            downVotedUsers: [],
         } as unknown as CommentType;
 
         await submitComment(newReply);
@@ -104,24 +113,26 @@ const Comment = ({
         }
 
         try {
+            let actionType;
             if (type === "upVote") {
                 if (isUpVoted) {
                     setComment((prevState) => ({
                         ...(prevState.toObject ? prevState.toObject() : prevState),
                         upVotes: prevState.upVotes - 1,
                     }));
+                    actionType = "remove";
                 } else {
-                    setComment((prevState) => ({
-                        ...(prevState.toObject ? prevState.toObject() : prevState),
-                        upVotes: prevState.upVotes + 1,
-                    }));
+                    const updatedComment = { ...comment };
+                    updatedComment.upVotes += 1;
+                    actionType = "add";
                     if (isDownVoted) {
                         setIsDownVoted(false);
-                        setComment((prevState) => ({
-                            ...(prevState.toObject ? prevState.toObject() : prevState),
-                            downVotes: prevState.upVotes - 1,
-                        }));
+                        updatedComment.downVotes -= 1;
                     }
+                    setComment((prevState) => ({
+                        ...(prevState.toObject ? prevState.toObject() : prevState),
+                        ...updatedComment,
+                    }));
                 }
                 setIsUpVoted(!isUpVoted);
             } else {
@@ -130,18 +141,19 @@ const Comment = ({
                         ...(prevState.toObject ? prevState.toObject() : prevState),
                         downVotes: prevState.downVotes - 1,
                     }));
+                    actionType = "remove";
                 } else {
-                    setComment((prevState) => ({
-                        ...(prevState.toObject ? prevState.toObject() : prevState),
-                        downVotes: prevState.downVotes + 1,
-                    }));
+                    const updatedComment = { ...comment };
+                    updatedComment.downVotes += 1;
+                    actionType = "add";
                     if (isUpVoted) {
                         setIsUpVoted(false);
-                        setComment((prevState) => ({
-                            ...(prevState.toObject ? prevState.toObject() : prevState),
-                            upVotes: prevState.upVotes - 1,
-                        }));
+                        updatedComment.upVotes -= 1;
                     }
+                    setComment((prevState) => ({
+                        ...(prevState.toObject ? prevState.toObject() : prevState),
+                        ...updatedComment,
+                    }));
                 }
                 setIsDownVoted(!isDownVoted);
             }
@@ -151,6 +163,7 @@ const Comment = ({
                 type: type,
                 userId: session?.user._id as unknown as ObjectId,
                 animeId: parseInt(animeId),
+                actionType: actionType,
             };
 
             await fetch("/api/update-vote", {

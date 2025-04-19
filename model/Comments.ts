@@ -12,6 +12,8 @@ export interface Comment extends Document {
     parentId: Schema.Types.ObjectId | null;
     createdAt: String;
     updatedAt: String;
+    upVotedUsers: Array<Schema.Types.ObjectId | String>;
+    downVotedUsers: Array<Schema.Types.ObjectId | String>;
 }
 
 const CommentSchema: Schema<Comment> = new Schema<Comment>(
@@ -47,6 +49,14 @@ const CommentSchema: Schema<Comment> = new Schema<Comment>(
         parentId: {
             type: Schema.Types.ObjectId,
             default: null,
+        },
+        upVotedUsers: {
+            type: [Schema.Types.ObjectId],
+            default: [],
+        },
+        downVotedUsers: {
+            type: [Schema.Types.ObjectId],
+            default: [],
         },
     },
     { timestamps: true }
