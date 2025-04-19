@@ -398,7 +398,7 @@ const CommentSection = ({ animeId }: { animeId: string }) => {
     };
 
     return (
-        <div className="my-10">
+        <div className="my-10 md:px-4">
             <h2 className="text-2xl font-bold text-primary mb-5">Comments</h2>
             <div className="w-full flex flex-col">
                 <InputBox

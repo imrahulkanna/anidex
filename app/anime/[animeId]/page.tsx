@@ -211,7 +211,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                 {characters.splice(0, 9).map((character: character) => (
                                     <div
                                         key={character.character.mal_id}
-                                        className="flex flex-grow items-center p-3 bg-white/10 rounded-md"
+                                        className="flex flex-grow items-center justify-between p-3 bg-white/10 rounded-md"
                                     >
                                         <Image
                                             src={character.character.images.webp.image_url}
@@ -220,7 +220,7 @@ const Anime = async ({ params }: { params: { animeId: string } }) => {
                                             width={200}
                                             className="w-11 h-11 rounded-full object-cover"
                                         />
-                                        <div className="w-52 px-2 py-1 flex flex-col gap-1 justify-between text-sm">
+                                        <div className="w-52 px-2 py-1 flex flex-grow flex-col gap-1 justify-between text-sm">
                                             <p>
                                                 <span className="font-bold">
                                                     {character.character.name}
